@@ -6,25 +6,15 @@
             "image": "stalwartlabs/mail-server:latest",
             "container_name": "{ServiceName}",
             "restart": "unless-stopped",
-            "hostname": "mail-server",
             "tty": true,
             "stdin_open": true,
             "ports": [
               "443:443",
               "8080:8080",
               "25:25",
-              "587:587",
               "465:465",
-              "143:143",
-              "993:993",
-              "4190:4190",
-              "110:110",
-              "995:995"
+              "993:993"
             ],
-            "network_mode": "cosmos-mail-server-default",
-            "networks": {
-                "cosmos-mail-server-default": {}
-            },
             "labels": {
                 "cosmos-force-network-secured": "true",
                 "cosmos-auto-update": "true",
@@ -51,8 +41,5 @@
                 }
             }]
         }
-    },
-    "networks": {
-        "cosmos-mail-server-default": {}
     }
 }
