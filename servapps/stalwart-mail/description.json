@@ -1,0 +1,9 @@
+{
+    "name": "Stalwart Mail Server",
+    "longDescription": "<p>Stalwart Labs' mission is to help modernize, democratize and promote decentralization of email by creating an open-source mail server in Rust that is simple to run but at the same time extremely secure, robust and focused on privacy.</p>",
+    "description": "One of the key challenges of self-hosting an email server is the outdated and complex nature of most available open-source mail server software.",
+    "tags": ["email", "mail server", "SMTP"],
+    "repository": "https://github.com/stalwartlabs/mail-server",
+    "image": "https://hub.docker.com/r/stalwartlabs/mail-server",
+    "supported_architectures": ["amd64", "arm/v6", "arm/v7"]
+}
