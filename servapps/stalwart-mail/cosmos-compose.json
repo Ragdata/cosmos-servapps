@@ -6,7 +6,6 @@
             "image": "stalwartlabs/mail-server:latest",
             "container_name": "{ServiceName}",
             "restart": "unless-stopped",
-            "hostname": "mail-server",
             "tty": true,
             "stdin_open": true,
             "ports": [
