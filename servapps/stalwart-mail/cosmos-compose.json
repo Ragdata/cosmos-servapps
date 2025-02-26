@@ -51,5 +51,8 @@
                 }
             }]
         }
+    },
+    "networks": {
+        "cosmos-mail-server-default": {}
     }
 }
