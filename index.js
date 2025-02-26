@@ -2,46 +2,42 @@ const fs = require('fs')
 const { config } = require('process')
 const configFile = require('./config.json')
 
-let servappsJSON = []
-
-let repoURL = configFile.pageUrl;
-let servappsFolder = configFile.servappsFolder;
-
 // list all directories in the directory servapps and compile them in servapps.json
 
-const servapps = fs.readdirSync(`./${servappsFolder}`).filter(file => fs.lstatSync(`./${servappsFolder}/${file}`).isDirectory())
+const servapps = fs.readdirSync('./servapps').filter(file => fs.lstatSync(`./servapps/${file}`).isDirectory())
 
+let servappsJSON = []
 
 for (const file of servapps) {
-  const servapp = require(`./${servappsFolder}/${file}/description.json`)
+  const servapp = require(`./servapps/${file}/description.json`)
   servapp.id = file
   servapp.screenshots = [];
   servapp.artefacts = {};
 
   // list all screenshots in the directory servapps/${file}/screenshots
-  const screenshots = fs.readdirSync(`./${servappsFolder}/${file}/screenshots`)
+  const screenshots = fs.readdirSync(`./servapps/${file}/screenshots`)
   for (const screenshot of screenshots) {
-    servapp.screenshots.push(`${repoURL}/${servappsFolder}/${file}/screenshots/${screenshot}`)
+    servapp.screenshots.push(`https://ragdata.github.io/cosmos-servapps/servapps/${file}/screenshots/${screenshot}`)
   }
 
-  if(fs.existsSync(`./${servappsFolder}/${file}/artefacts`)) {
-    const artefacts = fs.readdirSync(`./${servappsFolder}/${file}/artefacts`)
+  if(fs.existsSync(`./servapps/${file}/artefacts`)) {
+    const artefacts = fs.readdirSync(`./servapps/${file}/artefacts`)
     for(const artefact of artefacts) {
-      servapp.artefacts[artefact] = (`${repoURL}/${servappsFolder}/${file}/artefacts/${artefact}`)
+      servapp.artefacts[artefact] = (`https://ragdata.github.io/cosmos-servapps/servapps/${file}/artefacts/${artefact}`)
     }
   }
 
-  let composeFileName = "cosmos-compose.json";
-  if(!fs.existsSync(`./${servappsFolder}/${file}/cosmos-compose.json`)) {
-    composeFileName = "docker-compose.yml";
+  servapp.icon = `https://ragdata.github.io/cosmos-servapps/servapps/${file}/icon.png`
+  //Common Format,used by most
+  const YMLComposeSource =  `https://ragdata.github.io/cosmos-servapps/servapps/${file}/docker-compose.yml`;
+  if(fs.existsSync(`./servapps/${file}/docker-compose.yml`)) {
+    servapp.compose = YMLComposeSource;
   }
-  if(!fs.existsSync(`./${servappsFolder}/${file}/${composeFileName}`)) {
-    console.error(`No compose file found for ${file}`);
-    continue;
-  }
-
-  servapp.icon = `${repoURL}/${servappsFolder}/${file}/icon.png`
-  servapp.compose = `${repoURL}/${servappsFolder}/${file}/${composeFileName}`
+  //Cosmos Legacy Format
+  const CosmosComposeSource =  `https://ragdata.github.io/cosmos-servapps/servapps/${file}/cosmos-compose.json`; 
+  if(fs.existsSync(`./servapps/${file}/cosmos-compose.json`)) {
+    servapp.compose = CosmosComposeSource;
+    }
 
   servappsJSON.push(servapp)
 }
@@ -51,7 +47,7 @@ const _sc = ["Jellyfin", "Home Assistant", "Nextcloud"];
 const showcases = servappsJSON.filter((app) => _sc.includes(app.name));
 
 let apps = {
-  "source": configFile.marketIndexUrl,
+  "source": configFile.url,
   "showcase": showcases,
   "all": servappsJSON
 }
@@ -59,3 +55,15 @@ let apps = {
 fs.writeFileSync('./servapps.json', JSON.stringify(servappsJSON, null, 2))
 fs.writeFileSync('./index.json', JSON.stringify(apps, null, 2))
 
+for (const servapp of servappsJSON) {
+  servapp.compose = `http://localhost:3000/servapps/${servapp.id}/cosmos-compose.json`
+  servapp.icon = `http://localhost:3000/servapps/${servapp.id}/icon.png`
+  for (let i = 0; i < servapp.screenshots.length; i++) {
+    servapp.screenshots[i] = servapp.screenshots[i].replace('https://ragdata.github.io/cosmos-servapps', 'http://localhost:3000')
+  }
+  for (const artefact in servapp.artefacts) {
+    servapp.artefacts[artefact] = servapp.artefacts[artefact].replace('https://ragdata.github.io/cosmos-servapps', 'http://localhost:3000')
+  }
+}
+
+fs.writeFileSync('./servapps_test.json', JSON.stringify(apps, null, 2))
