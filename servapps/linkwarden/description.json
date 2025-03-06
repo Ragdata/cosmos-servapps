@@ -1,0 +1,9 @@
+{
+    "name": "Linkwarden",
+    "longDescription": "<p>Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, organize and archive webpages. <a href=\"https://github.com/linkwarden/browser-extension\" target=\"_blank\">Browser Extension Available</a></p>",
+    "description": "Your all-in-one collaborative tool for collecting and preserving useful webpages and documents.",
+    "tags": ["bookmark", "collaboration"],
+    "repository": "https://github.com/linkwarden/linkwarden",
+    "image": "https://hub.docker.com/r/wbsu2003/linkwarden",
+    "supported_architectures": ["amd64"]
+}

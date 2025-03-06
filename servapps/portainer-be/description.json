@@ -1,0 +1,9 @@
+{
+    "name": "Portainer Business Edition",
+    "longDescription": "<p>Portainer empowers you to securely manage containerized applications across Docker, Docker Swarm, and Kubernetes, and across Cloud, Hybrid Cloud, On-Premise and/or Data Center.</p>",
+    "description": "Portainer is your container management software to deploy, troubleshoot, and secure applications across cloud, datacenter, and Industrial IoT use cases.",
+    "tags": ["containers", "docker", "kubernetes"],
+    "repository": "https://github.com/portainer/portainer",
+    "image": "https://github.com/portainer/portainer",
+    "supported_architectures": ["amd64", "arm", "arm64", "ppc64le", "windows 64"]
+}
