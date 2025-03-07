@@ -11,12 +11,13 @@ services:
         image: gitea/gitea:latest
         restart: unless-stopped
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://{ServiceName}:8000"]
+            test: ["CMD", "curl", "-f", "http://{ServiceName}:3000"]
             interval: 10
             timeout: 10
             start_period: 30
             retries: 3
         environment:
+            TZ: "Australia/Brisbane"
             USER_GID: "1000"
             USER_UID: "1000"
         network_mode: bridge
@@ -31,7 +32,7 @@ services:
             - name: "{ServiceName}"
               description: "Expose {ServiceName} to the web"
               useHost: true
-              target: "http://{ServiceName}:8000"
+              target: "http://{ServiceName}:3000"
               mode: "SERVAPP"
               timeout: 14400000
               throttlePerMinute: 12000
@@ -55,8 +56,11 @@ services:
         image: docker.io/gitea/act_runner:latest
         restart: unless-stopped
         environment:
-            GITEA_INSTANCE_URL: http://{ServiceName}:8000
+            CONFIG_FILE: /data/gitea/conf/config.yaml
+            GITEA_INSTANCE_URL: http://{ServiceName}:3000
             GITEA_RUNNER_REGISTRATION_TOKEN: ReplaceWithToken
+            GITEA_RUNNER_NAME: "{ServiceName}-runner"
+            GITEA_RUNNER_LABELS: null
         volumes:
             - type: bind
               source: /data/act_runner
@@ -68,7 +72,7 @@ services:
             "{ServiceName}":
                 condition: service_healthy
                 restart: true
-        network_mode:
+        network_mode: bridge
         labels:
             cosmos.stack: "{ServiceName}"
             cosmos-auto-update: true

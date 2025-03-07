@@ -40,6 +40,7 @@ services:
             start_period: 60
             retries: 3
         environment:
+            TZ: "Australia/Brisbane"
             DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-ChangeMe@123}@postgres:5432/postgres
             NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F}
             NEXTAUTH_URL: ${NEXTAUTH_URL:-http://{ServiceName}:3000}
