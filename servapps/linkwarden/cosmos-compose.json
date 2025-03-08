@@ -1,0 +1,126 @@
+{
+    "cosmos-installer": {},
+    "name": "linkwarden",
+    "services": {
+      "{ServiceName}-postgres": {
+        "container_name": "{ServiceName}-postgres",
+        "hostname": "{ServiceName}-postgres",
+        "image": "postgres:16-alpine",
+        "restart": "unless-stopped",
+        "healthcheck": {
+          "test": [
+            "CMD-SHELL",
+            "pg_isready -d linkwarden -U linkwarden || exit 1"
+          ],
+          "interval": 5,
+          "timeout": 5,
+          "start_period": 30,
+          "retries": 10
+        },
+        "environment": [
+          "POSTGRES_HOST_AUTH_METHOD=trust",
+          "POSTGRES_USER=linkwarden",
+          "POSTGRES_PASSWORD=ChangeMe@123",
+          "POSTGRES_DB=linkwarden"
+        ],
+        "volumes": [
+          {
+            "type": "volume",
+            "source": "postgres",
+            "target": "/var/lib/postgresql"
+          }
+        ],
+        "network_mode": "bridge",
+        "labels": {
+          "cosmos.stack": "{ServiceName}",
+          "cosmos-auto-update": "true",
+          "cosmos-force-network-secured": "true"
+        }
+      },
+      "{ServiceName}": {
+        "container_name": "{ServiceName}",
+        "hostname": "{ServiceName}",
+        "image": "ghcr.io/linkwarden/linkwarden:latest",
+        "restart": "unless-stopped",
+        "healthcheck": {
+          "test": [
+            "CMD-SHELL",
+            "curl --fail http://{ServiceName}:3000 || exit 1"
+          ],
+          "interval": 40,
+          "timeout": 30,
+          "start_period": 60,
+          "retries": 3
+        },
+        "environment": [
+          "TZ=Australia/Brisbane",
+          "DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-ChangeMe@123}@postgres:5432/postgres",
+          "NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F}",
+          "NEXTAUTH_URL=${NEXTAUTH_URL:-http://{ServiceName}:3000}"
+        ],
+        "network_mode": "bridge",
+        "ports": [
+          "3000:3000/tcp"
+        ],
+        "volumes": [
+          {
+            "type": "volume",
+            "source": "data",
+            "target": "/data/data"
+          }
+        ],
+        "depends_on": {
+          "{ServiceName}-postgres": {
+            "condition": "service_healthy"
+          }
+        },
+        "routes": [
+          {
+            "name": "{ServiceName}",
+            "description": "Expose {ServiceName} to the web",
+            "useHost": true,
+            "target": "http://{ServiceName}:3000",
+            "mode": "SERVAPP",
+            "timeout": 14400000,
+            "throttlePerMinute": 12000,
+            "BlockCommonBots": true,
+            "Smartshield": {
+              "Enabled": true
+            }
+          }
+        ],
+        "labels": {
+          "cosmos.stack": "{ServiceName}",
+          "cosmos.stack.main": "true",
+          "cosmos-auto-update": "true",
+          "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
+          "cosmos-force-network-secured": "true"
+        }
+      },
+      "{ServiceName}-autoheal": {
+        "container_name": "{ServiceName}-autoheal",
+        "hostname": "{ServiceName}-autoheal",
+        "image": "willfarrell/autoheal:latest",
+        "restart": "unless-stopped",
+        "network_mode": "bridge",
+        "environment": [
+          "AUTOHEAL_CONTAINER_LABEL=all",
+          "AUTOHEAL_INTERVAL=60",
+          "AUTOHEAL_START_PERIOD=300",
+          "AUTOHEAL_DEFAULT_STOP_TIMEOUT=10"
+        ],
+        "volumes": [
+          {
+            "type": "bind",
+            "source": "/var/run/docker.sock",
+            "target": "/var/run/docker.sock"
+          }
+        ],
+        "labels": {
+          "cosmos.stack": "{ServiceName}",
+          "cosmos-auto-update": "true",
+          "cosmos-force-network-secured": "true"
+        }
+      }
+    }
+  }

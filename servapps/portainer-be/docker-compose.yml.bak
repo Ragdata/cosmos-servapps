@@ -37,10 +37,6 @@ services:
               BlockCommonBots: true
               Smartshield:
                 Enabled: true
-                PolicyStrictness: 3
-                PerUserRequestLimit: 12000
-                PerUserSimultaneous: 100
-                MaxGlobalSimultaneous: 1000
         labels:
             cosmos-auto-update: true
             cosmos-icon: https://ragdata.github.io/cosmos-servapps/servapps/portainer-be/icon.png

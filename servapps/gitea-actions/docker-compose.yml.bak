@@ -39,10 +39,6 @@ services:
               BlockCommonBots: true
               Smartshield:
                 Enabled: true
-                PolicyStrictness: 3
-                PerUserRequestLimit: 12000
-                PerUserSimultaneous: 100
-                MaxGlobalSimultaneous: 1000
         labels:
             cosmos.stack: "{ServiceName}"
             cosmos.stack.main: true
