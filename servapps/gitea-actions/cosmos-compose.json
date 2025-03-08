@@ -94,7 +94,6 @@
             "restart": true
           }
         },
-        "network_mode": "bridge",
         "labels": {
           "cosmos.stack": "{ServiceName}",
           "cosmos-auto-update": "true",

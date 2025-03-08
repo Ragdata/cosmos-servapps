@@ -43,7 +43,7 @@
             "name": "{ServiceName}",
             "description": "Expose {ServiceName} to the web",
             "useHost": true,
-            "target": "http://{ServiceName}:8000",
+            "target": "http://{ServiceName}:9000",
             "mode": "SERVAPP",
             "timeout": 14400000,
             "throttlePerMinute": 12000,
