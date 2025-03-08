@@ -2,9 +2,9 @@
     "cosmos-installer": {},
     "name": "linkwarden",
     "services": {
-      "{ServiceName}-postgres": {
-        "container_name": "{ServiceName}-postgres",
-        "hostname": "{ServiceName}-postgres",
+      "postgres": {
+        "container_name": "postgres",
+        "hostname": "postgres",
         "image": "postgres:16-alpine",
         "restart": "unless-stopped",
         "healthcheck": {
@@ -101,31 +101,6 @@
           "cosmos.stack.main": "true",
           "cosmos-auto-update": "true",
           "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
-          "cosmos-force-network-secured": "true"
-        }
-      },
-      "{ServiceName}-autoheal": {
-        "container_name": "{ServiceName}-autoheal",
-        "hostname": "{ServiceName}-autoheal",
-        "image": "willfarrell/autoheal:latest",
-        "restart": "unless-stopped",
-        "network_mode": "bridge",
-        "environment": [
-          "AUTOHEAL_CONTAINER_LABEL=all",
-          "AUTOHEAL_INTERVAL=60",
-          "AUTOHEAL_START_PERIOD=300",
-          "AUTOHEAL_DEFAULT_STOP_TIMEOUT=10"
-        ],
-        "volumes": [
-          {
-            "type": "bind",
-            "source": "/var/run/docker.sock",
-            "target": "/var/run/docker.sock"
-          }
-        ],
-        "labels": {
-          "cosmos.stack": "{ServiceName}",
-          "cosmos-auto-update": "true",
           "cosmos-force-network-secured": "true"
         }
       }
