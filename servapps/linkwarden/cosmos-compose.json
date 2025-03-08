@@ -109,7 +109,9 @@
         "hostname": "{ServiceName}-autoheal",
         "image": "willfarrell/autoheal:latest",
         "restart": "unless-stopped",
-        "network_mode": "bridge",
+        "networks": {
+            "{ServiceName}": {}
+        },
         "environment": [
           "AUTOHEAL_CONTAINER_LABEL=all",
           "AUTOHEAL_INTERVAL=60",
