@@ -24,7 +24,9 @@
           "USER_GID=1000",
           "USER_UID=1000"
         ],
-        "network_mode": "bridge",
+        "networks": {
+            "{ServiceName}": {}
+        },
         "ports": [
           "3002:3000/tcp",
           "222:22/tcp"
@@ -71,6 +73,9 @@
           "GITEA_RUNNER_NAME={ServiceName}-runner",
           "GITEA_RUNNER_LABELS=null"
         ],
+        "networks": {
+            "{ServiceName}": {}
+        },
         "volumes": [
           {
             "type": "bind",
@@ -97,5 +102,8 @@
           "cosmos-force-network-secured": "true"
         }
       }
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
-  }
+}

@@ -23,6 +23,9 @@
           "POSTGRES_PASSWORD=ChangeMe@123",
           "POSTGRES_DB=linkwarden"
         ],
+        "networks": {
+            "{ServiceName}": {}
+        },
         "volumes": [
           {
             "type": "volume",
@@ -30,7 +33,6 @@
             "target": "/var/lib/postgresql"
           }
         ],
-        "network_mode": "bridge",
         "labels": {
           "cosmos.stack": "{ServiceName}",
           "cosmos-auto-update": "true",
@@ -58,7 +60,9 @@
           "NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F}",
           "NEXTAUTH_URL=${NEXTAUTH_URL:-http://{ServiceName}:3000}"
         ],
-        "network_mode": "bridge",
+        "networks": {
+            "{ServiceName}": {}
+        },
         "ports": [
           "3000:3000/tcp"
         ],
@@ -122,5 +126,8 @@
           "cosmos-force-network-secured": "true"
         }
       }
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
-  }
+}
