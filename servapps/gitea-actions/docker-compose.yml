@@ -31,6 +31,7 @@ services:
         routes:
             - name: "{ServiceName}"
               description: "Expose {ServiceName} to the web"
+              useHost: false
               target: "http://{ServiceName}:3000"
               mode: "SERVAPP"
               timeout: 14400000
