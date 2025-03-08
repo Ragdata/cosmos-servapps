@@ -61,7 +61,7 @@
           "TZ=Australia/Brisbane",
           "DATABASE_URL=postgresql://postgres:ChangeMe@123@postgres:5432/postgres",
           "NEXTAUTH_SECRET=DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F",
-          "NEXTAUTH_URL=http://{ServiceName}:3000"
+          "NEXTAUTH_URL=http://{ServiceName}:3000/api/v1/auth"
         ],
         "networks": {
             "{ServiceName}": {}
