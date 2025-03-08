@@ -77,7 +77,7 @@
           }
         ],
         "depends_on": {
-          "{ServiceName}-postgres": {
+          "postgres": {
             "condition": "service_healthy"
           }
         },
