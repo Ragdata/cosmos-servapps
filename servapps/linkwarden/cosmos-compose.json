@@ -26,6 +26,9 @@
         "networks": {
             "{ServiceName}": {}
         },
+        "ports": [
+            "5432:5432/tcp"
+        ],
         "volumes": [
           {
             "type": "volume",
