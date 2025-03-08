@@ -1,6 +1,6 @@
 {
     "cosmos-installer": {},
-    "name": "gitea-actions",
+    "name": "gitea",
     "services": {
       "{ServiceName}": {
         "container_name": "{ServiceName}",
