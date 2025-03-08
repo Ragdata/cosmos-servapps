@@ -91,7 +91,7 @@
         "depends_on": {
           "{ServiceName}": {
             "condition": "service_healthy",
-            "restart": true
+            "restart": "true"
           }
         },
         "labels": {
