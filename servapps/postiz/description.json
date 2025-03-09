@@ -1,0 +1,9 @@
+{
+    "name": "Postiz",
+    "longDescription": "<p>Postiz offers everything you need to manage your social media posts, build and audience, capture leads, and grow your business.</p>",
+    "description": "Your ultimate social media scheduling tool.",
+    "tags": ["social media", "scheduling", "marketing"],
+    "repository": "https://github.com/gitroomhq/postiz-app",
+    "image": "https://ghcr.io/gitroomhq/postiz-app:latest",
+    "supported_architectures": ["amd64", "arm64"]
+}

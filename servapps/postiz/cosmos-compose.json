@@ -1,0 +1,139 @@
+{
+    "cosmos-installer": {},
+    "name": "postiz",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "ghcr.io/gitroomhq/postiz-app:latest",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "curl --fail http://{ServiceName}:5000 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "TZ=Australia/Brisbane",
+                "MAIN_URL=https://postiz.aever.au",
+                "FRONTEND_URL=https://postiz.aever.au",
+                "NEXT_PUBLIC_BACKEND_URL=https://postiz.aever.au/api",
+                "JWT_SECRET=jmub487#S$v%NnM2v*k*j9SsKm*W&mAh",
+                "DATABASE_URL=postgresql://postiz-user:postiz-password@postiz-postgres:5432/postiz",
+                "REDIS_URL=redis://postiz-redis:6379",
+                "BACKEND_INTERNAL_URL=http://{ServiceName}:3000",
+                "IS_GENERAL=true",
+                "STORAGE_PROVIDER=local",
+                "UPLOAD_DIRECTORY=/uploads",
+                "NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "ports": [
+                "5000:5000/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-config",
+                "target": "/config/"
+                },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-uploads",
+                "target": "/uploads/"
+                }
+            ],
+            "depends_on": {
+                "{ServiceName}-postgres": {
+                    "condition": "service_healthy"
+                },
+                "{ServiceName}-redis": {
+                    "condition": "service_healthy"
+                }
+            },
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:3000",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": {
+                    "Enabled": true
+                }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/postiz/icon.png",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres-17-alpine",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "pg_isready -U postiz-user -d postiz"
+                ],
+                "interval": 10,
+                "timeout": 3,
+                "retries": 3
+            },
+            "environment": [
+                "POSTGRES_PASSWORD=",
+                "POSTGRES_USER=",
+                "POSTGRES_DB="
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "volumes": [
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-data",
+                    "target": "/var/lib/postgresql/data"
+                }
+            ]
+        },
+        "{ServiceName}-redis": {
+            "container_name": "{ServiceName}-redis",
+            "hostname": "{ServiceName}-redis",
+            "image": "redis:7.2",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "redis-cli ping"
+                ],
+                "interval": 10,
+                "timeout": 3,
+                "retries": 3
+            },
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "volumes": [
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-redis",
+                    "target": "/data"
+                }
+            ]
+        }
+    }
+}
