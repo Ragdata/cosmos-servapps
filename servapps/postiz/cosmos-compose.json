@@ -108,7 +108,12 @@
                     "source": "{ServiceName}-data",
                     "target": "/var/lib/postgresql/data"
                 }
-            ]
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-force-network-secured": "true"
+            }
         },
         "{ServiceName}-redis": {
             "container_name": "{ServiceName}-redis",
@@ -133,7 +138,12 @@
                     "source": "{ServiceName}-redis",
                     "target": "/data"
                 }
-            ]
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-force-network-secured": "true"
+            }
         }
     }
 }
