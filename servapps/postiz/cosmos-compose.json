@@ -83,7 +83,7 @@
         "{ServiceName}-postgres": {
             "container_name": "{ServiceName}-postgres",
             "hostname": "{ServiceName}-postgres",
-            "image": "postgres-17-alpine",
+            "image": "postgres:17-alpine",
             "restart": "unless-stopped",
             "healthcheck": {
                 "test": [
@@ -145,5 +145,8 @@
                 "cosmos-force-network-secured": "true"
             }
         }
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
 }
