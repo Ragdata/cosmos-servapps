@@ -20,7 +20,6 @@
           "retries": 3
         },
         "environment": [
-          "TZ=Australia/Brisbane",
           "USER_GID=1000",
           "USER_UID=1000"
         ],
@@ -36,6 +35,16 @@
             "type": "volume",
             "source": "{ServiceName}-data",
             "target": "/data"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/localtime:ro",
+            "target": "/etc/localtime:ro"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/timezone:ro",
+            "target": "/etc/timezone:ro"
           }
         ],
         "routes": [
@@ -81,6 +90,16 @@
             "type": "bind",
             "source": "/data/act_runner",
             "target": "/data"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/localtime:ro",
+            "target": "/etc/localtime:ro"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/timezone:ro",
+            "target": "/etc/timezone:ro"
           },
           {
             "type": "bind",

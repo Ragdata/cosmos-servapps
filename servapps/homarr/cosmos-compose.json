@@ -2,12 +2,6 @@
   "cosmos-installer": {
     "form": [
       {
-        "name": "icons",
-        "label": "Where do you want to store your icons?",
-        "initialValue": "{DefaultDataPath}/homarr-icons",
-        "type": "text"
-      },
-      {
         "name": "adminOnly",
         "label": "Do you want to make this service admin only?",
         "initialValue": false,
@@ -21,33 +15,30 @@
       "image": "ghcr.io/homarr-labs/homarr:latest",
       "container_name": "{ServiceName}",
       "restart": "unless-stopped",
-      "UID": 1000,
-      "GID": 1000,
       "environment": [
-        "PUID=1000",
-        "PGID=1000",
-        "TZ=auto"
+        "SECRET_ENCRYPTION_KEY=AddOpenSSLKey"
       ],
-      "labels": {
-        "cosmos-force-network-secured": "true",
-        "cosmos-auto-update": "true",
-        "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/homarr/icon.png"
+      "networks": {
+          "{ServiceName}": {}
       },
+      "ports": [
+        "7575:7575/tcp"
+      ],
       "volumes": [
         {
-          "source": "{ServiceName}-config",
-          "target": "/app/data/configs",
+          "source": "{ServiceName}-appdata",
+          "target": "/appdata",
           "type": "volume"
         },
         {
-          "source": "{ServiceName}-data",
-          "target": "/data",
-          "type": "volume"
+          "type": "bind",
+          "source": "/etc/localtime:ro",
+          "target": "/etc/localtime:ro"
         },
         {
-          "source": "{Context.icons}",
-          "target": "/app/public/icons",
-          "type": "bind"
+          "type": "bind",
+          "source": "/etc/timezone:ro",
+          "target": "/etc/timezone:ro"
         }
       ],
       "routes": [
@@ -68,7 +59,15 @@
            , "AuthAdmin": true
           {/if}
         }
-      ]
+      ],
+      "labels": {
+        "cosmos-force-network-secured": "true",
+        "cosmos-auto-update": "true",
+        "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/homarr/icon.png"
+      }
     }
+  },
+  "networks": {
+      "{ServiceName}": {}
   }
 }

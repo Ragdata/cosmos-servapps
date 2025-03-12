@@ -18,7 +18,6 @@
                 "retries": 3
             },
             "environment": [
-                "TZ=Australia/Brisbane",
                 "MAIN_URL=https://postiz.aever.au",
                 "FRONTEND_URL=https://postiz.aever.au",
                 "NEXT_PUBLIC_BACKEND_URL=https://postiz.aever.au/api",
@@ -47,6 +46,16 @@
                 "type": "volume",
                 "source": "{ServiceName}-uploads",
                 "target": "/uploads/"
+                },
+                {
+                  "type": "bind",
+                  "source": "/etc/localtime:ro",
+                  "target": "/etc/localtime:ro"
+                },
+                {
+                  "type": "bind",
+                  "source": "/etc/timezone:ro",
+                  "target": "/etc/timezone:ro"
                 }
             ],
             "depends_on": {
@@ -107,6 +116,16 @@
                     "type": "volume",
                     "source": "{ServiceName}-data",
                     "target": "/var/lib/postgresql/data"
+                },
+                {
+                  "type": "bind",
+                  "source": "/etc/localtime:ro",
+                  "target": "/etc/localtime:ro"
+                },
+                {
+                  "type": "bind",
+                  "source": "/etc/timezone:ro",
+                  "target": "/etc/timezone:ro"
                 }
             ],
             "labels": {

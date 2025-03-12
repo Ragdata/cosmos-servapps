@@ -17,9 +17,6 @@
           "start_period": 60,
           "retries": 3
         },
-        "environment": [
-          "TZ=Australia/Brisbane"
-        ],
         "network_mode": "bridge",
         "ports": [
           "8000:8000/tcp",
@@ -31,6 +28,16 @@
             "type": "volume",
             "source": "{ServiceName}-data",
             "target": "/data"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/localtime:ro",
+            "target": "/etc/localtime:ro"
+          },
+          {
+            "type": "bind",
+            "source": "/etc/timezone:ro",
+            "target": "/etc/timezone:ro"
           },
           {
             "type": "bind",
