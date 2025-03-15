@@ -7,6 +7,8 @@
             "hostname": "{ServiceName}",
             "image": "gitea/gitea:latest",
             "restart": "unless-stopped",
+            "UID": 1000,
+            "GID": 1000,
             "healthcheck": {
                 "test": [
                     "CMD",
@@ -14,15 +16,11 @@
                     "-f",
                     "http://{ServiceName}:3000"
                 ],
-                "interval": 10,
-                "timeout": 10,
-                "start_period": 30,
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
                 "retries": 3
             },
-            "environment": [
-                "USER_GID=1000",
-                "USER_UID=1000"
-            ],
             "networks": {
                 "{ServiceName}": {}
             },

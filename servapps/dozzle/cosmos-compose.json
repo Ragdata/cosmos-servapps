@@ -1,0 +1,175 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "adminOnly",
+            "label": "Do you want to make this service admin only?",
+            "initialValue": false,
+            "type": "checkbox"
+            },
+            {
+            "name": "useSocketProxy",
+            "label": "Do you want to use a socket-proxy for increased security? (i.e., create socket-proxy container insead of exposing docker.sock)",
+            "initialValue": true,
+            "type": "checkbox"
+            }
+        ]
+    },
+    "name": "dozzle",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "amir20/dozzle:latest",
+            "restart": "unless-stopped",
+            "UID": 1000,
+            "GID": 1000,
+            "healthcheck": {
+                "test": [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://{ServiceName}:8080"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "DOZZLE_LEVEL=info",
+                "DOZZLE_TAILSIZE=300",
+                "DOZZLE_FILTER=status=running"
+                {if Context.useSocketProxy}
+                , "DOCKER_HOST=tcp://{ServiceName}-socket:2375"
+                {/if}
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+                {if not Context.useSocketProxy}
+                ,{
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock",
+                "type": "bind"
+                }
+                {/if}
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:8080",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true },
+                "AuthEnabled": true
+                {if Context.adminOnly}
+                , "AuthAdmin": true
+                {/if}
+                }
+            ],
+            "labels": {
+                {if Context.useSocketProxy}
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "true",
+                {/if}
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Dozzle/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+        {if Context.useSocketProxy}
+        ,
+        "{ServiceName}-socket": {
+            "container_name": "{ServiceName}-socket",
+            "hostname": "{ServiceName}-socket",
+            "image": "tecnativa/docker-socket-proxy",
+            "restart": "unless-stopped",
+            "security_opt": [
+                "no-new-privileges:true"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "2375:2375"
+            ],
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                },
+                {
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock",
+                "type": "bind"
+                }
+            ],
+            "environment": [
+                "LOG_LEVEL=info",
+                "EVENTS=1",
+                "PING=1",
+                "VERSION=1",
+                "AUTH=0",
+                "SECRETS=0",
+                "POST=0",
+                "BUILD=0",
+                "COMMIT=0",
+                "CONFIGS=0",
+                "CONTAINERS=1",
+                "DISTRIBUTION=0",
+                "EXEC=0",
+                "IMAGES=0",
+                "INFO=0",
+                "NETWORKS=0",
+                "NODES=0",
+                "PLUGINS=0",
+                "SERVICES=0",
+                "SESSION=0",
+                "SWARM=0",
+                "SYSTEM=0",
+                "TASKS=0",
+                "VOLUMES=0"
+            ],
+            "depends_on": {
+                "{ServiceName}" : {}
+            },
+            "links": [
+                "{ServiceName}"
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Dozzle/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+        {/if}
+    }
+}
