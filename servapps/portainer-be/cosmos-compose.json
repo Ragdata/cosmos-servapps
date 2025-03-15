@@ -2,69 +2,104 @@
     "cosmos-installer": {},
     "name": "portainer",
     "services": {
-      "{ServiceName}": {
-        "container_name": "{ServiceName}",
-        "hostname": "{ServiceName}",
-        "image": "portainer/portainer-ee:latest",
-        "restart": "unless-stopped",
-        "healthcheck": {
-          "test": [
-            "CMD-SHELL",
-            "curl --fail http://{ServiceName}:9000 || exit 1"
-          ],
-          "interval": 40,
-          "timeout": 30,
-          "start_period": 60,
-          "retries": 3
-        },
-        "network_mode": "bridge",
-        "ports": [
-          "8000:8000/tcp",
-          "9000:9000/tcp",
-          "9443:9443/tcp"
-        ],
-        "volumes": [
-          {
-            "type": "volume",
-            "source": "{ServiceName}-data",
-            "target": "/data"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/localtime:ro",
-            "target": "/etc/localtime:ro"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/timezone:ro",
-            "target": "/etc/timezone:ro"
-          },
-          {
-            "type": "bind",
-            "source": "/var/run/docker.sock",
-            "target": "/var/run/docker.sock"
-          }
-        ],
-        "routes": [
-          {
-            "name": "{ServiceName}",
-            "description": "Expose {ServiceName} to the web",
-            "useHost": true,
-            "target": "http://{ServiceName}:9000",
-            "mode": "SERVAPP",
-            "timeout": 14400000,
-            "throttlePerMinute": 12000,
-            "BlockCommonBots": true,
-            "Smartshield": {
-              "Enabled": true
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "portainer/portainer-ee:alpine",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "wget --no-verbose --tries=3 --spider http://{ServiceName}:9000 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "networks": {
+                "bridge": {}
+            },
+            "network_mode": "bridge",
+            "ports": [
+                "8000:8000/tcp",
+                "9000:9000/tcp",
+                "9443:9443/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/data"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:9000",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/portainer-be/icon.png"
             }
-          }
-        ],
-        "labels": {
-          "cosmos-auto-update": "true",
-          "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/portainer-be/icon.png",
-          "cosmos-force-network-secured": "true"
+        },
+        "{ServiceName}-tools": {
+            "container_name": "{ServiceName}-tools",
+            "hostname": "{ServiceName}-tools",
+            "image": "technorabilia/portainer-tools",
+            "restart": "unless-stopped",
+            "environment": [
+
+            ],
+            "networks": {
+                "bridge": {}
+            },
+            "network_mode": "bridge",
+            "ports": [
+                "9999:9999/tcp",
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-tools-config",
+                "target": "/config"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
         }
-      }
     }
-  }
+}

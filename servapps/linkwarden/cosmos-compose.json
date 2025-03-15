@@ -2,132 +2,130 @@
     "cosmos-installer": {},
     "name": "linkwarden",
     "services": {
-      "{ServiceName}-postgres": {
-        "container_name": "{ServiceName}-postgres",
-        "hostname": "{ServiceName}-postgres",
-        "image": "postgres:16-alpine",
-        "restart": "unless-stopped",
-        "healthcheck": {
-          "test": [
-            "CMD-SHELL",
-            "pg_isready -d linkwarden -U linkwarden || exit 1"
-          ],
-          "interval": 5,
-          "timeout": 5,
-          "start_period": 30,
-          "retries": 10
-        },
-        "environment": [
-          "POSTGRES_HOST_AUTH_METHOD=trust",
-          "POSTGRES_USER={ServiceName}",
-          "POSTGRES_PASSWORD=ChangeMe@123",
-          "POSTGRES_DB={ServiceName}"
-        ],
-        "networks": {
-            "{ServiceName}": {}
-        },
-        "network_mode": "{ServiceName}",
-        "ports": [
-            "5432:5432/tcp"
-        ],
-        "volumes": [
-          {
-            "type": "volume",
-            "source": "{ServiceName}-postgres",
-            "target": "/var/lib/postgresql"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/localtime:ro",
-            "target": "/etc/localtime:ro"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/timezone:ro",
-            "target": "/etc/timezone:ro"
-          }
-        ],
-        "labels": {
-          "cosmos.stack": "{ServiceName}",
-          "cosmos-auto-update": "true",
-          "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
-          "cosmos-force-network-mode": "{ServiceName}",
-          "cosmos-force-network-secured": "true"
-        }
-      },
-      "{ServiceName}": {
-        "container_name": "{ServiceName}",
-        "hostname": "{ServiceName}",
-        "image": "ghcr.io/linkwarden/linkwarden:latest",
-        "restart": "unless-stopped",
-        "healthcheck": {
-          "test": [
-            "CMD-SHELL",
-            "curl --fail http://{ServiceName}:3000 || exit 1"
-          ],
-          "interval": 40,
-          "timeout": 30,
-          "start_period": 60,
-          "retries": 3
-        },
-        "environment": [
-          "DATABASE_URL=postgresql://{ServiceName}:ChangeMe@123@{ServiceName}-postgres:5432/{ServiceName}",
-          "NEXTAUTH_SECRET=DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F",
-          "NEXTAUTH_URL=http://{ServiceName}:3000/api/v1/auth"
-        ],
-        "networks": {
-            "{ServiceName}": {}
-        },
-        "network_mode": "{ServiceName}",
-        "ports": [
-          "3000:3000/tcp"
-        ],
-        "volumes": [
-          {
-            "type": "volume",
-            "source": "{ServiceName}-data",
-            "target": "/data/data"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/localtime:ro",
-            "target": "/etc/localtime:ro"
-          },
-          {
-            "type": "bind",
-            "source": "/etc/timezone:ro",
-            "target": "/etc/timezone:ro"
-          }
-        ],
-        "depends_on": {
-          "postgres": {
-            "condition": "service_healthy"
-          }
-        },
-        "routes": [
-          {
-            "name": "{ServiceName}",
-            "description": "Expose {ServiceName} to the web",
-            "useHost": true,
-            "target": "http://{ServiceName}:3000",
-            "mode": "SERVAPP",
-            "timeout": 14400000,
-            "throttlePerMinute": 12000,
-            "BlockCommonBots": true,
-            "Smartshield": {
-              "Enabled": true
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres:16-alpine",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "pg_isready -d linkwarden -U linkwarden || exit 1"
+                ],
+                "interval": 5,
+                "timeout": 5,
+                "start_period": 30,
+                "retries": 10
+            },
+            "environment": [
+                "POSTGRES_HOST_AUTH_METHOD=trust",
+                "POSTGRES_USER={ServiceName}",
+                "POSTGRES_PASSWORD=ChangeMe",
+                "POSTGRES_DB={ServiceName}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "5432:5432/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-postgres",
+                "target": "/var/lib/postgresql"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
             }
-          }
-        ],
-        "labels": {
-          "cosmos.stack": "{ServiceName}",
-          "cosmos.stack.main": "true",
-          "cosmos-auto-update": "true",
-          "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
-          "cosmos-force-network-mode": "{ServiceName}",
-          "cosmos-force-network-secured": "true"
+        },
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "ghcr.io/linkwarden/linkwarden:latest",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "curl --fail http://{ServiceName}:3000 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "DATABASE_URL=postgresql://{ServiceName}:ChangeMe@{ServiceName}-postgres:5432/{ServiceName}",
+                "NEXTAUTH_SECRET=DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F",
+                "NEXTAUTH_URL=http://{ServiceName}:3000/api/v1/auth"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "3000:3000/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/data/data"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "depends_on": {
+                "postgres": {
+                    "condition": "service_healthy"
+                }
+            },
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:3000",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/linkwarden/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
         }
-      }
     },
     "networks": {
         "{ServiceName}": {}
