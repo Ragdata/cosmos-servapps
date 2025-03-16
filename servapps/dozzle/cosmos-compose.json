@@ -171,5 +171,8 @@
             }
         }
         {/if}
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
 }
