@@ -86,7 +86,7 @@
                 {
                 "type": "volume",
                 "source": "{ServiceName}-data",
-                "target": "/data/data"
+                "target": "/data"
                 },
                 {
                 "type": "bind",
@@ -100,7 +100,7 @@
                 }
             ],
             "depends_on": {
-                "postgres": {
+                "{ServiceName}-postgres": {
                     "condition": "service_healthy"
                 }
             },
