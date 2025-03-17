@@ -98,7 +98,6 @@ Add the information below in the form
 
 > [!important]
 > Name: Ragdata
->
 > URL: https://ragdata.github.io/cosmos-servapps/
 
 [release]: https://ragdata.github.io/cosmos-servapps/
