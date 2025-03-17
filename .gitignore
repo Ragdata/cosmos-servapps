@@ -4,3 +4,4 @@ servapps_test.json
 todo.txt
 servapps/postiz/.env
 servapps/portainer-be/.env
+.vscode

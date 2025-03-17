@@ -73,15 +73,12 @@
             "hostname": "{ServiceName}-tools",
             "image": "technorabilia/portainer-tools",
             "restart": "unless-stopped",
-            "environment": [
-
-            ],
             "networks": {
                 "bridge": {}
             },
             "network_mode": "bridge",
             "ports": [
-                "9999:9999/tcp",
+                "9999:9999/tcp"
             ],
             "volumes": [
                 {
