@@ -100,6 +100,11 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/portainer-be/icon.png"
+            }
         }
     }
 }
