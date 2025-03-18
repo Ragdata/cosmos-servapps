@@ -1,0 +1,55 @@
+{
+    "cosmos-installer": {},
+    "name": "vaultwarden",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "vaultwarden/server:latest",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "wget --no-verbose --tries=3 --spider http://{ServiceName}:80 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "10380:80/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/data"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:80",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/vaultwarden/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    }
+}
