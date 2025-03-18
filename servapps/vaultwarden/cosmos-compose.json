@@ -10,7 +10,7 @@
             "healthcheck": {
                 "test": [
                     "CMD-SHELL",
-                    "wget --no-verbose --tries=3 --spider http://{ServiceName}:80 || exit 1"
+                    "curl --fail http://{ServiceName}:80 || exit 1"
                 ],
                 "interval": 40,
                 "timeout": 30,
@@ -51,5 +51,8 @@
                 "cosmos-force-network-secured": "true"
             }
         }
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
 }
