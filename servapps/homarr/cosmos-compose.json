@@ -50,6 +50,11 @@
                 "type": "bind",
                 "source": "/etc/timezone:ro",
                 "target": "/etc/timezone:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock"
                 }
             ],
             "routes": [
