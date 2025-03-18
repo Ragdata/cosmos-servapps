@@ -1,5 +1,20 @@
 {
-    "cosmos-installer": {},
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "dbPassword",
+            "label": "Database Password",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "nextSecret",
+            "label": "NEXTAUTH_SECRET",
+            "initialValue": "",
+            "type": "text"
+            }
+            ]
+    },
     "name": "linkwarden",
     "services": {
         "{ServiceName}-postgres": {
@@ -19,8 +34,8 @@
             },
             "environment": [
                 "POSTGRES_HOST_AUTH_METHOD=trust",
-                "POSTGRES_USER={ServiceName}",
-                "POSTGRES_PASSWORD=ChangeMe",
+                "POSTGRES_USER={ServiceName}-user",
+                "POSTGRES_PASSWORD={Context.dbPassword}",
                 "POSTGRES_DB={ServiceName}"
             ],
             "networks": {
@@ -71,8 +86,8 @@
                 "retries": 3
             },
             "environment": [
-                "DATABASE_URL=postgresql://{ServiceName}:ChangeMe@{ServiceName}-postgres:5432/{ServiceName}",
-                "NEXTAUTH_SECRET=DR5o8dX6SR5#g*@7z!k2%8#sf5S@RR6F",
+                "DATABASE_URL=postgresql://{ServiceName}-user:{Context.dbPassword}@{ServiceName}-postgres:5432/{ServiceName}",
+                "NEXTAUTH_SECRET={Context.nextSecret}",
                 "NEXTAUTH_URL=http://{ServiceName}:3000/api/v1/auth"
             ],
             "networks": {
@@ -86,7 +101,7 @@
                 {
                 "type": "volume",
                 "source": "{ServiceName}-data",
-                "target": "/data"
+                "target": "/data/data"
                 },
                 {
                 "type": "bind",
