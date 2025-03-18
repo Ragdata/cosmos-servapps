@@ -44,7 +44,7 @@
             "healthcheck": {
                 "test": [
                     "CMD-SHELL",
-                    "wget --no-verbose --tries=3 --spider http://{ServiceName}:3001 || exit 1"
+                    "curl --fail http://{ServiceName}:2283 || exit 1"
                 ],
                 "interval": 40,
                 "timeout": 30,
@@ -86,33 +86,33 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
-            "labels": {
-                "cosmos-stack": "{ServiceName}",
-                "cosmos-stack-main": "{ServiceName}",
-                "cosmos-persistent-env": "UPLOAD_LOCATION, TYPESENSE_API_KEY, DB_PASSWORD, DB_DATABASE_NAME",
-                "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Immich/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}",
-                "cosmos-force-network-secured": "true"
-            },
             "routes": [
                 {
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
                 "useHost": true,
-                "target": "http://{ServiceName}:3001",
+                "target": "http://{ServiceName}:2283",
                 "mode": "SERVAPP",
                 "Timeout": 14400000,
                 "ThrottlePerMinute": 12000,
                 "BlockCommonBots": true,
                 "SmartShield": { "Enabled": true }
                 }
-            ]
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "{ServiceName}",
+                "cosmos-persistent-env": "UPLOAD_LOCATION, TYPESENSE_API_KEY, DB_PASSWORD, DB_DATABASE_NAME",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/immich/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
         },
         "immich-ml": {
             "container_name": "immich-ml",
             "hostname": "immich-ml",
-            "image": "ghcr.io/immich-app/immich-ml:release",
+            "image": "ghcr.io/immich-app/immich-machine-learning:release",
             "restart": "unless-stopped",
             "environment": [
                 "UPLOAD_LOCATION=/usr/src/app/upload",
@@ -144,11 +144,24 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}-ml:3003",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
             "labels": {
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-persistent-env": "UPLOAD_LOCATION, TYPESENSE_API_KEY, DB_PASSWORD, DB_DATABASE_NAME",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Immich/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/immich/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
@@ -166,7 +179,7 @@
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-persistent-env": "POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Immich/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/immich/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
@@ -207,12 +220,12 @@
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-persistent-env": "POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Immich/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/immich/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
         }
-        {if Context.installImmichBackup}
+        {if Context.installimmichBackup}
         ,
         "{ServiceName}-backup": {
             "image": "prodrigestivill/postgres-backup-local",
@@ -260,7 +273,7 @@
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, DB_DATABASE_NAME",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Immich/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/immich/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
