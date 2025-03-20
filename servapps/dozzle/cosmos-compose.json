@@ -24,18 +24,6 @@
             "restart": "unless-stopped",
             "UID": 1000,
             "GID": 1000,
-            "healthcheck": {
-                "test": [
-                    "CMD",
-                    "curl",
-                    "-f",
-                    "http://{ServiceName}:8080"
-                ],
-                "interval": 40,
-                "timeout": 30,
-                "start_period": 60,
-                "retries": 3
-            },
             "environment": [
                 "DOZZLE_LEVEL=info",
                 "DOZZLE_TAILSIZE=300",
@@ -90,7 +78,7 @@
                 "cosmos-stack-main": "true",
                 {/if}
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Dozzle/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/dozzle/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
