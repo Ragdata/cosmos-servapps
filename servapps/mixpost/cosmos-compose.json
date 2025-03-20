@@ -1,0 +1,210 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "appKey",
+            "label": "Enter Encryption Key (obtain from https://mixpost.app/tools/encryption-key-generator)",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "domain",
+            "label": "Enter App's Domain",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "dbPassword",
+            "label": "DB_PASSWORD",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "email",
+            "label": "Email Address",
+            "initialValue": "",
+            "type": "text"
+            }
+        ]
+    },
+    "name": "mixpost",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "inovector/mixpost:latest",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "wget --no-verbose --tries=3 --spider http://{ServiceName} || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "APP_NAME=Mixpost",
+                "APP_KEY={Context.appKey}",
+                "APP_DEBUG=false",
+                "APP_DOMAIN={Context.domain}",
+                "APP_URL=https://{ServiceName}.{Context.domain}",
+                "DB_DATABASE=mixpost_db",
+                "DB_USERNAME=mixpost_user",
+                "DB_PASSWORD={Context.dbPassword}",
+                "SSL_EMAIL={Context.email}"
+            ],
+            "depends_on": {
+                "{ServiceName}-redis": {},
+                "{ServiceName}-mysql": {}
+            },
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "storage",
+                "target": "/var/www/html/storage/app"
+                },
+                {
+                "type": "volume",
+                "source": "logs",
+                "target": "/var/www/html/storage/logs"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "{ServiceName}",
+                "cosmos-persistent-env": "DB_DATABASE, DB_USERNAME, DB_PASSWORD, SSL_EMAIL",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mixpost/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-mysql": {
+            "container_name": "{ServiceName}-mysql",
+            "hostname": "{ServiceName}-mysql",
+            "image": "mysql/mysql-server:8.0",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "mysqladmin ping -p {Context.dbPassword}"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "MYSQL_DATABASE=mixpost_db",
+                "MYSQL_USER=mixpost_user",
+                "MYSQL_PASSWORD={Context.dbPassword}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "mysql",
+                "target": "/var/lib/mysql"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-persistent-env": "DB_DATABASE, DB_USERNAME, DB_PASSWORD",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mixpost/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-redis": {
+            "container_name": "{ServiceName}-redis",
+            "hostname": "{ServiceName}-redis",
+            "image": "redis:latest",
+            "restart": "unless-stopped",
+            "command": "redis-server --appendonly yes --replica-read-only no",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "redis-cli ping"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "redis",
+                "target": "/data"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mixpost/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}

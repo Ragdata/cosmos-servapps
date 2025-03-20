@@ -145,9 +145,6 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
-            "links": [
-                "{ServiceName}"
-            ],
             "labels": {
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-auto-update": "true",
