@@ -1,0 +1,115 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "dbPassword",
+                "label": "DATABASE_PASSWORD",
+                "initialValue": "",
+                "type": "text"
+            }
+
+        ]
+    },
+    "name": "n8n",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "docker.n8n.io/n8nio/n8n",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "curl --fail http://{ServiceName}:5678 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "DB_TYPE=postgresdb",
+                "DB_POSTGRESDB_HOST={ServiceName}-postgres",
+                "DB_POSTGRESDB_PORT=5432",
+                "DB_POSTGRESDB_DATABASE=n8n",
+                "DB_POSTGRESDB_USER=n8n",
+                "DB_POSTGRESDB_PASSWORD={Context.dbPassword}"
+            ],
+            "networks": {
+                "{ServiceName}": {},
+                "{ServiceName}-postgres": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-storage",
+                "target": "/home/node/.n8n",
+                "type": "volume"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:5678",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "{ServiceName}",
+                "cosmos-persistent-env": "DB_POSTGRESDB_PORT, DB_POSTGRESDB_PORT, DB_POSTGRESDB_DATABASE, DB_POSTGRESDB_USER, DB_POSTGRESDB_PASSWORD",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/n8n/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres:15-alpine",
+            "restart": "unless-stopped",
+            "stop_grace_period": 5,
+            "security_opt": [
+                "seccomp:unconfined",
+                "apparmor:unconfined"
+            ],
+            "environment": [
+                "POSTGRES_DB=n8n",
+                "POSTGRES_USER=n8n",
+                "POSTGRES_PASSWORD={Context.dbPassword}"
+            ],
+            "networks": {
+                "{ServiceName}": {},
+                "{ServiceName}-postgres": {}
+            },
+            "network_mode": "{ServiceName}-postgres",
+            "volumes": [
+                {
+                "source": "{ServiceName}-postgres-data",
+                "target": "/var/lib/postgresql/data",
+                "type": "volume"
+                }
+            ],
+            "labels": {
+                "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "{ServiceName}",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/n8n/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-postgres",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {},
+        "{ServiceName}-postgres": {}
+    }
+}

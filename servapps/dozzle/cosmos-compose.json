@@ -75,7 +75,7 @@
             "labels": {
                 {if Context.useSocketProxy}
                 "cosmos-stack": "{ServiceName}",
-                "cosmos-stack-main": "true",
+                "cosmos-stack-main": "{ServiceName}",
                 {/if}
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/dozzle/icon.png",
@@ -151,7 +151,7 @@
             ],
             "labels": {
                 "cosmos-stack": "{ServiceName}",
-                "cosmos-stack-main": "true",
+                "cosmos-stack-main": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Dozzle/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
