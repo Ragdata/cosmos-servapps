@@ -12,8 +12,9 @@
     "name": "homarr",
     "services": {
         "{ServiceName}": {
-            "image": "ghcr.io/homarr-labs/homarr:latest",
             "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "ghcr.io/homarr-labs/homarr:latest",
             "restart": "unless-stopped",
             "healthcheck": {
                 "test": [

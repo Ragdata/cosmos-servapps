@@ -1,0 +1,134 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "storagePath",
+                "label": "This location contains files from your host that need to be accessible to the application. (leave empty to not mount anything)",
+                "initialValue": "{DefaultDataPath}",
+                "type": "text"
+            },
+            {
+                "name": "watchPath",
+                "label": "This is where videos to be automatically converted are located (leave empty to not mount anything)",
+                "initialValue": "{DefaultDataPath}/{ServiceName}/watch",
+                "type": "text"
+            },
+            {
+                "name": "outputPath",
+                "label": "This is where automatically converted video files are written (leave empty to not mount anything)",
+                "initialValue": "{DefaultDataPath}/{ServiceName}/output",
+                "type": "text"
+            },
+            {
+                "name": "enableDevices",
+                "label": "Do you want to enable hardware acceleration? (only enable for Intel cpu)",
+                "initialValue": false,
+                "type": "checkbox"
+            },
+            {
+                "name": "adminOnly",
+                "label": "Do you want to make this service admin only?",
+                "initialValue": false,
+                "type": "checkbox"
+            }
+        ]
+    },
+    "name": "handbrake",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "jlesage/handbrake:latest",
+            "restart": "unless-stopped",
+            "UID": 1000,
+            "GID": 1000,
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "wget --no-verbose --tries=3 --spider http://{ServiceName}:5800 || exit 1"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "USER_ID=1000",
+                "GROUP_ID=1000"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            {if Context.enableDevices}
+            "devices": [
+                "/dev/dri:/dev/dri"
+            ],
+            {/if}
+            "volumes": [
+                {
+                "source": "{ServiceName}-config",
+                "target": "/config",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            {if Context.storagePath}
+              , {
+                "source": "{Context.storagePath}",
+                "target": "/storage",
+                "type": "bind"
+                }
+            {/if}
+            {if Context.outputPath}
+              , {
+                "source": "{Context.outputPath}",
+                "target": "/output",
+                "type": "bind"
+                }
+            {/if}
+            {if Context.watchPath}
+              , {
+                "source": "{Context.watchPath}",
+                "target": "/watch",
+                "type": "bind"
+                }
+            {/if}
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:5800",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true },
+                "AuthEnabled": true
+                {if Context.adminOnly}
+                , "AuthAdmin": true
+                {/if}
+                }
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/Handbrake/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
