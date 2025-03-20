@@ -1,0 +1,88 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "API_KEY",
+            "label": "Enter your Notifiarr API Key",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "PLEX_TOKEN",
+            "label": "Enter your Plex token",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "PLEX_URL",
+            "label": "Enter your Plex url or IP",
+            "initialValue": "25",
+            "type": "text"
+            }
+        ]
+    },
+    "name": "notifiarr",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "golift/notifiarr:latest",
+            "restart": "unless-stopped",
+            "environment": [
+                "DN_API_KEY={Context.API_KEY}",
+                "DN_PLEX_TOKEN={Context.PLEX_TOKEN}",
+                "DN_PLEX_URL={Context.PLEX_URL}",
+                "DN_LOG_FILE=/config/app.log",
+                "DN_HTTP_LOG=/config/http.log"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-config",
+                "target": "/config",
+                "type": "volume"
+                },
+                {
+                "source": "/dev/sda",
+                "target": "/storage/1",
+                "type": "bind"
+                },
+                {
+                "source": "/var/run/utmp",
+                "target": "/var/run/utmp",
+                "type": "bind"
+                },
+                {
+                "source": "/etc/machine-id",
+                "target": "/etc/machine-id",
+                "type": "bind"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:5454",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/notifiarr/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
