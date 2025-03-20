@@ -7,7 +7,6 @@
                 "initialValue": "",
                 "type": "text"
             }
-
         ]
     },
     "name": "n8n",
@@ -45,6 +44,16 @@
                 "source": "{ServiceName}-storage",
                 "target": "/home/node/.n8n",
                 "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
                 }
             ],
             "routes": [

@@ -1,0 +1,164 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "adminOnly",
+            "label": "Do you want to make this service admin only?",
+            "initialValue": false,
+            "type": "checkbox"
+            },
+            {
+            "name": "useSocketProxy",
+            "label": "Do you want to use a socket-proxy for increased security? (i.e., create socket-proxy container insead of exposing docker.sock)",
+            "initialValue": true,
+            "type": "checkbox"
+            }
+            {if Context.useSocketProxy}
+            ,
+            {
+            "type": "warning",
+            "label": "Remember to edit the Docker Host inside Uptime-Kuma settings to attach the {ServiceName}-socket container. Use tcp://{ServiceName}-socket:2375"
+            }
+            {/if}
+        ]
+        {if Context.useSocketProxy}
+        ,
+        "post-install": [
+            {
+            "type": "warning",
+            "label": "Remember to edit the Docker Host inside Uptime-Kuma settings to attach the {ServiceName}-socket container. Use tcp://{ServiceName}-socket:2375"
+            }
+        ]
+        {/if}
+    },
+    "name": "uptime-kuma",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "louislam/uptime-kuma:1",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-config",
+                "target": "/app/data",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:3001",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true },
+                "AuthEnabled": true
+                {if Context.adminOnly}
+                , "AuthAdmin": true
+                {/if}
+                }
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-stack-main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/uptime-kuma/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+        {if Context.useSocketProxy}
+        ,
+        "{ServiceName}-socket": {
+            "container_name": "{ServiceName}-socket",
+            "hostname": "{ServiceName}-socket",
+            "image": "tecnativa/docker-socket-proxy",
+            "restart": "unless-stopped",
+            "security_opt": [
+                "no-new-privileges:true"
+            ],
+            "environment": [
+                "LOG_LEVEL=info",
+                "EVENTS=1",
+                "PING=1",
+                "VERSION=1",
+                "AUTH=0",
+                "SECRETS=0",
+                "POST=0",
+                "BUILD=0",
+                "COMMIT=0",
+                "CONFIGS=0",
+                "CONTAINERS=1",
+                "DISTRIBUTION=0",
+                "EXEC=0",
+                "IMAGES=0",
+                "INFO=0",
+                "NETWORKS=0",
+                "NODES=0",
+                "PLUGINS=0",
+                "SERVICES=0",
+                "SESSION=0",
+                "SWARM=0",
+                "SYSTEM=0",
+                "TASKS=0",
+                "VOLUMES=0"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "2375:2375"
+            ],
+            "volumes": [
+                {
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock",
+                "type": "bind"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "links": [
+                "{ServiceName}"
+            ],
+            "labels": {
+                "cosmos-stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/uptime-kuma/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+        {/if}
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
