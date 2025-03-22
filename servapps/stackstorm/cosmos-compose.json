@@ -1,0 +1,925 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "imageRepo",
+            "label": "Image Repository",
+            "initialValue": "stackstorm",
+            "type": "text"
+            },
+            {
+            "name": "version",
+            "label": "Image Version",
+            "initialValue": "latest",
+            "type": "text"
+            },
+            {
+            "name": "scriptsDir",
+            "label": "Path to scripts directory on host",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "filesDir",
+            "label": "Path to files directory on host",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "packsDir",
+            "label": "Path to dev packs directory on host",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "apiKey",
+            "label": "Stackstorm API Key",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "enableChatops",
+            "label": "Do you want to enable Chatops? (Set additional options in chatops container)",
+            "initialValue": 0,
+            "type": "checkbox"
+            }
+        ]
+    },
+    "name": "st2",
+    "services": {
+        "{ServiceName}-web": {
+            "container_name": "{ServiceName}-web",
+            "hostname": "{ServiceName}-web",
+            "image": "{Context.imageRepo}/st2web:{Context.version}",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD",
+                    "/st2web-healthcheck.sh"
+                ],
+                "interval": 40,
+                "timeout": 1,
+                "retries": 1
+            },
+            "environment": [
+                "ST2_AUTH_URL=http://{ServiceName}-auth:9100",
+                "ST2_API_URL=http://{ServiceName}-api:9101",
+                "ST2_STREAM_URL=http://{ServiceName}-stream:9102",
+                "ST2WEB_HTTPS=1"
+            ],
+            "depends_on": {
+                "{ServiceName}-auth": {},
+                "{ServiceName}-api": {},
+                "{ServiceName}-stream": {}
+            },
+            "networks": {
+                "{ServiceName}-public": {},
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-public",
+            "ports": [
+                "4433:443/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.scriptsDir}/st2web-healthcheck.sh",
+                "target": "/st2web-healthcheck.sh"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}-web:443",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}-web",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-public",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-makesecrets": {
+            "container_name": "{ServiceName}-makesecrets",
+            "hostname": "{ServiceName}-makesecrets",
+            "image": "{Context.imageRepo}/st2actionrunner:{Context.version}",
+            "restart": "unless-stopped",
+            "command": "/makesecrets.sh",
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-keys",
+                "target": "/etc/st2/keys:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.scriptsDir}/makesecrets.sh",
+                "target": "/makesecrets.sh"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-api": {
+            "container_name": "{ServiceName}-api",
+            "hostname": "{ServiceName}-api",
+            "image": "{Context.imageRepo}/st2api:{Context.version}",
+            "restart": "unless-stopped",
+            "environment": [
+                "ST2_AUTH_URL=http://{ServiceName}-auth:9100",
+                "ST2_API_URL=http://{ServiceName}-api:9101",
+                "ST2_STREAM_URL=http://{ServiceName}-stream:9102"
+            ],
+            "depends_on": {
+                "{ServiceName}-mongo": {},
+                "{ServiceName}-rabbitmq": {},
+                "{ServiceName}-redis": {},
+                "{ServiceName}-makesecrets": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-keys",
+                "target": "/etc/st2/keys:ro"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs-configs",
+                "target": "/opt/stackstorm/configs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs",
+                "target": "/opt/stackstorm/packs:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/rbac",
+                "target": "/opt/stackstorm/rbac:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/packs.dev",
+                "target": "/opt/stackstorm/packs.dev:rw"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-stream": {
+            "container_name": "{ServiceName}-stream",
+            "hostname": "{ServiceName}-stream",
+            "image": "{Context.imageRepo}/st2stream:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-scheduler": {
+            "container_name": "{ServiceName}-scheduler",
+            "hostname": "{ServiceName}-scheduler",
+            "image": "{Context.imageRepo}/st2scheduler:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-redis": {},
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-workflowengine": {
+            "container_name": "{ServiceName}-workflowengine",
+            "hostname": "{ServiceName}-workflowengine",
+            "image": "{Context.imageRepo}/st2workflowengine:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-redis": {},
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-keys",
+                "target": "/etc/st2/keys:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-auth": {
+            "container_name": "{ServiceName}-auth",
+            "hostname": "{ServiceName}-auth",
+            "image": "{Context.imageRepo}/st2auth:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/htpasswd",
+                "target": "/etc/st2/htpasswd:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-actionrunner": {
+            "container_name": "{ServiceName}-actionrunner",
+            "hostname": "{ServiceName}-actionrunner",
+            "image": "{Context.imageRepo}/st2actionrunner:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-redis": {},
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-keys",
+                "target": "/etc/st2/keys:ro"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs-configs",
+                "target": "/opt/stackstorm/configs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs",
+                "target": "/opt/stackstorm/packs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-virtualenvs",
+                "target": "/opt/stackstorm/virtualenvs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-ssh",
+                "target": "/home/stanley/.ssh"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/packs.dev",
+                "target": "/opt/stackstorm/packs.dev:rw"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-garbagecollector": {
+            "container_name": "{ServiceName}-garbagecollector",
+            "hostname": "{ServiceName}-garbagecollector",
+            "image": "{Context.imageRepo}/st2garbagecollector:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-notifier": {
+            "container_name": "{ServiceName}-notifier",
+            "hostname": "{ServiceName}-notifier",
+            "image": "{Context.imageRepo}/st2notifier:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-redis": {},
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-rulesengine": {
+            "container_name": "{ServiceName}-rulesengine",
+            "hostname": "{ServiceName}-rulesengine",
+            "image": "{Context.imageRepo}/st2rulesengine:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-sensorcontainer": {
+            "container_name": "{ServiceName}-sensorcontainer",
+            "hostname": "{ServiceName}-sensorcontainer",
+            "image": "{Context.imageRepo}/st2sensorcontainer:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-packs-configs",
+                "target": "/opt/stackstorm/configs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs",
+                "target": "/opt/stackstorm/packs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-virtualenvs",
+                "target": "/opt/stackstorm/virtualenvs:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/packs.dev",
+                "target": "/opt/stackstorm/packs.dev:rw"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-timersengine": {
+            "container_name": "{ServiceName}-timersengine",
+            "hostname": "{ServiceName}-timersengine",
+            "image": "{Context.imageRepo}/st2timersengine:{Context.version}",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-client": {
+            "container_name": "{ServiceName}-client",
+            "hostname": "{ServiceName}-client",
+            "image": "{Context.imageRepo}/st2actionrunner:{Context.version}",
+            "restart": "unless-stopped",
+            "command": "/st2client-startup.sh",
+            "environment": [
+                "ST2CLIENT=1",
+                "ST2_AUTH_URL=http://{ServiceName}-auth:9100",
+                "ST2_API_URL=http://{ServiceName}-api:9101",
+                "ST2_STREAM_URL=http://{ServiceName}-stream:9102"
+            ],
+            "depends_on": {
+                "{ServiceName}-auth": {},
+                "{ServiceName}-stream": {},
+                "{ServiceName}-api": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "stackstorm-keys",
+                "target": "/etc/st2/keys:ro"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs-configs",
+                "target": "/opt/stackstorm/configs:rw"
+                },
+                {
+                "type": "volume",
+                "source": "stackstorm-packs",
+                "target": "/opt/stackstorm/packs:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.docker.conf",
+                "target": "/etc/st2/st2.docker.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2.user.conf",
+                "target": "/etc/st2/st2.user.conf:ro"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/rbac",
+                "target": "/opt/stackstorm/rbac:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/packs.dev",
+                "target": "/opt/stackstorm/packs.dev:rw"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.filesDir}/st2-cli.conf",
+                "target": "/root/.st2/config"
+                },
+                {
+                "type": "bind",
+                "source": "{Context.scriptsDir}/st2client-startup.sh",
+                "target": "/st2client-startup.sh"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-chatops": {
+            "container_name": "{ServiceName}-chatops",
+            "hostname": "{ServiceName}-chatops",
+            "image": "{Context.imageRepo}/st2chatops:{Context.version}",
+            "restart": "unless-stopped",
+            "command": "/st2chatops-startup.sh",
+            "environment": [
+                "ST2_AUTH_URL=http://{ServiceName}-auth:9100",
+                "ST2_API_URL=http://{ServiceName}-api:9101",
+                "ST2_STREAM_URL=http://{ServiceName}-stream:9102",
+                "ST2_API_KEY={Context.apiKey}",
+                "ST2_CHATOPS_ENABLE={Context.enableChatops}",
+                "HUBOT_ADAPTER=slack",
+                "HUBOT_LOG_LEVEL=debug",
+                "HUBOT_SLACK_TOKEN"
+            ],
+            "depends_on": {
+                "{ServiceName}-api": {},
+                "{ServiceName}-auth": {},
+                "{ServiceName}-stream": {}
+            },
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "{Context.scriptsDir}/st2chatops-startup.sh",
+                "target": "/st2chatops-startup.sh"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-mongo": {
+            "container_name": "{ServiceName}-mongo",
+            "hostname": "{ServiceName}-mongo",
+            "image": "mongo:4.4",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-mongo",
+                "target": "/data/db"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-rabbitmq": {
+            "container_name": "{ServiceName}-rabbitmq",
+            "hostname": "{ServiceName}-rabbitmq",
+            "image": "rabbitmq:3.12",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-rabbitmq",
+                "target": "/var/lib/rabbitmq"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-redis": {
+            "container_name": "{ServiceName}-redis",
+            "hostname": "{ServiceName}-redis",
+            "image": "redis:7.2",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}-private": {}
+            },
+            "network_mode": "{ServiceName}-private",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-redis",
+                "target": "/data"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-private",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    }
+}
