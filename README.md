@@ -43,6 +43,27 @@ Add the information below in the form
 >
 > URL: https://ragdata.github.io/cosmos-servapps/
 
+## [Features](#top) ✨
+
+| App               | Description |
+|:------------------|:------------|
+| [Activepieces]()  |             |
+| [Dozzle]()        |             |
+| [Gitea-Actions]() |             |
+| [Handbrake]()     |             |
+| [Homarr v1.x]()   |             |
+| [Immich]()        |             |
+| [IT-Tools]()      |             |
+| [Linkwarden]()    |             |
+| [Mixpost]()       |             |
+| [N8n]()           |             |
+| [Portainer BE]()  |             |
+| [Postiz]()        |             |
+| [Uptime-Kuma]()   |             |
+| [Vaultwarden]()   |             |
+
+[`^ Top`](#top)
+
 [pre-release]: https://img.shields.io/badge/Status-Pre--Release-d20000?labelColor=31383f
 [release]: https://ragdata.github.io/cosmos-servapps/
 [repo]: https://github.com/ragdata/cosmos-servapps
