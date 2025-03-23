@@ -1,9 +1,0 @@
-{
-    "name": "Stackstorm",
-    "longDescription": "<p>In its simplest form, Stackstorm is a robust engine for IFTT operations allowing you to set conditional logic for anything.<br />ENSURE YOU READ THE README FILE BEFORE YOU INSTALL</p>",
-    "description": "Stackstorm offers advanced event-driven automation, letting you create complex workflows to automate your world.",
-    "tags": ["workflow", "automation", "self-hosted"],
-    "repository": "https://github.com/StackStorm",
-    "readme": "https://ragdata.github.io/cosmos-servapps/servapps/stackstorm/README.md",
-    "supported_architectures": ["amd64"]
-}
