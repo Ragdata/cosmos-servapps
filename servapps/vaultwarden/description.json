@@ -2,14 +2,8 @@
   "name": "Vaultwarden",
   "description": "A self-hosted Bitwarden server",
   "longDescription": "Alternative implementation of the Bitwarden server API written in Rust and compatible with upstream Bitwarden clients*, perfect for self-hosted deployment where running the official resource-heavy service might not be ideal.",
-  "tags": [
-    "Utilities"
-  ],
+  "tags": [ "productivity", "password-manager", "utilities" ],
   "repository": "https://github.com/IceWhaleTech/CasaOS-AppStore",
-  "image": "",
-  "supported_architectures": [
-    "amd64",
-    "arm",
-    "arm64"
-  ]
+  "image": "https://hub.docker.com/r/vaultwarden/server",
+  "supported_architectures": [ "amd64", "arm", "arm64" ]
 }
