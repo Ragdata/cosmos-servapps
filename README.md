@@ -40,7 +40,7 @@ Click the 'sources' button on the 'market' screen
 
 Add the information below in the form in the image above:
 
-> [!tip]
+> [!important]
 > Name: Ragdata
 >
 > URL: https://ragdata.github.io/cosmos-servapps/
