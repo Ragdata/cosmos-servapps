@@ -34,35 +34,95 @@ Click the 'sources' button on the 'market' screen
 
 ### Step 2
 
-Add the information below in the form
-
 <img src="images/2.png">
 
-> [!important]
+<small>These images were stolen quite brazenly from the <a href="https://github.com/TinyActive/cosmos-servapps" target="blank">TinyActive</a> Cosmos Server Apps Repo</small>
+
+Add the information below in the form in the image above:
+
+> [!tip]
 > Name: Ragdata
 >
 > URL: https://ragdata.github.io/cosmos-servapps/
 
 ## [Features](#top) ✨
 
-| App               | Description |
-|:------------------|:------------|
-| [Activepieces]()  |             |
-| [Dozzle]()        |             |
-| [Gitea-Actions]() |             |
-| [Handbrake]()     |             |
-| [Homarr v1.x]()   |             |
-| [Immich]()        |             |
-| [IT-Tools]()      |             |
-| [Linkwarden]()    |             |
-| [Mixpost]()       |             |
-| [N8n]()           |             |
-| [Portainer BE]()  |             |
-| [Postiz]()        |             |
-| [Uptime-Kuma]()   |             |
-| [Vaultwarden]()   |             |
+| App                   | Category    | Web             | Code            |
+|:----------------------|:------------|:---------------:|:---------------:|
+| [Activepieces][act]   | Automation  | [🌐][act-web]   | [💾][act-cod]  |
+| [Dozzle][doz]         | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  |
+| [Gitea-Actions][git]  | CI/CD       | [🌐][git-web]   | [💾][git-cod]  |
+| [Handbrake][hnd]      | Video       | [🌐][hnd-web]   | [💾][hnd-cod]  |
+| [Homarr v1.x][hom]    | Dashboards  | [🌐][hom-web]   | [💾][hom-cod]  |
+| [Immich][imm]         | Photos      | [🌐][imm-web]   | [💾][imm-cod]  |
+| [IT-Tools][itt]       | Utilities   | [🌐][itt-web]   | [💾][itt-cod]  |
+| [Linkwarden][lnk]     | Bookmarks   | [🌐][lnk-web]   | [💾][lnk-cod]  |
+| [Mixpost][mix]        | Social Mgmt | [🌐][mix-web]   | [💾][mix-cod]  |
+| [N8n][n8n]            | Automation  | [🌐][n8n-web]   | [💾][n8n-cod]  |
+| [Portainer BE][pbe]   | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  |
+| [Postiz][ptz]         | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  |
+| [Uptime-Kuma][upk]    | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  |
+| [Vaultwarden][vlw]    | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  |
 
 [`^ Top`](#top)
+
+[act]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
+[act-web]: https://www.activepieces.com/
+[act-cod]: https://github.com/activepieces/activepieces/
+
+[doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dozzle
+[doz-web]: https://dozzle.dev/
+[doz-cod]: https://github.com/amir20/dozzle
+
+[git]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/gitea-actions
+[git-web]: https://about.gitea.com/
+[git-cod]: https://github.com/go-gitea/gitea
+
+[hnd]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/handbrake
+[hnd-web]: https://handbrake.fr/
+[hnd-cod]: https://github.com/jlesage/docker-handbrake
+
+[hom]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/homarr
+[hom-web]: https://homarr.dev/
+[hom-cod]: https://github.com/ajnart/homarr
+
+[imm]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/immich
+[imm-web]: https://immich.app/
+[imm-cod]: https://github.com/immich-app/immich
+
+[itt]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/it-tools
+[itt-web]: https://it-tools.tech/
+[itt-cod]: https://github.com/CorentinTh/it-tools
+
+[lnk]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/linkwarden
+[lnk-web]: https://linkwarden.app/
+[lnk-cod]: https://github.com/linkwarden/linkwarden
+
+[mix]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/mixpost
+[mix-web]: https://mixpost.app/
+[mix-cod]: https://github.com/inovector/mixpost
+
+[n8n]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/n8n
+[n8n-web]: https://n8n.io/
+[n8n-cod]: https://github.com/n8n-io/n8n/
+
+[pbe]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/portainer-be
+[pbe-web]: https://www.portainer.io/
+[pbe-cod]: https://github.com/portainer/portainer
+
+[ptz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/postiz
+[ptz-web]: https://postiz.com/
+[ptz-cod]: https://github.com/gitroomhq/postiz-app
+
+[upk]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/uptime-kuma
+[upk-web]: https://uptime.kuma.pet/
+[upk-cod]: https://github.com/louislam/uptime-kuma
+
+[vlw]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/vaultwarden
+[vlw-web]: https://github.com/azukaar/cosmos-casaos-store
+[vlw-cod]: https://github.com/azukaar/cosmos-casaos-store
+
+
 
 [pre-release]: https://img.shields.io/badge/Status-Pre--Release-d20000?labelColor=31383f
 [release]: https://ragdata.github.io/cosmos-servapps/
