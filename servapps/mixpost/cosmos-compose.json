@@ -153,7 +153,7 @@
             "volumes": [
                 {
                 "type": "volume",
-                "source": "mysql",
+                "source": "{ServiceName}-mysql",
                 "target": "/var/lib/mysql"
                 },
                 {
@@ -199,7 +199,7 @@
             "volumes": [
                 {
                 "type": "volume",
-                "source": "redis",
+                "source": "{ServiceName}-redis",
                 "target": "/data"
                 },
                 {
@@ -221,6 +221,10 @@
                 "cosmos-force-network-secured": "true"
             }
         }
+    },
+    "volumes": {
+        "{ServiceName}-mysql": {},
+        "{ServiceName}-redis": {}
     },
     "networks": {
         "{ServiceName}": {}
