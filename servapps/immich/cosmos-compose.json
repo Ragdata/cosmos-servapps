@@ -26,14 +26,8 @@
                 "label": "TYPESENSE_API_KEY",
                 "initialValue": "",
                 "type": "text"
-            },
-            {
-                "name": "dbPassword",
-                "label": "DATABASE_PASSWORD",
-                "initialValue": "",
-                "type": "text"
             }
-            ]
+        ]
     },
     "name": "immich",
     "services": {
@@ -55,7 +49,7 @@
             "environment": [
                 "UPLOAD_LOCATION=/usr/src/app/upload",
                 "TYPESENSE_API_KEY={Context.typesenseAPI}",
-                "DB_PASSWORD={Context.dbPassword}",
+                "DB_PASSWORD={Passwords.0}",
                 "DB_HOSTNAME={ServiceName}-database",
                 "DB_USERNAME={ServiceName}-postgres",
                 "DB_DATABASE_NAME=immich",
@@ -117,7 +111,7 @@
             "environment": [
                 "UPLOAD_LOCATION=/usr/src/app/upload",
                 "TYPESENSE_API_KEY={Context.typesenseAPI}",
-                "DB_PASSWORD={Context.dbPassword}",
+                "DB_PASSWORD={Passwords.0}",
                 "DB_HOSTNAME={ServiceName}-database",
                 "DB_USERNAME={ServiceName}-postgres",
                 "DB_DATABASE_NAME=immich",
@@ -191,7 +185,7 @@
             "user": "postgres",
             "restart": "unless-stopped",
             "environment": [
-                "POSTGRES_PASSWORD={Context.dbPassword}",
+                "POSTGRES_PASSWORD={Passwords.0}",
                 "POSTGRES_USER={ServiceName}-postgres",
                 "POSTGRES_DB=immich"
             ],
@@ -239,7 +233,7 @@
                 "POSTGRES_HOST={ServiceName}-database",
                 "POSTGRES_DB=immich",
                 "POSTGRES_USER={ServiceName}-postgres",
-                "POSTGRES_PASSWORD={Context.dbPassword}",
+                "POSTGRES_PASSWORD={Passwords.0}",
                 "SCHEDULE=@daily",
                 "BACKUP_KEEP_DAYS=7",
                 "BACKUP_KEEP_WEEKS=4",

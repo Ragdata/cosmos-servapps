@@ -1,0 +1,135 @@
+{
+    "cosmos-installer": {},
+    "name": "mattermost",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "vouu/mattermost",
+            "restart": "unless-stopped",
+            "environment": [
+                "MM_SQLSETTINGS_DRIVERNAME=postgres",
+                "MM_SQLSETTINGS_DATASOURCE=postgres://mattermost:{Passwords.0}@{ServiceName}-postgres:5432/mattermost?sslmode=disable&connect_timeout=10",
+                "MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexe",
+                "MM_SERVICESETTINGS_SITEURL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}"
+            ],
+            "networks": {
+                "{ServiceName}": {},
+                "{ServiceName}-postgres": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-config",
+                "target": "/mattermost/config",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-data",
+                "target": "/mattermost/data",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-logs",
+                "target": "/mattermost/logs",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-plugins",
+                "target": "/mattermost/plugins",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-plugins",
+                "target": "/mattermost/client/plugins",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-bleve-indexes",
+                "target": "/mattermost/bleve-indexes",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:8065",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-persistent-env": "MM_SQLSETTINGS_DRIVERNAME, MM_SQLSETTINGS_DATASOURCE, MM_BLEVESETTINGS_INDEXDIR, MM_SERVICESETTINGS_SITEURL",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mattermost/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres:15-alpine",
+            "restart": "unless-stopped",
+            "stop_grace_period": 5,
+            "security_opt": [
+                "seccomp:unconfined",
+                "apparmor:unconfined"
+            ],
+            "environment": [
+                "POSTGRES_DB=mattermost",
+                "POSTGRES_USER=mattermost",
+                "POSTGRES_PASSWORD={Passwords.0}"
+            ],
+            "networks": {
+                "{ServiceName}-postgres": {}
+            },
+            "network_mode": "{ServiceName}-postgres",
+            "volumes": [
+                {
+                "source": "{ServiceName}-postgres",
+                "target": "/var/lib/postgresql/data",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mattermost/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-postgres",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {},
+        "{ServiceName}-postgres": {}
+    }
+}
