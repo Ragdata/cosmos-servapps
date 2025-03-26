@@ -1,0 +1,51 @@
+{
+    "cosmos-installer": {},
+    "name": "hetty",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "dstotijn/hetty",
+            "restart": "unless-stopped",
+            "shm_size": "4gb",
+            "security_opt": [
+                "seccomp:unconfined"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "8080:8080"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-hetty",
+                "target": "/root/.hetty"
+                }
+            ],
+            "routes": [{
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:8080",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true },
+                "AcceptInsecureHTTPSTarget": true
+            }],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/hetty/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
