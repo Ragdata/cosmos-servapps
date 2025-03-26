@@ -14,8 +14,7 @@
                 "MM_SERVICESETTINGS_SITEURL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}"
             ],
             "networks": {
-                "{ServiceName}": {},
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
             "volumes": [
@@ -99,9 +98,9 @@
                 "POSTGRES_PASSWORD={Passwords.0}"
             ],
             "networks": {
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
-            "network_mode": "{ServiceName}-postgres",
+            "network_mode": "{ServiceName}",
             "volumes": [
                 {
                 "source": "{ServiceName}-postgres",
@@ -123,13 +122,15 @@
                 "cosmos.stack": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mattermost/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}-postgres",
+                "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
         }
     },
-    "networks": {
-        "{ServiceName}": {},
+    "volumes": {
         "{ServiceName}-postgres": {}
+    },
+    "networks": {
+        "{ServiceName}": {}
     }
 }
