@@ -1,0 +1,87 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "storagePath",
+            "label": "This location contains files from your host that need to be accessible to the application. (leave empty to not mount anything)",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "adminOnly",
+            "label": "Do you want to make this service admin only?",
+            "initialValue": false,
+            "type": "checkbox"
+            }
+        ]
+    },
+    "name": "mkvtools",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "jlesage/mkvtoolnix",
+            "restart": "unless-stopped",
+            "UID": 1000,
+            "GID": 1000,
+            "environment": [
+                "USER_ID=1000",
+                "GROUP_ID=1000"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-config",
+                "target": "/config",
+                "type": "volume"
+                }
+                {if Context.storagePath}
+                , {
+                "source": "{Context.storagePath}",
+                "target": "/storage",
+                "type": "bind"
+                }
+                {/if}
+                , {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:5800",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true },
+                "AuthEnabled": true
+                {if Context.adminOnly}
+                , "AuthAdmin": true
+                {/if}
+                }
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mkvtoolnix/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
