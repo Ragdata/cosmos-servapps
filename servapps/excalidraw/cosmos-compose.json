@@ -1,0 +1,40 @@
+{
+    "cosmos-installer": {},
+    "name": "excalidraw",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "excalidraw/excalidraw:latest",
+            "restart": "unless-stopped",
+            "shm_size": "4gb",
+            "security_opt": [
+                "seccomp:unconfined"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "routes": [{
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:80",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+            }],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/excalidraw/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
