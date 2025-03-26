@@ -1,0 +1,109 @@
+{
+    "cosmos-installer": {},
+    "name": "coder",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "ghcr.io/coder/coder:latest",
+            "restart": "unless-stopped",
+            "environment": [
+                "CODER_PG_CONNECTION_URL=postgresql://coder:{Passwords.0}@{ServiceName}-postgres:5432/coder?sslmode=disable",
+                "CODER_HTTP_ADDRESS=0.0.0.0:7080",
+                "CODER_ACCESS_URL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "/var/run/docker.sock",
+                "target": "/var/run/docker.sock",
+                "type": "bind"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:7080",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/coder/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres:15-alpine",
+            "restart": "unless-stopped",
+            "stop_grace_period": 5,
+            "security_opt": [
+                "seccomp:unconfined",
+                "apparmor:unconfined"
+            ],
+            "environment": [
+                "POSTGRES_DB=coder",
+                "POSTGRES_USER=coder",
+                "POSTGRES_PASSWORD={Passwords.0}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-postgres",
+                "target": "/var/lib/postgresql/data",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/coder/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-postgres": {}
+    },
+    "networks": {
+        "{ServiceName}": {}
+    }
+}
