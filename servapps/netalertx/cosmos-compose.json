@@ -56,7 +56,7 @@
             ],
             "labels": {
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nessus/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/netalertx/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
