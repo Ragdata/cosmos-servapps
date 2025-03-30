@@ -1,0 +1,425 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "domainName",
+            "label": "Enter your domain name",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "superUserPassword",
+            "label": "Enter a password for admin",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "URL_MAIN",
+            "label": "What is your nginx router rengine download link?",
+            "initialValue": "https://ragdata.github.io/servapps/rengine/artefacts/rengine.conf",
+            "type": "text"
+            }
+        ]
+    },
+    "name": "rengine",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "vouu/rengine-dev",
+            "entrypoint": "/usr/src/app/entrypoint.sh",
+            "restart": "unless-stopped",
+            "environment": [
+              "DEBUG=0",
+              "CELERY_BROKER=redis://{ServiceName}-redis:6379/0",
+              "CELERY_BACKEND=redis://{ServiceName}-redis:6379/0",
+              "DOMAIN_NAME={Context.domainName}",
+              "POSTGRES_DB=rengine",
+              "POSTGRES_USER=rengine",
+              "POSTGRES_PASSWORD={Passwords.0}",
+              "POSTGRES_PORT=5432",
+              "POSTGRES_HOST={ServiceName}-db",
+              "DJANGO_SUPERUSER_PASSWORD={Context.superUserPassword}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-web",
+                "target": "/usr/src/app",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-github_repos",
+                "target": "/usr/src/github",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-wordlist",
+                "target": "/usr/src/wordlist",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-scan_results",
+                "target": "/usr/src/scan_results",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-gf_patterns",
+                "target": "/root/.gf",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-nuclei_templates",
+                "target": "/root/nuclei-templates",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-tool_config",
+                "target": "/root/.config",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-static_volume",
+                "target": "/usr/src/app/staticfiles/",
+                "type": "volume"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "true",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-proxy": {
+            "container_name": "{ServiceName}-proxy",
+            "hostname": "{ServiceName}-proxy",
+            "image": "nginx:alpine",
+            "restart": "unless-stopped",
+            "post_install": [
+              "rm -rf /etc/nginx/conf.d/rengine.conf &&  curl -L -o /etc/nginx/conf.d/rengine.conf {Context.URL_MAIN} && sed -i 's/rengine:8000/{ServiceName}:8000/g' /etc/nginx/conf.d/rengine.conf"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "8082:8082/tcp"
+            ],
+            "volumes": [
+                {
+                "source": "{ServiceName}-static_volume",
+                "target": "/usr/src/app/staticfiles/",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-scan_results",
+                "target": "/usr/src/scan_results",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}-proxy:8082",
+                "mode": "SERVAPP",
+                "Timeout": 14400000,
+                "ThrottlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-db": {
+            "container_name": "{ServiceName}-db",
+            "hostname": "{ServiceName}-db",
+            "image": "postgres:12.3-alpine",
+            "restart": "unless-stopped",
+            "environment": [
+                "POSTGRES_DB=rengine",
+                "POSTGRES_USER=rengine",
+                "POSTGRES_PASSWORD={Passwords.0}",
+                "POSTGRES_PORT=5432"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-postgres",
+                "target": "/var/lib/postgresql/data/",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-redis": {
+            "container_name": "{ServiceName}-redis",
+            "hostname": "{ServiceName}-redis",
+            "image": "redis:alpine",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-celery": {
+            "container_name": "{ServiceName}-celery",
+            "hostname": "{ServiceName}-celery",
+            "image": "vouu/rengine-dev",
+            "restart": "unless-stopped",
+            "entrypoint": "/usr/src/app/celery-entrypoint.sh",
+            "environment": [
+                "DEBUG=0",
+                "CELERY_BROKER=redis://{ServiceName}-redis:6379/0",
+                "CELERY_BACKEND=redis://{ServiceName}-redis:6379/0",
+                "DOMAIN_NAME={Context.domainName}",
+                "POSTGRES_DB=rengine",
+                "POSTGRES_USER=rengine",
+                "POSTGRES_PASSWORD={Passwords.0}",
+                "POSTGRES_PORT=5432",
+                "POSTGRES_HOST={ServiceName}-db",
+                "MAX_CONCURRENCY=80",
+                "MIN_CONCURRENCY=10"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-web",
+                "target": "/usr/src/app",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-github",
+                "target": "/usr/src/github",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-wordlist",
+                "target": "/usr/src/wordlist",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-scans",
+                "target": "/usr/src/scan_results",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-patterns",
+                "target": "/root/.gf",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-templates",
+                "target": "/root/nuclei-templates",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-config",
+                "target": "/root/.config",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-static",
+                "target": "/usr/src/app/staticfiles/",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-beat": {
+            "container_name": "{ServiceName}-beat",
+            "hostname": "{ServiceName}-beat",
+            "image": "vouu/rengine-dev",
+            "restart": "unless-stopped",
+            "entrypoint": "/usr/src/app/beat-entrypoint.sh",
+            "command": "celery -A reNgine beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler",
+            "environment": [
+              "CELERY_BROKER=redis://{ServiceName}-redis:6379/0",
+              "CELERY_BACKEND=redis://{ServiceName}-redis:6379/0",
+              "POSTGRES_DB=rengine",
+              "POSTGRES_USER=rengine",
+              "POSTGRES_PASSWORD={Passwords.0}",
+              "POSTGRES_PORT=5432",
+              "POSTGRES_HOST={ServiceName}-db"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "source": "{ServiceName}-web",
+                "target": "/usr/src/app",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-github",
+                "target": "/usr/src/github",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-wordlist",
+                "target": "/usr/src/wordlist",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-scans",
+                "target": "/usr/src/scan_results",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-patterns",
+                "target": "/root/.gf",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-templates",
+                "target": "/root/nuclei-templates",
+                "type": "volume"
+                },
+                {
+                "source": "{ServiceName}-config",
+                "target": "/root/.config",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-ollama": {
+            "container_name": "{ServiceName}-ollama",
+            "hostname": "{ServiceName}-ollama",
+            "image": "ollama/ollama",
+            "restart": "unless-stopped",
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "11434:11434"
+            ],
+            "volumes": [
+                {
+                "source": "{ServiceName}-ollama",
+                "target": "/root/.ollama",
+                "type": "volume"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/rengine/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "networks": {
+      "{ServiceName}": {}
+    }
+}
