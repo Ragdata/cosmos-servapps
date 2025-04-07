@@ -3,8 +3,9 @@
     "name": "it-tools",
     "services": {
         "{ServiceName}": {
-            "image": "corentinth/it-tools",
             "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "corentinth/it-tools",
             "restart": "unless-stopped",
             "healthcheck": {
                 "test": [
@@ -54,6 +55,13 @@
         }
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.2.0/24" }
+                ]
+            }
+        }
     }
 }

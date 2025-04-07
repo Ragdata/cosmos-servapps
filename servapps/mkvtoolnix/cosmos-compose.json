@@ -34,15 +34,15 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-config",
-                "target": "/config",
-                "type": "volume"
+                "target": "/config"
                 }
                 {if Context.storagePath}
                 , {
+                "type": "bind",
                 "source": "{Context.storagePath}",
-                "target": "/storage",
-                "type": "bind"
+                "target": "/storage"
                 }
                 {/if}
                 , {
@@ -81,7 +81,20 @@
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        }
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.10.0/24" }
+                ]
+            }
+        }
     }
 }

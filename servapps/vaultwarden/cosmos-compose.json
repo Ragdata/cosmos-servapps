@@ -52,7 +52,20 @@
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        }
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.3.0/24" }
+                ]
+            }
+        }
     }
 }

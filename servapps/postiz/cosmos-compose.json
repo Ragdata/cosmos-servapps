@@ -226,10 +226,19 @@
         }
     },
     "volumes": {
+        "{ServiceName}-config": {},
         "{ServiceName}-data": {},
-        "{ServiceName}-redis": {}
+        "{ServiceName}-redis": {},
+        "{ServiceName}-uploads": {}
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.11.0/24" }
+                ]
+            }
+        }
     }
 }

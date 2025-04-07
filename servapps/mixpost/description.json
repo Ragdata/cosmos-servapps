@@ -1,9 +1,0 @@
-{
-    "name": "Mixpost",
-    "longDescription": "<p>Easily create, schedule, publish, and manage social media content in one place, with no limits or monthly subscription fees.</p>",
-    "description": "Self-hosted social media management.",
-    "tags": ["social media", "automation", "self-hosted"],
-    "repository": "https://github.com/inovector/mixpost",
-    "image": "https://hub.docker.com/r/inovector/mixpost",
-    "supported_architectures": ["amd64", "arm64"]
-}

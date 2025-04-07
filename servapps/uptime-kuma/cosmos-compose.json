@@ -155,7 +155,17 @@
         }
         {/if}
     },
+    "volumes": {
+        "{ServiceName}-config": {}
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.13.0/24" }
+                ]
+            }
+        }
     }
 }

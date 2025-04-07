@@ -6,3 +6,5 @@ servapps/postiz/.env
 servapps/portainer-be/.env
 .vscode
 .archive
+
+servapps/linkwarden/custom

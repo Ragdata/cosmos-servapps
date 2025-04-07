@@ -111,9 +111,9 @@
                 "target": "/etc/timezone:ro"
                 },
                 {
+                "type": "bind",
                 "source": "/var/run/docker.sock",
-                "target": "/var/run/docker.sock",
-                "type": "bind"
+                "target": "/var/run/docker.sock"
                 }
             ],
             "environment": [
@@ -160,6 +160,13 @@
         {/if}
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.1.0/24" }
+                ]
+            }
+        }
     }
 }

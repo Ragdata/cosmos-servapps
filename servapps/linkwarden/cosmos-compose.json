@@ -19,7 +19,7 @@
             "healthcheck": {
                 "test": [
                     "CMD-SHELL",
-                    "pg_isready -d linkwarden -U linkwarden || exit 1"
+                    "pg_isready -d linkwarden -U linkwarden-user || exit 1"
                 ],
                 "interval": 5,
                 "timeout": 5,
@@ -137,10 +137,23 @@
         }
     },
     "volumes": {
-        "{ServiceName}-data": {},
-        "{ServiceName}-postgres": {}
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-postgres": {
+            "name": "{ServiceName}-postgres",
+            "driver": "local"
+        }
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.5.0/24" }
+                ]
+            }
+        }
     }
 }

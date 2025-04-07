@@ -38,9 +38,9 @@
             ],
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-appdata",
-                "target": "/appdata",
-                "type": "volume"
+                "target": "/appdata"
                 },
                 {
                 "type": "bind",
@@ -83,7 +83,20 @@
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-appdata": {
+            "name": "{ServiceName}-appdata",
+            "driver": "local"
+        }
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.7.0/24" }
+                ]
+            }
+        }
     }
 }

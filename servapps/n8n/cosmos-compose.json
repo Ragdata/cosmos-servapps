@@ -35,8 +35,7 @@
                 "DB_POSTGRESDB_PASSWORD={Context.dbPassword}"
             ],
             "networks": {
-                "{ServiceName}": {},
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
             "volumes": [
@@ -79,7 +78,6 @@
                 "cosmos-force-network-secured": "true"
             }
         },
-
         "{ServiceName}-postgres": {
             "container_name": "{ServiceName}-postgres",
             "hostname": "{ServiceName}-postgres",
@@ -96,10 +94,9 @@
                 "POSTGRES_PASSWORD={Context.dbPassword}"
             ],
             "networks": {
-                "{ServiceName}": {},
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
-            "network_mode": "{ServiceName}-postgres",
+            "network_mode": "{ServiceName}",
             "volumes": [
                 {
                 "source": "{ServiceName}-postgres-data",
@@ -112,13 +109,23 @@
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-stack-main": "{ServiceName}",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/n8n/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}-postgres",
+                "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-storage": {},
+        "{ServiceName}-postgres-data": {}
+    },
     "networks": {
-        "{ServiceName}": {},
-        "{ServiceName}-postgres": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.12.0/24" }
+                ]
+            }
+        }
     }
 }

@@ -128,7 +128,20 @@
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        }
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.9.0/24" }
+                ]
+            }
+        }
     }
 }

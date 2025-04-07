@@ -65,9 +65,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "bind",
                 "source": "{Context.photoPath}",
-                "target": "/usr/src/app/upload",
-                "type": "bind"
+                "target": "/usr/src/app/upload"
                 },
                 {
                 "type": "bind",
@@ -123,9 +123,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-model-cache",
-                "target": "/cache",
-                "type": "volume"
+                "target": "/cache"
                 },
                 {
                 "type": "bind",
@@ -195,9 +195,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-pgdata",
-                "target": "/var/lib/postgresql/data",
-                "type": "volume"
+                "target": "/var/lib/postgresql/data"
                 },
                 {
                 "type": "bind",
@@ -222,9 +222,9 @@
         {if Context.installimmichBackup}
         ,
         "{ServiceName}-backup": {
-            "image": "prodrigestivill/postgres-backup-local",
             "container_name": "{ServiceName}-backup",
             "hostname": "{ServiceName}-backup",
+            "image": "prodrigestivill/postgres-backup-local",
             "restart": "unless-stopped",
             "depends_on": {
                 "{ServiceName}-database": {}
@@ -248,9 +248,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "bind",
                 "source": "{Context.ImmichBackupPath}",
-                "target": "/db_dumps",
-                "type": "bind"
+                "target": "/db_dumps"
                 },
                 {
                 "type": "bind",
@@ -274,7 +274,24 @@
         }
         {/if}
     },
+    "volumes": {
+        "{ServiceName}-pgdata": {
+            "name": "{ServiceName}-pgdata",
+            "driver": "local"
+        },
+        "{ServiceName}-postgres": {
+            "name": "{ServiceName}-model-cache",
+            "driver": "local"
+        }
+    },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.6.0/24" }
+                ]
+            }
+        }
     }
 }
