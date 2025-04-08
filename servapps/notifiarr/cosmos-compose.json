@@ -41,24 +41,24 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-config",
-                "target": "/config",
-                "type": "volume"
+                "target": "/config"
                 },
                 {
+                "type": "bind",
                 "source": "/dev/sda",
-                "target": "/storage/1",
-                "type": "bind"
+                "target": "/storage/1"
                 },
                 {
+                "type": "bind",
                 "source": "/var/run/utmp",
-                "target": "/var/run/utmp",
-                "type": "bind"
+                "target": "/var/run/utmp"
                 },
                 {
+                "type": "bind",
                 "source": "/etc/machine-id",
-                "target": "/etc/machine-id",
-                "type": "bind"
+                "target": "/etc/machine-id"
                 }
             ],
             "routes": [
@@ -83,6 +83,13 @@
         }
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.17.0/24" }
+                ]
+            }
+        }
     }
 }

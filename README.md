@@ -51,18 +51,24 @@ Add the information below in the form in the image above:
 |:----------------------|:------------|:---------------:|:---------------:|:---------------|
 | [Activepieces][act]   | Automation  | [🌐][act-web]   | [💾][act-cod]  | 172.16.8.0/24  |
 | [Dozzle][doz]         | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | 172.16.1.0/24  |
+| [Excalidraw][exc]     | Whiteboard  | [🌐][exc-web]   | [💾][exc-cod]  | 172.16.14.0/24 |
 | [Gitea-Actions][git]  | CI/CD       | [🌐][git-web]   | [💾][git-cod]  | 172.16.4.0/24  |
 | [Handbrake][hnd]      | Video       | [🌐][hnd-web]   | [💾][hnd-cod]  | 172.16.9.0/24  |
 | [Homarr v1.x][hom]    | Dashboards  | [🌐][hom-web]   | [💾][hom-cod]  | 172.16.7.0/24  |
+| [Huginn][hug]         | Automation  | [🌐][hug-web]   | [💾][hug-cod]  | 172.16.19.0/24 |
 | [Immich][imm]         | Photos      | [🌐][imm-web]   | [💾][imm-cod]  | 172.16.6.0/24  |
 | [IT-Tools][itt]       | Utilities   | [🌐][itt-web]   | [💾][itt-cod]  | 172.16.2.0/24  |
 | [Linkwarden][lnk]     | Bookmarks   | [🌐][lnk-web]   | [💾][lnk-cod]  | 172.16.5.0/24  |
+| [Mattermost][mat]     | Chat        | [🌐][mat-web]   | [💾][mat-cod]  | 172.16.15.0/24 |
 | [MKVTools][mkv]       | Video       | [🌐][mkv-web]   | [💾][mkv-cod]  | 172.16.10.0/24 |
 | [N8n][n8n]            | Automation  | [🌐][n8n-web]   | [💾][n8n-cod]  | 172.16.12.0/24 |
+| [NetAlertX][net]      | Security    | [🌐][net-web]   | [💾][net-cod]  | 172.16.16.0/24 |
+| [Notifiarr][not]      | Messaging   | [🌐][not-web]   | [💾][not-cod]  | 172.16.17.0/24 |
 | [Portainer BE][pbe]   | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | 172.17.0.0/24  |
 | [Postiz][ptz]         | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  | 172.16.11.0/24 |
 | [Uptime-Kuma][upk]    | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  | 172.16.13.0/24 |
 | [Vaultwarden][vlw]    | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  | 172.16.3.0/24  |
+| [Yopass][yop]         | Secrets     | [🌐][yop-web]   | [💾][yop-cod]  | 172.16.18.0/24 |
 
 [`^ Top`](#top)
 
@@ -73,6 +79,10 @@ Add the information below in the form in the image above:
 [doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dozzle
 [doz-web]: https://dozzle.dev/
 [doz-cod]: https://github.com/amir20/dozzle
+
+[exc]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/excalidraw
+[exc-web]: https://excalidraw.com/
+[exc-cod]: https://github.com/excalidraw/excalidraw/
 
 [git]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/gitea-actions
 [git-web]: https://about.gitea.com/
@@ -86,6 +96,10 @@ Add the information below in the form in the image above:
 [hom-web]: https://homarr.dev/
 [hom-cod]: https://github.com/ajnart/homarr
 
+[hug]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/huginn
+[hug-web]: https://github.com/huginn/huginn
+[hug-cod]: https://github.com/huginn/huginn
+
 [imm]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/immich
 [imm-web]: https://immich.app/
 [imm-cod]: https://github.com/immich-app/immich
@@ -98,9 +112,9 @@ Add the information below in the form in the image above:
 [lnk-web]: https://linkwarden.app/
 [lnk-cod]: https://github.com/linkwarden/linkwarden
 
-[mix]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/mixpost
-[mix-web]: https://mixpost.app/
-[mix-cod]: https://github.com/inovector/mixpost
+[mat]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/mattermost
+[mat-web]: https://mattermost.com/
+[mat-cod]: https://github.com/mattermost/mattermost/
 
 [mkv]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/mkvtoolnix
 [mkv-web]: https://mkvtoolnix.download/
@@ -109,6 +123,14 @@ Add the information below in the form in the image above:
 [n8n]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/n8n
 [n8n-web]: https://n8n.io/
 [n8n-cod]: https://github.com/n8n-io/n8n/
+
+[net]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/netalertx
+[net-web]: https://netalertx.com/
+[net-cod]: https://github.com/jokob-sk/NetAlertX/
+
+[not]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/notifiarr
+[not-web]: https://notifiarr.com/
+[not-cod]: https://github.com/Notifiarr/notifiarr
 
 [pbe]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/portainer-be
 [pbe-web]: https://www.portainer.io/
@@ -123,9 +145,12 @@ Add the information below in the form in the image above:
 [upk-cod]: https://github.com/louislam/uptime-kuma
 
 [vlw]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/vaultwarden
-[vlw-web]: https://github.com/azukaar/cosmos-casaos-store
+[vlw-web]: https://github.com/IceWhaleTech/CasaOS-AppStore
 [vlw-cod]: https://github.com/azukaar/cosmos-casaos-store
 
+[yop]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/yopass
+[yop-web]: https://yopass.se/
+[yop-cod]: https://github.com/jhaals/yopass/
 
 
 [pre-release]: https://img.shields.io/badge/Status-Pre--Release-d20000?labelColor=31383f

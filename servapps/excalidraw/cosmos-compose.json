@@ -35,6 +35,13 @@
         }
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.14.0/24" }
+                ]
+            }
+        }
     }
 }

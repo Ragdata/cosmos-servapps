@@ -2,56 +2,50 @@
     "cosmos-installer": {
         "form": [
             {
-            "name": "SITE_OWNER",
-            "label": "What is your 2FAuth user email?",
+            "name": "SMTP_DOMAIN",
+            "label": "Domain to use for email?",
             "initialValue": "",
             "type": "text"
             },
             {
-            "name": "MAIL_HOST",
-            "label": "SMTP host",
+            "name": "SMTP_SERVER",
+            "label": "SMTP Server",
             "initialValue": "smtp.gmail.com",
             "type": "text"
             },
             {
-            "name": "MAIL_PORT",
-            "label": "SMTP port",
+            "name": "SMTP_PORT",
+            "label": "SMTP Port",
             "initialValue": "587",
             "type": "text"
             },
             {
-            "name": "MAIL_FROM",
-            "label": "Enter 'from' address",
+            "name": "SMTP_USER_NAME",
+            "label": "SMTP Username",
             "initialValue": "",
             "type": "text"
             },
             {
-            "name": "MAIL_USERNAME",
-            "label": "SMTP username",
-            "initialValue": "",
-            "type": "text"
-            },
-            {
-            "name": "MAIL_PASSWORD",
-            "label": "SMTP password",
+            "name": "SMTP_PASSWORD",
+            "label": "SMTP Password",
             "initialValue": "",
             "type": "password"
             },
             {
-            "name": "MAIL_ENCRYPTION",
-            "label": "Encryption (tls or ssl)",
-            "initialValue": "tls",
+            "name": "SMTP_AUTHENTICATION",
+            "label": "Mail Authentication Protocol?",
+            "initialValue": "plain",
             "type": "text"
             },
             {
-            "name": "MAIL_FROM_NAME",
-            "label": "Email 'from' name",
-            "initialValue": "",
+            "name": "SMTP_ENABLE_STARTTLS_AUTO",
+            "label": "Enable SMTP Encryption?",
+            "initialValue": "true",
             "type": "text"
             },
             {
-            "name": "MAIL_FROM_ADDRESS",
-            "label": "Email 'from' address",
+            "name": "INVITATION_CODE",
+            "label": "Secret Invitation Code",
             "initialValue": "",
             "type": "text"
             }
@@ -59,58 +53,16 @@
     },
     "name": "huginn",
     "services": {
-        "{ServiceName}": {
-            "container_name": "{ServiceName}",
-            "hostname": "{ServiceName}",
-            "image": "2fauth/2fauth",
+        "{ServiceName}-postgres": {
+            "container_name": "{ServiceName}-postgres",
+            "hostname": "{ServiceName}-postgres",
+            "image": "postgres:latest",
             "restart": "unless-stopped",
-            "security_opt": [
-                "seccomp:unconfined"
-            ],
             "environment": [
-                "APP_NAME=2FAuth",
-                "APP_ENV=local",
-                "APP_DEBUG=false",
-                "SITE_OWNER={Context.SITE_OWNER}",
-                "APP_KEY=tLfTrAbKr3NBWtHlTmkMF65HHd8qrmWD",
-                "APP_URL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
-                "IS_DEMO_APP=false",
-                "LOG_CHANNEL=daily",
-                "LOG_LEVEL=notice",
-                "DB_DATABASE=\"/srv/database/database.sqlite\"",
-                "CACHE_DRIVER=file",
-                "SESSION_DRIVER=file",
-                "MAIL_DRIVER=log",
-                "MAIL_HOST={Context.MAIL_HOST}",
-                "MAIL_PORT={Context.MAIL_PORT}",
-                "MAIL_FROM={Context.MAIL_FROM}",
-                "MAIL_USERNAME={Context.MAIL_USERNAME}",
-                "MAIL_PASSWORD={Context.MAIL_PASSWORD}",
-                "MAIL_ENCRYPTION={Context.MAIL_ENCRYPTION}",
-                "MAIL_FROM_NAME={Context.MAIL_FROM_NAME}",
-                "MAIL_FROM_ADDRESS={Context.MAIL_FROM_ADDRESS}",
-                "AUTHENTICATION_GUARD=web-guard",
-                "AUTH_PROXY_HEADER_FOR_USER=null",
-                "AUTH_PROXY_HEADER_FOR_EMAIL=null",
-                "PROXY_LOGOUT_URL=null",
-                "WEBAUTHN_NAME=2FAuth",
-                "WEBAUTHN_ID=null",
-                "WEBAUTHN_ICON=null",
-                "WEBAUTHN_USER_VERIFICATION=preferred",
-                "TRUSTED_PROXIES=*",
-                "BROADCAST_DRIVER=log",
-                "QUEUE_DRIVER=sync",
-                "SESSION_LIFETIME=120",
-                "REDIS_HOST={ServiceName}-redis",
-                "REDIS_PASSWORD={Passwords.1}",
-                "REDIS_PORT=6379",
-                "PUSHER_APP_ID=",
-                "PUSHER_APP_KEY=",
-                "PUSHER_APP_SECRET=",
-                "PUSHER_APP_CLUSTER=mt1",
-                "MIX_PUSHER_APP_KEY=\"${PUSHER_APP_KEY}\"",
-                "MIX_PUSHER_APP_CLUSTER=\"${PUSHER_APP_CLUSTER}\"",
-                "MIX_ENV=local"
+                "POSTGRES_PORT_5432_TCP_ADDR={ServiceName}-postgres",
+                "POSTGRES_PORT_5432_TCP_PORT=5432",
+                "POSTGRES_USER=huginn",
+                "POSTGRES_PASSWORD={Passwords.0}"
             ],
             "networks": {
                 "{ServiceName}": {}
@@ -119,13 +71,68 @@
             "volumes": [
                 {
                 "type": "volume",
-                "source": "{ServiceName}-2fauth",
-                "target": "/2fauth"
+                "source": "{ServiceName}-pgdata",
+                "target": "/var/lib/postgresql/data"
                 },
                 {
-                "type": "volume",
-                "source": "{ServiceName}-database",
-                "target": "/srv/database"
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/huginn/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "huginn/huginn",
+            "restart": "unless-stopped",
+            "environment": [
+                "SMTP_DOMAIN={Context.SMTP_DOMAIN}",
+                "SMTP_USER_NAME={Context.SMTP_USER_NAME}",
+                "SMTP_PASSWORD={Context.SMTP_PASSWORD}",
+                "SMTP_SERVER={Context.SMTP_SERVER}",
+                "SMTP_PORT={Context.SMTP_PORT}",
+                "SMTP_AUTHENTICATION={Context.SMTP_AUTHENTICATION}",
+                "SMTP_ENABLE_STARTTLS_AUTO={Context.SMTP_ENABLE_STARTTLS_AUTO}",
+                "INVITATION_CODE={Context.INVITATION_CODE}",
+                "POSTGRES_PORT_5432_TCP_ADDR={ServiceName}-postgres",
+                "POSTGRES_PORT_5432_TCP_PORT=5432",
+                "DATABASE_USERNAME=huginn",
+                "DATABASE_PASSWORD={Passwords.0}",
+                "DATABASE_ADAPTER=postgresql",
+                "TWITTER_OAUTH_KEY",
+                "TWITTER_OAUTH_SECRET",
+                "POSTGRES_USER=huginn",
+                "POSTGRES_PASSWORD={Passwords.0}",
+                "BACKUP_NUM_KEEP=7",
+                "BACKUP_FREQUENCY=1d"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
                 }
             ],
             "routes": [
@@ -133,7 +140,7 @@
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
                 "useHost": true,
-                "target": "http://{ServiceName}:8000",
+                "target": "http://{ServiceName}:3000",
                 "mode": "SERVAPP",
                 "Timeout": 14400000,
                 "ThrottlePerMinute": 12000,
@@ -145,18 +152,32 @@
                 "cosmos.stack": "{ServiceName}",
                 "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/2fauth/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/huginn/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
         },
-        "{ServiceName}-postgres": {
-            "container_name": "{ServiceName}-postgres",
-            "hostname": "{ServiceName}-postgres",
+        "{ServiceName}-backup": {
+            "container_name": "{ServiceName}-backup",
+            "hostname": "{ServiceName}-backup",
             "image": "postgres:latest",
             "restart": "unless-stopped",
             "environment": [
-                "REDIS_PASSWORD={Passwords.1}"
+                "POSTGRES_USER=huginn",
+                "POSTGRES_PASSWORD={Passwords.0}",
+                "BACKUP_NUM_KEEP=7",
+                "BACKUP_FREQUENCY=1d"
+            ],
+            "entrypoint": [
+                "/bin/bash",
+                "-c",
+                "trap \"break;exit\" SIGHUP SIGINT SIGTERM",
+                "sleep 2m",
+                "while /bin/true; do",
+                  "pg_dump -Fc > /dump/dump_`date +%d-%m-%Y\"_\"%H_%M_%S`.psql",
+                  "ls -tr /dump/dump_*.psql | head -n -$BACKUP_NUM_KEEP | xargs -r rm",
+                  "sleep $BACKUP_FREQUENCY",
+                "done"
             ],
             "networks": {
                 "{ServiceName}": {}
@@ -164,24 +185,48 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
-                "source": "{ServiceName}-redis",
-                "target": "/bitnami/redis",
-                "type": "volume"
+                "type": "volume",
+                "source": "{ServiceName}-backup",
+                "target": "/dump"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
                 }
             ],
             "labels": {
                 "cosmos.stack": "{ServiceName}",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/2fauth/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/huginn/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
         }
     },
     "volumes": {
-        "{ServiceName}-redis": {}
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-backup",
+            "driver": "local"
+        },
+        "{ServiceName}-postgres": {
+            "name": "{ServiceName}-pgdata",
+            "driver": "local"
+        }
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.19.0/24" }
+                ]
+            }
+        }
     }
 }

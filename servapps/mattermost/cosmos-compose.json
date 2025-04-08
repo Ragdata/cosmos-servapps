@@ -19,34 +19,34 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-config",
-                "target": "/mattermost/config",
-                "type": "volume"
+                "target": "/mattermost/config"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-data",
-                "target": "/mattermost/data",
-                "type": "volume"
+                "target": "/mattermost/data"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-logs",
-                "target": "/mattermost/logs",
-                "type": "volume"
+                "target": "/mattermost/logs"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-plugins",
-                "target": "/mattermost/plugins",
-                "type": "volume"
+                "target": "/mattermost/plugins"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-plugins",
-                "target": "/mattermost/client/plugins",
-                "type": "volume"
+                "target": "/mattermost/client/plugins"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-bleve-indexes",
-                "target": "/mattermost/bleve-indexes",
-                "type": "volume"
+                "target": "/mattermost/bleve-indexes"
                 },
                 {
                 "type": "bind",
@@ -103,9 +103,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-postgres",
-                "target": "/var/lib/postgresql/data",
-                "type": "volume"
+                "target": "/var/lib/postgresql/data"
                 },
                 {
                 "type": "bind",
@@ -131,6 +131,13 @@
         "{ServiceName}-postgres": {}
     },
     "networks": {
-        "{ServiceName}": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.15.0/24" }
+                ]
+            }
+        }
     }
 }
