@@ -169,6 +169,23 @@
                 "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-redis",
+                "target": "/data"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
             "labels": {
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-persistent-env": "POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB",
@@ -277,6 +294,10 @@
     "volumes": {
         "{ServiceName}-pgdata": {
             "name": "{ServiceName}-pgdata",
+            "driver": "local"
+        },
+        "{ServiceName}-pgdata": {
+            "name": "{ServiceName}-redis",
             "driver": "local"
         },
         "{ServiceName}-postgres": {

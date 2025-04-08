@@ -156,64 +156,9 @@
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
             }
-        },
-        "{ServiceName}-backup": {
-            "container_name": "{ServiceName}-backup",
-            "hostname": "{ServiceName}-backup",
-            "image": "postgres:latest",
-            "restart": "unless-stopped",
-            "environment": [
-                "POSTGRES_USER=huginn",
-                "POSTGRES_PASSWORD={Passwords.0}",
-                "BACKUP_NUM_KEEP=7",
-                "BACKUP_FREQUENCY=1d"
-            ],
-            "entrypoint": [
-                "/bin/bash",
-                "-c",
-                "trap \"break;exit\" SIGHUP SIGINT SIGTERM",
-                "sleep 2m",
-                "while /bin/true; do",
-                  "pg_dump -Fc > /dump/dump_`date +%d-%m-%Y\"_\"%H_%M_%S`.psql",
-                  "ls -tr /dump/dump_*.psql | head -n -$BACKUP_NUM_KEEP | xargs -r rm",
-                  "sleep $BACKUP_FREQUENCY",
-                "done"
-            ],
-            "networks": {
-                "{ServiceName}": {}
-            },
-            "network_mode": "{ServiceName}",
-            "volumes": [
-                {
-                "type": "volume",
-                "source": "{ServiceName}-backup",
-                "target": "/dump"
-                },
-                {
-                "type": "bind",
-                "source": "/etc/localtime:ro",
-                "target": "/etc/localtime:ro"
-                },
-                {
-                "type": "bind",
-                "source": "/etc/timezone:ro",
-                "target": "/etc/timezone:ro"
-                }
-            ],
-            "labels": {
-                "cosmos.stack": "{ServiceName}",
-                "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/huginn/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}",
-                "cosmos-force-network-secured": "true"
-            }
         }
     },
     "volumes": {
-        "{ServiceName}-data": {
-            "name": "{ServiceName}-backup",
-            "driver": "local"
-        },
         "{ServiceName}-postgres": {
             "name": "{ServiceName}-pgdata",
             "driver": "local"
