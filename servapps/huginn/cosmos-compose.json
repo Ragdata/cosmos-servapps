@@ -96,7 +96,7 @@
         "{ServiceName}": {
             "container_name": "{ServiceName}",
             "hostname": "{ServiceName}",
-            "image": "huginn/huginn",
+            "image": "ghcr.io/huginn/huginn",
             "restart": "unless-stopped",
             "environment": [
                 "SMTP_DOMAIN={Context.SMTP_DOMAIN}",
