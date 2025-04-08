@@ -50,6 +50,7 @@ Add the information below in the form in the image above:
 | App                   | Category    | Web             | Code            | Subnet         |
 |:----------------------|:------------|:---------------:|:---------------:|:---------------|
 | [Activepieces][act]   | Automation  | [🌐][act-web]   | [💾][act-cod]  | 172.16.8.0/24  |
+| [Calibre-Web][cal]    | Doc Mgmt    | [🌐][cal-web]   | [💾][cal-cod]  | 172.16.20.0/24 |
 | [Dozzle][doz]         | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | 172.16.1.0/24  |
 | [Excalidraw][exc]     | Whiteboard  | [🌐][exc-web]   | [💾][exc-cod]  | 172.16.14.0/24 |
 | [Gitea-Actions][git]  | CI/CD       | [🌐][git-web]   | [💾][git-cod]  | 172.16.4.0/24  |
@@ -75,6 +76,10 @@ Add the information below in the form in the image above:
 [act]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [act-web]: https://www.activepieces.com/
 [act-cod]: https://github.com/activepieces/activepieces/
+
+[doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/calibre-web
+[doz-web]: https://calibre-ebook.com/
+[doz-cod]: https://github.com/janeczku/calibre-web
 
 [doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dozzle
 [doz-web]: https://dozzle.dev/
