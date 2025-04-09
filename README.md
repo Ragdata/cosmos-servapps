@@ -77,9 +77,9 @@ Add the information below in the form in the image above:
 [act-web]: https://www.activepieces.com/
 [act-cod]: https://github.com/activepieces/activepieces/
 
-[doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/calibre-web
-[doz-web]: https://calibre-ebook.com/
-[doz-cod]: https://github.com/janeczku/calibre-web
+[cal]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/calibre-web
+[cal-web]: https://calibre-ebook.com/
+[cal-cod]: https://github.com/janeczku/calibre-web
 
 [doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dozzle
 [doz-web]: https://dozzle.dev/
