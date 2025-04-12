@@ -1,5 +1,14 @@
 {
-    "cosmos-installer": {},
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "volPath",
+            "label": "Volumes Path",
+            "initialValue": "/var/lib/docker/volumes",
+            "type": "text"
+            }
+        ]
+    },
     "name": "gitea",
     "services": {
         "{ServiceName}": {
@@ -87,7 +96,7 @@
             "volumes": [
                 {
                 "type": "bind",
-                "source": "/data/act_runner",
+                "source": "{Context.volPath}/gitea-data/_data/act_runner",
                 "target": "/data"
                 },
                 {
@@ -118,6 +127,17 @@
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/gitea-actions/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local",
+            "driver_opts": {
+                "type": "none",
+                "o": "bind",
+                "device": "{Context.volPath}/gitea-data/_data"
             }
         }
     },

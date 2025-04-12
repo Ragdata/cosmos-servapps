@@ -116,21 +116,19 @@
         "{ServiceName}-search": {
             "container_name": "{ServiceName}-search",
             "hostname": "{ServiceName}-search",
-            "image": "elasticsearch:8.15.0",
+            "image": "seafileltd/seasearch:latest",
             "restart": "unless-stopped",
             "environment": [
-                "discovery.type=single-node",
-                "bootstrap.memory_lock=true",
-                "ES_JAVA_OPTS=-Xms2g -Xmx2g",
-                "xpack.security.enabled=false"
+                "SS_FIRST_ADMIN_USER=seasearch",
+                "SS_FIRST_ADMIN_PASSWORD={Passwords.2}",
+                "SS_STORAGE_TYPE",
+                "SS_MAX_OBJ_CACHE_SIZE=10GB",
+                "SS_LOG_TO_STDOUT=false",
+                "SS_LOG_DIR=/opt/seasearch/data/log",
+                "SS_LOG_LEVEL=info",
+                "SEAFILE_LOG_TO_STDOUT=false",
+                "SEATABLE_LOG_TO_STDOUT=false"
             ],
-            "ulimits": {
-                "memlock": {
-                    "hard": -1,
-                    "soft": -1
-                }
-            },
-            "mem-limit": "4g",
             "networks": {
                 "{ServiceName}": {}
             },
@@ -139,7 +137,7 @@
                 {
                 "type": "volume",
                 "source": "{ServiceName}-search",
-                "target": "/usr/share/elasticsearch/data"
+                "target": "/opt/seasearch/data"
                 },
                 {
                 "type": "bind",
@@ -216,6 +214,19 @@
                 "type": "bind",
                 "source": "/etc/timezone:ro",
                 "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:80",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
                 }
             ],
             "labels": {

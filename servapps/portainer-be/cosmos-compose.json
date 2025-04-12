@@ -83,7 +83,7 @@
             "volumes": [
                 {
                 "type": "volume",
-                "source": "{ServiceName}-tools-config",
+                "source": "{ServiceName}-tools",
                 "target": "/config"
                 },
                 {
@@ -102,6 +102,16 @@
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/portainer-be/icon.png"
             }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-search": {
+            "name": "{ServiceName}-tools",
+            "driver": "local"
         }
     }
 }
