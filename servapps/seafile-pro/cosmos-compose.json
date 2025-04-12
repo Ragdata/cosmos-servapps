@@ -1,0 +1,255 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+            "name": "INIT_SEAFILE_ADMIN_EMAIL",
+            "label": "Initial admin email address?",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "INIT_SEAFILE_ADMIN_PASSWORD",
+            "label": "Initial admin password?",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "SEAFILE_SERVER_HOSTNAME",
+            "label": "Seafile server hostname (FQDN)?",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "JWT_PRIVATE_KEY",
+            "label": "JWT Private Key? (random 32 char string)",
+            "initialValue": "",
+            "type": "text"
+            },
+            {
+            "name": "TIME_ZONE",
+            "label": "Timezone?",
+            "initialValue": "",
+            "type": "text"
+            }
+        ],
+        "post-install": [
+            {
+            "type": "info",
+            "label": "You may remove any variable beginning with INIT_ from the environment section of the compose file. They are only used for initial setup."
+            }
+        ]
+    },
+    "name": "seafile",
+    "services": {
+        "{ServiceName}-mysql": {
+            "container_name": "{ServiceName}-mysql",
+            "hostname": "{ServiceName}-mysql",
+            "image": "mariadb:10.11",
+            "restart": "unless-stopped",
+            "healthcheck": {
+                "test": [
+                    "CMD",
+                    "/usr/local/bin/healthcheck.sh",
+                    "--connect",
+                    "--mariadbupgrade",
+                    "--innodb_initialized"
+                ],
+                "interval": 40,
+                "timeout": 30,
+                "start_period": 60,
+                "retries": 3
+            },
+            "environment": [
+                "MYSQL_ROOT_PASSWORD={Passwords.0}",
+                "MYSQL_LOG_CONSOLE=true",
+                "MARIADB_AUTO_UPGRADE=1"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-mysql",
+                "target": "/var/lib/mysql"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/seafile-pro/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-memcached": {
+            "container_name": "{ServiceName}-memcached",
+            "hostname": "{ServiceName}-memcached",
+            "image": "memcached:1.6.29",
+            "restart": "unless-stopped",
+            "entrypoint": "memcached -m 256",
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/seafile-pro/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-search": {
+            "container_name": "{ServiceName}-search",
+            "hostname": "{ServiceName}-search",
+            "image": "elasticsearch:8.15.0",
+            "restart": "unless-stopped",
+            "environment": [
+                "discovery.type=single-node",
+                "bootstrap.memory_lock=true",
+                "ES_JAVA_OPTS=-Xms2g -Xmx2g",
+                "xpack.security.enabled=false"
+            ],
+            "ulimits": {
+                "memlock": {
+                    "hard": -1,
+                    "soft": -1
+                }
+            },
+            "mem-limit": "4g",
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-search",
+                "target": "/usr/share/elasticsearch/data"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/seafile-pro/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "seafileltd/seafile-pro-mc:12.0-latest",
+            "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-mysql": {
+                    "condition": "service_healthy"
+                },
+                "{ServiceName}-memcached": {
+                    "condition": "service_started"
+                },
+                "{ServiceName}-search": {
+                    "condition": "service_started"
+                }
+            },
+            "environment": [
+                "DB_HOST={ServiceName}-mysql",
+                "DB_PORT=3306",
+                "DB_USER=seafile",
+                "DB_ROOT_PASSWD={Passwords.0}",
+                "DB_PASSWORD={Passwords.1}",
+                "SEAFILE_MYSQL_DB_CCNET_DB_NAME=ccnet_db",
+                "SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile_db",
+                "SEAFILE_MYSQL_DB_SEAHUB_DB_NAME=seahub_db",
+                "TIME_ZONE={Context.TIME_ZONE}",
+                "INIT_SEAFILE_ADMIN_EMAIL={Context.INIT_SEAFILE_ADMIN_EMAIL}",
+                "INIT_SEAFILE_ADMIN_PASSWORD={Context.INIT_SEAFILE_ADMIN_PASSWORD}",
+                "SEAFILE_SERVER_HOSTNAME={Context.SEAFILE_SERVER_HOSTNAME}",
+                "JWT_PRIVATE_KEY={Context.JWT_PRIVATE_KEY}",
+                "SEAFILE_SERVER_PROTOCOL=http",
+                "SITE_ROOT=/",
+                "NON_ROOT=false",
+                "SEAFILE_LOG_TO_STDOUT=false",
+                "ENABLE_SEADOC=false"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/shared"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/seafile-pro/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-mysql": {
+            "name": "{ServiceName}-mysql",
+            "driver": "local"
+        },
+        "{ServiceName}-search": {
+            "name": "{ServiceName}-search",
+            "driver": "local"
+        }
+    },
+    "networks": {
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.21.0/24" }
+                ]
+            }
+        }
+    }
+}
