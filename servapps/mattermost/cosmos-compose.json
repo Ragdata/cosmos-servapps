@@ -45,7 +45,7 @@
                 },
                 {
                 "type": "volume",
-                "source": "{ServiceName}-bleve-indexes",
+                "source": "{ServiceName}-indexes",
                 "target": "/mattermost/bleve-indexes"
                 },
                 {
@@ -128,7 +128,30 @@
         }
     },
     "volumes": {
-        "{ServiceName}-postgres": {}
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        },
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-logs": {
+            "name": "{ServiceName}-logs",
+            "driver": "local"
+        },
+        "{ServiceName}-plugins": {
+            "name": "{ServiceName}-plugins",
+            "driver": "local"
+        },
+        "{ServiceName}-indexes": {
+            "name": "{ServiceName}-indexes",
+            "driver": "local"
+        },
+        "{ServiceName}-postgres": {
+            "name": "{ServiceName}-postgres",
+            "driver": "local"
+        }
     },
     "networks": {
         "{ServiceName}": {

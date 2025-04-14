@@ -109,7 +109,7 @@
             "name": "{ServiceName}-data",
             "driver": "local"
         },
-        "{ServiceName}-search": {
+        "{ServiceName}-tools": {
             "name": "{ServiceName}-tools",
             "driver": "local"
         }

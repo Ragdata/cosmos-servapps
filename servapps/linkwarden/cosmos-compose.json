@@ -43,7 +43,7 @@
                 {
                 "type": "volume",
                 "source": "{ServiceName}-postgres",
-                "target": "/var/lib/postgresql"
+                "target": "/var/lib/postgresql/data"
                 },
                 {
                 "type": "bind",

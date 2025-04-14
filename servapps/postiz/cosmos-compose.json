@@ -8,12 +8,6 @@
             "type": "text"
             },
             {
-            "name": "dbPassword",
-            "label": "Database Password",
-            "initialValue": "",
-            "type": "text"
-            },
-            {
             "name": "cfAccID",
             "label": "Cloudflare Account ID",
             "initialValue": "",
@@ -61,7 +55,7 @@
                 "FRONTEND_URL=https://{ServiceName}.aever.au",
                 "NEXT_PUBLIC_BACKEND_URL=https://{ServiceName}.aever.au/api",
                 "JWT_SECRET={Context.jwtSecret}",
-                "DATABASE_URL=postgresql://{ServiceName}-user:{Context.dbPassword}@{ServiceName}-postgres:5432/{ServiceName}",
+                "DATABASE_URL=postgresql://{ServiceName}-user:{Passwords.0}@{ServiceName}-postgres:5432/{ServiceName}",
                 "REDIS_URL=redis://{ServiceName}-redis:6379",
                 "BACKEND_INTERNAL_URL=http://{ServiceName}:3000",
                 "IS_GENERAL=true",
@@ -148,7 +142,7 @@
                 "retries": 3
             },
             "environment": [
-                "POSTGRES_PASSWORD={Context.dbPassword}",
+                "POSTGRES_PASSWORD={Passwords.0}",
                 "POSTGRES_USER={ServiceName}-user",
                 "POSTGRES_DB={ServiceName}"
             ],

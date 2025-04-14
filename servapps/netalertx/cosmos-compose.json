@@ -26,9 +26,9 @@
                 "target": "/app/db"
                 },
                 {
+                "type": "volume",
                 "source": "{ServiceName}-log",
-                "target": "/app/front/log",
-                "type": "volume"
+                "target": "/app/front/log"
                 },
                 {
                 "type": "bind",
@@ -63,7 +63,18 @@
         }
     },
     "volumes": {
-        "{ServiceName}-db": {}
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        },
+        "{ServiceName}-db": {
+            "name": "{ServiceName}-db",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-log",
+            "driver": "local"
+        }
     },
     "networks": {
         "{ServiceName}": {

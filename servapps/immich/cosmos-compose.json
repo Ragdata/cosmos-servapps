@@ -140,8 +140,8 @@
             ],
             "routes": [
                 {
-                "name": "{ServiceName}",
-                "description": "Expose {ServiceName} to the web",
+                "name": "{ServiceName}-ml",
+                "description": "Expose {ServiceName}-ml to the web",
                 "useHost": true,
                 "target": "http://{ServiceName}-ml:3003",
                 "mode": "SERVAPP",
@@ -296,11 +296,11 @@
             "name": "{ServiceName}-pgdata",
             "driver": "local"
         },
-        "{ServiceName}-pgdata": {
+        "{ServiceName}-redis": {
             "name": "{ServiceName}-redis",
             "driver": "local"
         },
-        "{ServiceName}-postgres": {
+        "{ServiceName}-model-cache": {
             "name": "{ServiceName}-model-cache",
             "driver": "local"
         }

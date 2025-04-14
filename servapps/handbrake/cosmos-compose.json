@@ -67,9 +67,14 @@
             {/if}
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-config",
-                "target": "/config",
-                "type": "volume"
+                "target": "/config"
+                },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-trash",
+                "target": "/trash"
                 },
                 {
                 "type": "bind",
@@ -131,6 +136,10 @@
     "volumes": {
         "{ServiceName}-config": {
             "name": "{ServiceName}-config",
+            "driver": "local"
+        },
+        "{ServiceName}-trash": {
+            "name": "{ServiceName}-trash",
             "driver": "local"
         }
     },

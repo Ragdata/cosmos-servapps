@@ -159,7 +159,7 @@
         }
     },
     "volumes": {
-        "{ServiceName}-postgres": {
+        "{ServiceName}-pgdata": {
             "name": "{ServiceName}-pgdata",
             "driver": "local"
         }

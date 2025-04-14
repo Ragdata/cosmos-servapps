@@ -44,9 +44,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-config",
-                "target": "/app/data",
-                "type": "volume"
+                "target": "/app/data"
                 },
                 {
                 "type": "bind",
@@ -156,7 +156,10 @@
         {/if}
     },
     "volumes": {
-        "{ServiceName}-config": {}
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        }
     },
     "networks": {
         "{ServiceName}": {

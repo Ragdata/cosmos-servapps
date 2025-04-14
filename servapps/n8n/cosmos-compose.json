@@ -1,14 +1,5 @@
 {
-    "cosmos-installer": {
-        "form": [
-            {
-                "name": "dbPassword",
-                "label": "DATABASE_PASSWORD",
-                "initialValue": "",
-                "type": "text"
-            }
-        ]
-    },
+    "cosmos-installer": {},
     "name": "n8n",
     "services": {
         "{ServiceName}": {
@@ -32,7 +23,7 @@
                 "DB_POSTGRESDB_PORT=5432",
                 "DB_POSTGRESDB_DATABASE=n8n",
                 "DB_POSTGRESDB_USER=n8n",
-                "DB_POSTGRESDB_PASSWORD={Context.dbPassword}"
+                "DB_POSTGRESDB_PASSWORD={Passwords.0}"
             ],
             "networks": {
                 "{ServiceName}": {}
@@ -40,9 +31,9 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
+                "type": "volume",
                 "source": "{ServiceName}-storage",
-                "target": "/home/node/.n8n",
-                "type": "volume"
+                "target": "/home/node/.n8n"
                 },
                 {
                 "type": "bind",
@@ -91,7 +82,7 @@
             "environment": [
                 "POSTGRES_DB=n8n",
                 "POSTGRES_USER=n8n",
-                "POSTGRES_PASSWORD={Context.dbPassword}"
+                "POSTGRES_PASSWORD={Passwords.0}"
             ],
             "networks": {
                 "{ServiceName}": {}
@@ -99,7 +90,7 @@
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
-                "source": "{ServiceName}-postgres-data",
+                "source": "{ServiceName}-postgres",
                 "target": "/var/lib/postgresql/data",
                 "type": "volume"
                 }
@@ -108,6 +99,7 @@
                 "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
                 "cosmos-stack": "{ServiceName}",
                 "cosmos-stack-main": "{ServiceName}",
+                "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/n8n/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
@@ -115,8 +107,14 @@
         }
     },
     "volumes": {
-        "{ServiceName}-storage": {},
-        "{ServiceName}-postgres-data": {}
+        "{ServiceName}-storage": {
+            "name": "{ServiceName}-storage",
+            "driver": "local"
+        },
+        "{ServiceName}-postgres": {
+            "name": "{ServiceName}-postgres",
+            "driver": "local"
+        }
     },
     "networks": {
         "{ServiceName}": {

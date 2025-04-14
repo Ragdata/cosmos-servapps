@@ -133,12 +133,7 @@
     "volumes": {
         "{ServiceName}-data": {
             "name": "{ServiceName}-data",
-            "driver": "local",
-            "driver_opts": {
-                "type": "none",
-                "o": "bind",
-                "device": "{Context.volPath}/gitea-data/_data"
-            }
+            "driver": "local"
         }
     },
     "networks": {

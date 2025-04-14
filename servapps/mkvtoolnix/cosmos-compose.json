@@ -44,6 +44,13 @@
                 "source": "{Context.storagePath}",
                 "target": "/storage"
                 }
+                {else}
+                ,
+                {
+                "type": "volume",
+                "source": "{ServiceName}-storage",
+                "target": "/storage"
+                }
                 {/if}
                 , {
                 "type": "bind",
@@ -86,6 +93,13 @@
             "name": "{ServiceName}-config",
             "driver": "local"
         }
+        {if not Context.storagePath}
+        ,
+        "{ServiceName}-storage": {
+            "name": "{ServiceName}-storage",
+            "driver": "local"
+        }
+        {/if}
     },
     "networks": {
         "{ServiceName}": {

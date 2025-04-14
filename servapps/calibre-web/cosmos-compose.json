@@ -77,6 +77,12 @@
             }
         }
     },
+    "volumes": {
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        }
+    },
     "networks": {
         "{ServiceName}": {
             "driver": "bridge",
