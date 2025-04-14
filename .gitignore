@@ -9,3 +9,5 @@ servapps/portainer-be/.env
 
 servapps/linkwarden/custom
 servapps/seafile-pro/downloads
+
+servapps/seafile-ce/downloads
