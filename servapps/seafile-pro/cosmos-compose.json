@@ -258,7 +258,7 @@
             "driver": "bridge",
             "ipam": {
                 "config": [
-                    { "subnet": "172.16.21.0/24" }
+                    { "subnet": "172.16.22.0/24" }
                 ]
             }
         }
