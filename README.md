@@ -74,12 +74,12 @@ Add the information below in the form in the image above:
 
 ## [Seafile Variants](#top) 📀
 
-| App                         | Category    | Web             | Code            | Subnet         |
-|:----------------------------|:------------|:---------------:|:---------------:|:---------------|
-| [Seafile CE][sce]           | Fileshare   | [🌐][sce-web]   | [💾][sce-cod]  | 172.16.21.0/24 |
-| [Seafile PRO][pro]          | Fileshare   | [🌐][pro-web]   | [💾][pro-cod]  | 172.16.22.0/24 |
-| [Seafile + Seadoc][doc]     | Fileshare   | [🌐][doc-web]   | [💾][doc-cod]  | 172.16.23.0/24 |
-| [Seafile + OnlyOffice][ood] | Fileshare   | [🌐][ood-web]   | [💾][ood-cod]  | 172.16.24.0/24 |
+| App                         | Category    | Web             | Code            | Docs           | Subnet         |
+|:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:---------------|
+| [Seafile CE][sce]           | Fileshare   | [🌐][sce-web]   | [💾][sce-cod]  | [📖][sce-doc]  | 172.16.21.0/24 |
+| [Seafile PRO][pro]          | Fileshare   | [🌐][pro-web]   | [💾][pro-cod]  | [📖][pro-doc]  | 172.16.22.0/24 |
+| [Seafile + Seadoc][doc]     | Fileshare   | [🌐][doc-web]   | [💾][doc-cod]  | [📖][doc-doc]  | 172.16.23.0/24 |
+| [Seafile + OnlyOffice][ood] | Fileshare   | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.24.0/24 |
 
 
 
@@ -88,18 +88,22 @@ Add the information below in the form in the image above:
 [sce]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [sce-web]: https://www.activepieces.com/
 [sce-cod]: https://github.com/activepieces/activepieces/
+[sce-doc]: https://seafile.readthedocs.io/en/latest/
 
 [pro]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [pro-web]: https://www.activepieces.com/
 [pro-cod]: https://github.com/activepieces/activepieces/
+[pro-doc]: https://www.seafile.com/en/support/
 
 [doc]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [doc-web]: https://www.activepieces.com/
 [doc-cod]: https://github.com/activepieces/activepieces/
+[doc-doc]: https://help.seafile.com/faq/
 
 [ood]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [ood-web]: https://www.activepieces.com/
 [ood-cod]: https://github.com/activepieces/activepieces/
+[ood-doc]: https://helpcenter.onlyoffice.com/
 
 
 
