@@ -161,7 +161,7 @@
                 {
                 "type": "volume",
                 "source": "{ServiceName}-data",
-                "target": "/opt/seafile-data"
+                "target": "/shared"
                 },
                 {
                 "type": "bind",
