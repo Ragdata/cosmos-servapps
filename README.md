@@ -72,15 +72,6 @@ Add the information below in the form in the image above:
 | [Yopass][yop]               | Secrets     | [🌐][yop-web]   | [💾][yop-cod]  | [📖][yop-doc]  | 172.16.18.0/24   |
 
 
-## [Seafile Variants](#top) 📀
-
-| App                         | Category    | Web             | Code            | Docs           | Subnet         |
-|:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:---------------|
-| [Seafile CE][sce]           | Fileshare   | [🌐][sce-web]   | [💾][sce-cod]  | [📖][sce-doc]  | 172.16.21.0/24 |
-| [Seafile PRO][pro]          | Fileshare   | [🌐][pro-web]   | [💾][pro-cod]  | [📖][pro-doc]  | 172.16.22.0/24 |
-| [Seafile + Seadoc][doc]     | Fileshare   | [🌐][doc-web]   | [💾][doc-cod]  | [📖][doc-doc]  | 172.16.23.0/24 |
-| [Seafile + OnlyOffice][ood] | Fileshare   | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.24.0/24 |
-
 
 
 [`^ Top`](#top)
@@ -94,11 +85,6 @@ Add the information below in the form in the image above:
 [pro-web]: https://www.activepieces.com/
 [pro-cod]: https://github.com/activepieces/activepieces/
 [pro-doc]: https://www.seafile.com/en/support/
-
-[doc]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
-[doc-web]: https://www.activepieces.com/
-[doc-cod]: https://github.com/activepieces/activepieces/
-[doc-doc]: https://help.seafile.com/faq/
 
 [ood]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/activepieces
 [ood-web]: https://www.activepieces.com/

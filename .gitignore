@@ -8,6 +8,7 @@ servapps/portainer-be/.env
 .archive
 
 servapps/linkwarden/custom
-servapps/seafile-pro/downloads
 
-servapps/seafile-ce/downloads
+servapps/seafile/downloads
+
+servapps/seafile/cosmos-compose.bak.json
