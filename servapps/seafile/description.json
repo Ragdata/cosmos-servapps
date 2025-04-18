@@ -1,9 +1,0 @@
-{
-  "name": "Seeafile Community Edition",
-  "description": "Besides file synchronization and sharing, Seafile enables you to add various kinds of file properties and create different types of views to organize your files. By integrating AI for automatic generation of file properties, Seafile delivers a new and automated file management experience.",
-  "longDescription": "Seafile features: extensible file properties, file views, file sharing, file syncing, knowledge management, and more. It is designed to be a powerful tool for managing files and information in a collaborative environment.",
-  "tags": [ "file sharing", "file syncing", "knowledge management" ],
-  "repository": "https://github.com/haiwen/seafile",
-  "image": "https://hub.docker.com/r/seafileltd/seafile-pro-mc",
-  "supported_architectures": [ "amd64" ]
-}

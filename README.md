@@ -178,8 +178,8 @@ Add the information below in the form in the image above:
 [pbe-cod]: https://github.com/portainer/portainer
 [pbe-doc]: https://docs.portainer.io/
 
-[ptz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/postiz
-[ptz-web]: https://postiz.com/
+[ptz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/seafile
+[ptz-web]: http://seafile.com/
 [ptz-cod]: https://github.com/gitroomhq/postiz-app
 [ptz-doc]: https://docs.postiz.com/introduction
 
