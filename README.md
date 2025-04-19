@@ -68,6 +68,7 @@ Add the information below in the form in the image above:
 | [Notifiarr][not]            | Messaging   | [🌐][not-web]   | [💾][not-cod]  | [📖][not-doc]  | 172.16.17.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
 | [Postiz][ptz]               | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  | [📖][ptz-doc]  | 172.16.11.0/24   |
+| [Seafile][sea]              | File Mgmt   | [🌐][sea-web]   | [💾][sea-cod]  | [📖][sea-doc]  | 172.16.22.0/24   |
 | [Uptime-Kuma][upk]          | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  | [📖][upk-doc]  | 172.16.13.0/24   |
 | [Vaultwarden][vlw]          | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  | [📖][vlw-doc]  | 172.16.3.0/24    |
 | [Yopass][yop]               | Secrets     | [🌐][yop-web]   | [💾][yop-cod]  | [📖][yop-doc]  | 172.16.18.0/24   |
@@ -184,10 +185,15 @@ Add the information below in the form in the image above:
 [pbe-cod]: https://github.com/portainer/portainer
 [pbe-doc]: https://docs.portainer.io/
 
-[ptz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/seafile
-[ptz-web]: http://seafile.com/
+[ptz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/positz
+[ptz-web]: https://postiz.com/
 [ptz-cod]: https://github.com/gitroomhq/postiz-app
 [ptz-doc]: https://docs.postiz.com/introduction
+
+[sea]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/seafile
+[sea-web]: http://seafile.com/
+[sea-cod]: https://github.com/haiwen/seafile
+[sea-doc]: https://www.seafile.com/en/support/
 
 [upk]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/uptime-kuma
 [upk-web]: https://uptime.kuma.pet/
