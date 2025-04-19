@@ -1,0 +1,87 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "JWT_PRIVATE_KEY",
+                "label": "JWT Private Key? (random 32 char string)",
+                "initialValue": "",
+                "type": "text"
+            }
+        ]
+    },
+    "name": "onlyoffice-docserver",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "onlyoffice/documentserver:latest",
+            "restart": "unless-stopped",
+            "environment": [
+                "JWT_SECRET={Context.JWT_PRIVATE_KEY}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "ports": [
+                "8088:80/tcp",
+                "4438:443/tcp"
+            ],
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/var/www/onlyoffice/Data"
+                },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-log",
+                "target": "/var/www/onlyoffice"
+                },
+                {
+                "type": "bind",
+                "source": "/var/run/docker.sock:ro",
+                "target": "/var/run/docker.sock:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/onlyoffice-docs/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-log",
+            "driver": "local"
+        }
+    },
+    "networks": {
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.23.0/24" }
+                ]
+            }
+        }
+    }
+}

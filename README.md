@@ -66,6 +66,7 @@ Add the information below in the form in the image above:
 | [NetAlertX][net]            | Security    | [🌐][net-web]   | [💾][net-cod]  | [📖][net-doc]  | 172.16.16.0/24   |
 | [Nextcloud][nex]            | Security    | [🌐][nex-web]   | [💾][nex-cod]  | [📖][nex-doc]  | 172.16.21.0/24   |
 | [Notifiarr][not]            | Messaging   | [🌐][not-web]   | [💾][not-cod]  | [📖][not-doc]  | 172.16.17.0/24   |
+| [OnlyOffice Docs][ood]      | Office      | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.23.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
 | [Postiz][ptz]               | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  | [📖][ptz-doc]  | 172.16.11.0/24   |
 | [Seafile][sea]              | File Mgmt   | [🌐][sea-web]   | [💾][sea-cod]  | [📖][sea-doc]  | 172.16.22.0/24   |
@@ -179,6 +180,11 @@ Add the information below in the form in the image above:
 [not-web]: https://notifiarr.com/
 [not-cod]: https://github.com/Notifiarr/notifiarr
 [not-doc]: https://notifiarr.wiki/
+
+[ood]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/onlyoffice-docs
+[ood-web]: https://www.onlyoffice.com/
+[ood-cod]: https://github.com/ONLYOFFICE/Docker-DocumentServer
+[ood-doc]: https://helpcenter.onlyoffice.com/
 
 [pbe]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/portainer-be
 [pbe-web]: https://www.portainer.io/
