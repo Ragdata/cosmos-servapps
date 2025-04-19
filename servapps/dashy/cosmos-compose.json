@@ -30,7 +30,7 @@
                 {
                     "type": "bind",
                     "source": "{Context.configPath}",
-                    "target": "/app/public/"
+                    "target": "/app"
                 },
                 {/if}
                 {

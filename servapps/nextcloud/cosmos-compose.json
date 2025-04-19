@@ -42,6 +42,11 @@
                 "source": "{ServiceName}-config",
                 "target": "/var/www/html/config"
                 },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-rabbitmq",
+                "target": "/var/lib/rabbitmq"
+                },
                 {if Context.dataPath}
                 {
                 "type": "bind",
@@ -197,8 +202,18 @@
             "volumes": [
                 {
                 "type": "volume",
+                "source": "{ServiceName}-rabbitmq",
+                "target": "/var/lib/rabbitmq"
+                },
+                {
+                "type": "volume",
                 "source": "{ServiceName}-redis",
                 "target": "/bitnami/redis"
+                },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-www",
+                "target": "/var/www/html"
                 },
                 {
                 "type": "bind",
@@ -231,12 +246,20 @@
             "name": "{ServiceName}-config",
             "driver": "local"
         },
+        "{ServiceName}-rabbitmq": {
+            "name": "{ServiceName}-rabbitmq",
+            "driver": "local"
+        },
         "{ServiceName}-mariadb": {
             "name": "{ServiceName}-mariadb",
             "driver": "local"
         },
         "{ServiceName}-redis": {
             "name": "{ServiceName}-redis",
+            "driver": "local"
+        },
+        "{ServiceName}-www": {
+            "name": "{ServiceName}-www",
             "driver": "local"
         }
     },

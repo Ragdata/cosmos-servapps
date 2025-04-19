@@ -29,37 +29,42 @@
             ],
             "volumes": [
                 {
-                "type": "volume",
-                "source": "{ServiceName}-data",
-                "target": "/var/www/onlyoffice/Data"
+                    "type": "volume",
+                    "source": "{ServiceName}-data",
+                    "target": "/var/www/onlyoffice/Data"
                 },
                 {
-                "type": "volume",
-                "source": "{ServiceName}-log",
-                "target": "/var/www/onlyoffice"
+                    "type": "volume",
+                    "source": "{ServiceName}-log",
+                    "target": "/var/www/onlyoffice"
                 },
                 {
-                "type": "bind",
-                "source": "/etc/localtime:ro",
-                "target": "/etc/localtime:ro"
+                    "type": "volume",
+                    "source": "{ServiceName}-fonts",
+                    "target": "/usr/share/fonts/truetype/custom"
                 },
                 {
-                "type": "bind",
-                "source": "/etc/timezone:ro",
-                "target": "/etc/timezone:ro"
+                    "type": "bind",
+                    "source": "/etc/localtime:ro",
+                    "target": "/etc/localtime:ro"
+                },
+                {
+                    "type": "bind",
+                    "source": "/etc/timezone:ro",
+                    "target": "/etc/timezone:ro"
                 }
             ],
             "routes": [
                 {
-                "name": "{ServiceName}",
-                "description": "Expose {ServiceName} to the web",
-                "useHost": true,
-                "target": "http://{ServiceName}:80",
-                "mode": "SERVAPP",
-                "timeout": 14400000,
-                "throttlePerMinute": 12000,
-                "BlockCommonBots": true,
-                "Smartshield": { "Enabled": true }
+                    "name": "{ServiceName}",
+                    "description": "Expose {ServiceName} to the web",
+                    "useHost": true,
+                    "target": "http://{ServiceName}:80",
+                    "mode": "SERVAPP",
+                    "timeout": 14400000,
+                    "throttlePerMinute": 12000,
+                    "BlockCommonBots": true,
+                    "Smartshield": { "Enabled": true }
                 }
             ],
             "labels": {
@@ -75,6 +80,10 @@
     "volumes": {
         "{ServiceName}-data": {
             "name": "{ServiceName}-data",
+            "driver": "local"
+        },
+        "{ServiceName}-fonts": {
+            "name": "{ServiceName}-fonts",
             "driver": "local"
         },
         "{ServiceName}-log": {
