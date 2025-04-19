@@ -1,0 +1,253 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "dataPath",
+                "label": "What is the path to your data? (leave empty to not mount anything)",
+                "initialValue": "{DefaultDataPath}/nextcloud-data",
+                "type": "text"
+            }
+        ]
+    },
+    "name": "nextcloud",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "nextcloud",
+            "restart": "unless-stopped",
+            "environment": [
+                "TZ=auto",
+                "NEXTCLOUD_TRUSTED_DOMAINS={Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
+                "MYSQL_DATABASE=nextcloud",
+                "MYSQL_USER=nextcloud",
+                "MYSQL_PASSWORD={Passwords.0}",
+                "MYSQL_HOST={ServiceName}-mariadb",
+                "REDIS_HOST={ServiceName}-redis",
+                "REDIS_HOST_PASSWORD={Passwords.2}",
+                "NC_overwriteprotocol=https"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-apps",
+                "target": "/var/www/html/custom_apps"
+                },
+                {
+                "type": "volume",
+                "source": "{ServiceName}-config",
+                "target": "/var/www/html/config"
+                },
+                {if Context.dataPath}
+                {
+                "type": "bind",
+                "source": "{Context.dataPath}",
+                "target": "/var/www/html/data"
+                },
+                {/if}
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                    "Name": "{ServiceName}-caldav",
+                    "Description": "Redirect {ServiceName} caldav to proper route",
+                    "UseHost": true,
+                    "Host": "{Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
+                    "UsePathPrefix": true,
+                    "PathPrefix": "/.well-known/caldav",
+                    "Timeout": 14400000,
+                    "ThrottlePerMinute": 12000,
+                    "CORSOrigin": "",
+                    "StripPathPrefix": false,
+                    "MaxBandwith": 0,
+                    "AuthEnabled": false,
+                    "AdminOnly": false,
+                    "Target": "https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}/remote.php/dav",
+                    "SmartShield": { "Enabled": true },
+                    "Mode": "REDIRECT",
+                    "BlockCommonBots": true,
+                    "BlockAPIAbuse": false,
+                    "AcceptInsecureHTTPSTarget": false
+                },
+                {
+                    "Name": "{ServiceName}-carddav",
+                    "Description": "Redirect {ServiceName} carddav to proper route",
+                    "UseHost": true,
+                    "Host": "{Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
+                    "UsePathPrefix": true,
+                    "PathPrefix": "/.well-known/carddav",
+                    "Timeout": 14400000,
+                    "ThrottlePerMinute": 12000,
+                    "CORSOrigin": "",
+                    "StripPathPrefix": false,
+                    "MaxBandwith": 0,
+                    "AuthEnabled": false,
+                    "AdminOnly": false,
+                    "Target": "https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}/remote.php/dav",
+                    "SmartShield": { "Enabled": true },
+                    "Mode": "REDIRECT",
+                    "BlockCommonBots": true,
+                    "BlockAPIAbuse": false,
+                    "AcceptInsecureHTTPSTarget": false
+                },
+                {
+                    "name": "{ServiceName}",
+                    "description": "Expose {ServiceName} to the web",
+                    "useHost": true,
+                    "target": "http://{ServiceName}:80",
+                    "mode": "SERVAPP",
+                    "Timeout": 14400000,
+                    "ThrottlePerMinute": 12000,
+                    "BlockCommonBots": true,
+                    "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-persistent-env": "MYSQL_PASSWORD, REDIS_HOST_PASSWORD, MYSQL_DATABASE, MYSQL_USER",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nextcloud/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-mariadb": {
+            "container_name": "{ServiceName}-mariadb",
+            "hostname": "{ServiceName}-mariadb",
+            "image": "mariadb:10.11",
+            "restart": "unless-stopped",
+            "stop_grace_period": 5,
+            "security_opt": [
+                "seccomp:unconfined",
+                "apparmor:unconfined"
+            ],
+            "command": "mariadbd --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120",
+            "environment": [
+                "MARIADB_AUTO_UPGRADE=1",
+                "MARIADB_INITDB_SKIP_TZINFO=1",
+                "MARIADB_DATABASE=nextcloud",
+                "MARIADB_USER=nextcloud",
+                "MARIADB_PASSWORD={Passwords.0}",
+                "MARIADB_ROOT_PASSWORD={Passwords.1}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-mariadb",
+                "target": "/var/lib/mysql"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+                "labels": {
+                "cosmos-persistent-env": "MARIADB_USER, MARIADB_PASSWORD, MARIADB_ROOT_PASSWORD, MARIADB_DATABASE",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nextcloud/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        },
+        "{ServiceName}-redis": {
+            "container_name": "{ServiceName}-redis",
+            "hostname": "{ServiceName}-redis",
+            "image": "bitnami/redis:latest",
+            "restart": "unless-stopped",
+            "stop_grace_period": 5,
+            "security_opt": [
+                "seccomp:unconfined",
+                "apparmor:unconfined"
+            ],
+            "environment": [
+                "ALLOW_EMPTY_PASSWORD=no",
+                "REDIS_PASSWORD={Passwords.2}",
+                "REDIS_EXTRA_FLAGS=--auto-aof-rewrite-percentage 100 --auto-aof-rewrite-min-size 64mb"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                "type": "volume",
+                "source": "{ServiceName}-redis",
+                "target": "/bitnami/redis"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
+            "labels": {
+                "cosmos-persistent-env": "REDIS_PASSWORD",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nextcloud/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}-apps": {
+            "name": "{ServiceName}-apps",
+            "driver": "local"
+        },
+        "{ServiceName}-config": {
+            "name": "{ServiceName}-config",
+            "driver": "local"
+        },
+        "{ServiceName}-mariadb": {
+            "name": "{ServiceName}-mariadb",
+            "driver": "local"
+        },
+        "{ServiceName}-redis": {
+            "name": "{ServiceName}-redis",
+            "driver": "local"
+        }
+    },
+    "networks": {
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.21.0/24" }
+                ]
+            }
+        }
+    }
+}

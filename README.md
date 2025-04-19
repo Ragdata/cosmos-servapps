@@ -64,6 +64,7 @@ Add the information below in the form in the image above:
 | [MKVTools][mkv]             | Video       | [🌐][mkv-web]   | [💾][mkv-cod]  | [📖][mkv-doc]  | 172.16.10.0/24   |
 | [N8n][n8n]                  | Automation  | [🌐][n8n-web]   | [💾][n8n-cod]  | [📖][n8n-doc]  | 172.16.12.0/24   |
 | [NetAlertX][net]            | Security    | [🌐][net-web]   | [💾][net-cod]  | [📖][net-doc]  | 172.16.16.0/24   |
+| [Nextcloud][nex]            | Security    | [🌐][nex-web]   | [💾][nex-cod]  | [📖][nex-doc]  | 172.16.21.0/24   |
 | [Notifiarr][not]            | Messaging   | [🌐][not-web]   | [💾][not-cod]  | [📖][not-doc]  | 172.16.17.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
 | [Postiz][ptz]               | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  | [📖][ptz-doc]  | 172.16.11.0/24   |
@@ -167,6 +168,11 @@ Add the information below in the form in the image above:
 [net-web]: https://netalertx.com/
 [net-cod]: https://github.com/jokob-sk/NetAlertX/
 [net-doc]: https://jokob-sk.github.io/NetAlertX/
+
+[nex]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/nextcloud
+[nex-web]: https://nextcloud.com/
+[nex-cod]: https://github.com/nextcloud
+[nex-doc]: https://docs.nextcloud.com/server/latest/admin_manual/
 
 [not]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/notifiarr
 [not-web]: https://notifiarr.com/
