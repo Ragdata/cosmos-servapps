@@ -9,7 +9,7 @@
             }
         ]
     },
-    "name": "onlyoffice-docserver",
+    "name": "docserver",
     "services": {
         "{ServiceName}": {
             "container_name": "{ServiceName}",
@@ -40,11 +40,6 @@
                 },
                 {
                 "type": "bind",
-                "source": "/var/run/docker.sock:ro",
-                "target": "/var/run/docker.sock:ro"
-                },
-                {
-                "type": "bind",
                 "source": "/etc/localtime:ro",
                 "target": "/etc/localtime:ro"
                 },
@@ -52,6 +47,19 @@
                 "type": "bind",
                 "source": "/etc/timezone:ro",
                 "target": "/etc/timezone:ro"
+                }
+            ],
+            "routes": [
+                {
+                "name": "{ServiceName}",
+                "description": "Expose {ServiceName} to the web",
+                "useHost": true,
+                "target": "http://{ServiceName}:80",
+                "mode": "SERVAPP",
+                "timeout": 14400000,
+                "throttlePerMinute": 12000,
+                "BlockCommonBots": true,
+                "Smartshield": { "Enabled": true }
                 }
             ],
             "labels": {
