@@ -51,6 +51,7 @@ Add the information below in the form in the image above:
 |:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:-----------------|
 | [Activepieces][act]         | Automation  | [🌐][act-web]   | [💾][act-cod]  | [📖][act-doc]  | 172.16.8.0/24    |
 | [Calibre-Web][cal]          | Doc Mgmt    | [🌐][cal-web]   | [💾][cal-cod]  | [📖][cal-doc]  | 172.16.20.0/24   |
+| [Dashy][das]                | Dashboards  | [🌐][das-web]   | [💾][das-cod]  | [📖][das-doc]  | 172.16.24.0/24   |
 | [Dozzle][doz]               | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | [📖][doz-doc]  | 172.16.1.0/24    |
 | [Excalidraw][exc]           | Whiteboard  | [🌐][exc-web]   | [💾][exc-cod]  | [📖][exc-doc]  | 172.16.14.0/24   |
 | [Gitea-Actions][git]        | CI/CD       | [🌐][git-web]   | [💾][git-cod]  | [📖][git-doc]  | 172.16.4.0/24    |
@@ -69,6 +70,7 @@ Add the information below in the form in the image above:
 | [OnlyOffice Docs][ood]      | Office      | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.23.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
 | [Postiz][ptz]               | Social Mgmt | [🌐][ptz-web]   | [💾][ptz-cod]  | [📖][ptz-doc]  | 172.16.11.0/24   |
+| [Readarr][rdr]              | Doc Mngt    | [🌐][rdr-web]   | [💾][rdr-cod]  | [📖][rdr-doc]  | 172.16.25.0/24   |
 | [Seafile][sea]              | File Mgmt   | [🌐][sea-web]   | [💾][sea-cod]  | [📖][sea-doc]  | 172.16.22.0/24   |
 | [Uptime-Kuma][upk]          | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  | [📖][upk-doc]  | 172.16.13.0/24   |
 | [Vaultwarden][vlw]          | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  | [📖][vlw-doc]  | 172.16.3.0/24    |
@@ -105,6 +107,11 @@ Add the information below in the form in the image above:
 [cal-web]: https://calibre-ebook.com/
 [cal-cod]: https://github.com/janeczku/calibre-web
 [cal-doc]: https://calibre-ebook.com/help
+
+[das]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dashy
+[das-web]: https://dashy.to/
+[das-cod]: https://github.com/Lissy93/dashy
+[das-doc]: https://dashy.to/docs
 
 [doz]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dozzle
 [doz-web]: https://dozzle.dev/
@@ -195,6 +202,11 @@ Add the information below in the form in the image above:
 [ptz-web]: https://postiz.com/
 [ptz-cod]: https://github.com/gitroomhq/postiz-app
 [ptz-doc]: https://docs.postiz.com/introduction
+
+[rdr]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/readarr
+[rdr-web]: https://readarr.com/
+[rdr-cod]: https://github.com/Readarr/Readarr
+[rdr-doc]: https://wiki.servarr.com/en/readarr
 
 [sea]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/seafile
 [sea-web]: http://seafile.com/
