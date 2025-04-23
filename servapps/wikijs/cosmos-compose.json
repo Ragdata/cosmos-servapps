@@ -19,11 +19,23 @@
                 "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
-            "volumes": [{
+            "volumes": [
+                {
                 "source": "{ServiceName}-content",
                 "target": "/wiki/data/content",
                 "type": "volume"
-            }],
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
             "routes": [{
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
@@ -65,11 +77,23 @@
                 "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
-            "volumes": [{
+            "volumes": [
+                {
                 "source": "{ServiceName}-postgres",
                 "target": "/var/lib/postgresql/data",
                 "type": "volume"
-            }],
+                },
+                {
+                "type": "bind",
+                "source": "/etc/localtime:ro",
+                "target": "/etc/localtime:ro"
+                },
+                {
+                "type": "bind",
+                "source": "/etc/timezone:ro",
+                "target": "/etc/timezone:ro"
+                }
+            ],
             "labels": {
                 "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
                 "cosmos.stack": "{ServiceName}",
