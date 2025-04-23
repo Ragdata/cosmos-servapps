@@ -19,6 +19,11 @@
                 "{ServiceName}": {}
             },
             "network_mode": "{ServiceName}",
+            "volumes": [{
+                "source": "{ServiceName}-content",
+                "target": "/wiki/data/content",
+                "type": "volume"
+            }],
             "routes": [{
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
@@ -77,6 +82,10 @@
         }
     },
     "volumes": {
+        "{ServiceName}-content": {
+            "name": "{ServiceName}-content",
+            "driver": "local"
+        },
         "{ServiceName}-postgres": {
             "name": "{ServiceName}-postgres",
             "driver": "local"
