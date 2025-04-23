@@ -77,6 +77,13 @@
         }
     },
     "networks": {
-        "{ServiceName}-postgres": {}
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.26.0/24" }
+                ]
+            }
+        }
     }
 }
