@@ -1,6 +1,6 @@
 {
     "cosmos-installer": {},
-    "minVersion": "0.9.0",
+    "name": "wikijs",
     "services": {
         "{ServiceName}": {
             "container_name": "{ServiceName}",
@@ -16,8 +16,9 @@
                 "DB_NAME=wikijs"
             ],
             "networks": {
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
+            "network_mode": "{ServiceName}",
             "routes": [{
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
@@ -31,11 +32,13 @@
             }],
             "labels": {
                 "cosmos-persistent-env": "DB_TYPE, DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME",
-                "cosmos-auto-update": "true",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
+               "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/wikijs/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
-            },
+            }
         },
 
         "{ServiceName}-postgres": {
@@ -54,8 +57,9 @@
                 "POSTGRES_PASSWORD={Passwords.0}"
             ],
             "networks": {
-                "{ServiceName}-postgres": {}
+                "{ServiceName}": {}
             },
+            "network_mode": "{ServiceName}",
             "volumes": [{
                 "source": "{ServiceName}-postgres",
                 "target": "/var/lib/postgresql/data",
@@ -63,11 +67,13 @@
             }],
             "labels": {
                 "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
+                "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/wikijs/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
                 "cosmos-force-network-secured": "true"
-            },
+            }
         }
     },
     "volumes": {
