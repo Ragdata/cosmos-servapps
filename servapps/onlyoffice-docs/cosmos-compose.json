@@ -36,7 +36,27 @@
                 {
                     "type": "volume",
                     "source": "{ServiceName}-log",
-                    "target": "/var/www/onlyoffice"
+                    "target": "/var/log/onlyoffice"
+                },
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-lib",
+                    "target": "/var/lib/onlyoffice"
+                },
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-postgres",
+                    "target": "/var/lib/postgresql"
+                },
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-rabbitmq",
+                    "target": "/var/lib/rabbitmq"
+                },
+                {
+                    "type": "volume",
+                    "source": "{ServiceName}-redis",
+                    "target": "/var/lib/redis"
                 },
                 {
                     "type": "volume",
@@ -68,8 +88,6 @@
                 }
             ],
             "labels": {
-                "cosmos.stack": "{ServiceName}",
-                "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/onlyoffice-docs/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
@@ -83,11 +101,27 @@
             "driver": "local"
         },
         "{ServiceName}-fonts": {
-            "name": "{ServiceName}-fonts",
+            "name": "{ServiceName}-log",
             "driver": "local"
         },
         "{ServiceName}-log": {
-            "name": "{ServiceName}-log",
+            "name": "{ServiceName}-lib",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-postgres",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-rabbitmq",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-redis",
+            "driver": "local"
+        },
+        "{ServiceName}-log": {
+            "name": "{ServiceName}-fonts",
             "driver": "local"
         }
     },
