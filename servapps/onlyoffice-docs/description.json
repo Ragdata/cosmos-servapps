@@ -1,9 +1,0 @@
-{
-  "name": "OnlyOffice Docserver",
-  "description": "ONLYOFFICE Docs, a powerful online editor for text documents, spreadsheets, presentations, forms and PDF for the platform you use",
-  "longDescription": "Create complex documents, professional spreadsheets, stunning presentations. Build fillable forms and fill them in online. View and edit PDFs, export/import to/from PDF. Convert docs to Markdown and HTML. Turn your textbooks into e-books.",
-  "tags": [ "office", "documents", "pdf" ],
-  "repository": "https://github.com/ONLYOFFICE/Docker-DocumentServer",
-  "image": "https://hub.docker.com/r/onlyoffice/documentserver",
-  "supported_architectures": [ "amd64", "arm64" ]
-}

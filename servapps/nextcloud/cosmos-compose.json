@@ -1,14 +1,5 @@
 {
-    "cosmos-installer": {
-        "form": [
-            {
-                "name": "dataPath",
-                "label": "What is the path to your data? (leave empty to not mount anything)",
-                "initialValue": "{DefaultDataPath}/nextcloud-data",
-                "type": "text"
-            }
-        ]
-    },
+    "cosmos-installer": {},
     "name": "nextcloud",
     "services": {
         "{ServiceName}": {
@@ -34,26 +25,14 @@
             "volumes": [
                 {
                 "type": "volume",
-                "source": "{ServiceName}-apps",
-                "target": "/var/www/html/custom_apps"
-                },
-                {
-                "type": "volume",
-                "source": "{ServiceName}-config",
-                "target": "/var/www/html/config"
+                "source": "{ServiceName}-www",
+                "target": "/var/www/html"
                 },
                 {
                 "type": "volume",
                 "source": "{ServiceName}-rabbitmq",
                 "target": "/var/lib/rabbitmq"
                 },
-                {if Context.dataPath}
-                {
-                "type": "bind",
-                "source": "{Context.dataPath}",
-                "target": "/var/www/html/data"
-                },
-                {/if}
                 {
                 "type": "bind",
                 "source": "/etc/localtime:ro",
@@ -238,14 +217,6 @@
         }
     },
     "volumes": {
-        "{ServiceName}-apps": {
-            "name": "{ServiceName}-apps",
-            "driver": "local"
-        },
-        "{ServiceName}-config": {
-            "name": "{ServiceName}-config",
-            "driver": "local"
-        },
         "{ServiceName}-rabbitmq": {
             "name": "{ServiceName}-rabbitmq",
             "driver": "local"
