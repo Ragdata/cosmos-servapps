@@ -1,17 +1,114 @@
 {
-    "cosmos-installer": {},
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "POSTGRES_DB",
+                "label": "Database Name?",
+                "initialValue": "mattermost",
+                "type": "text"
+            },
+            {
+                "name": "POSTGRES_USER",
+                "label": "Database Username?",
+                "initialValue": "mattermost",
+                "type": "text"
+            },
+            {
+                "name": "POSTGRES_PASSWORD",
+                "label": "Database Password?",
+                "initialValue": "{Passwords.0}",
+                "type": "text"
+            },
+            {
+                "name": "ENABLEUPLOADS",
+                "label": "Enable Uploads?",
+                "initialValue": true,
+                "type": "checkbox"
+            },
+            {
+                "name": "SENDEMAILNOTIFICATIONS",
+                "label": "Send Email Notifications?",
+                "initialValue": true,
+                "type": "checkbox"
+            },
+            {
+                "name": "SMTPUSERNAME",
+                "label": "SMTP Username?",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "SMTPASSWORD",
+                "label": "SMTP Password?",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "SMTPSERVER",
+                "label": "SMTP Host?",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "SMTPPORT",
+                "label": "SMTP Port? (465 or 587)",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "CONNECTIONSECURITY",
+                "label": "SMTP Secutiry Protocol? (STARTTLS or SSL)",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "NOTIFICATIONEMAILADDRESS",
+                "label": "Address to send email from?",
+                "initialValue": "",
+                "type": "text"
+            }
+        ]
+    }, 
     "name": "mattermost",
     "services": {
         "{ServiceName}": {
             "container_name": "{ServiceName}",
             "hostname": "{ServiceName}",
-            "image": "vouu/mattermost",
+            "image": "mattermost/mattermost-team-edition:latest",
             "restart": "unless-stopped",
+            "depends_on": [
+                "{ServiceName}-postgres": {
+                    "condition": "service_healthy"
+                }
+            ],
+            "deploy": {
+                "resources": {
+                    "limits": {
+                        "cpus": 1,
+                        "memory": "1G",
+                        "pids": 1
+                    },
+                    "reservations": {
+                        "cpus": "0.5",
+                        "memory": "100M"
+                    }
+                }
+            },
             "environment": [
                 "MM_SQLSETTINGS_DRIVERNAME=postgres",
-                "MM_SQLSETTINGS_DATASOURCE=postgres://mattermost:{Passwords.0}@{ServiceName}-postgres:5432/mattermost?sslmode=disable&connect_timeout=10",
+                "MM_SQLSETTINGS_DATASOURCE=postgres://{Context.POSTGRES_USER}:{Context.POSTGRES_PASSWORD}@{ServiceName}-postgres:5432/{Context.POSTGRES_DBNAME}?sslmode=disable&connect_timeout=10",
                 "MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexe",
-                "MM_SERVICESETTINGS_SITEURL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}"
+                "MM_SERVICESETTINGS_SITEURL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
+                "PATH=/mattermost/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "MM_CALLS_GROUP_CALLS_ALLOWED=true",
+                "MM_PLUGINSETTINGS_ENABLEUPLOADS={Context.ENABLEUPLOADS}",
+                "MM_EMAILSETTINGS_SMTPUSERNAME={Context.SMTPUSERNAME}",
+                "MM_EMAILSETTINGS_SMTPPASSWORD={Context.SMTPASSWORD}",
+                "MM_EMAILSETTINGS_SMTPSERVER={Context.SMTPSERVER}",
+                "MM_EMAILSETTINGS_SMTPPORT={Context.SMTPPORT}",
+                "MM_EMAILSETTINGS_CONNECTIONSECURITY={Context.CONNECTIONSECURITY}",
+                "MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS={Context.SENDEMAILNOTIFICATIONS}",
+                "MM_EMAILSETTINGS_NOTIFICATIONEMAILADDRESS={Context.NOTIFICATIONEMAILADDRESS}"
             ],
             "networks": {
                 "{ServiceName}": {}
@@ -72,10 +169,20 @@
                 "SmartShield": { "Enabled": true }
                 }
             ],
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8065/api/v4/system/ping || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 10,
+                "retries": 3,
+                "start_period": 10
+            },
             "labels": {
                 "cosmos-persistent-env": "MM_SQLSETTINGS_DRIVERNAME, MM_SQLSETTINGS_DATASOURCE, MM_BLEVESETTINGS_INDEXDIR, MM_SERVICESETTINGS_SITEURL",
                 "cosmos.stack": "{ServiceName}",
-                "cosmos.stack.main": "true",
+                "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mattermost/icon.png",
                 "cosmos-force-network-mode": "{ServiceName}",
@@ -85,22 +192,38 @@
         "{ServiceName}-postgres": {
             "container_name": "{ServiceName}-postgres",
             "hostname": "{ServiceName}-postgres",
-            "image": "postgres:15-alpine",
+            "image": "postgres:17-alpine",
             "restart": "unless-stopped",
             "stop_grace_period": 5,
             "security_opt": [
                 "seccomp:unconfined",
                 "apparmor:unconfined"
             ],
+            "deploy": {
+                "resources": {
+                    "limits": {
+                        "cpus": 1,
+                        "memory": "1G",
+                        "pids": 1
+                    },
+                    "reservations": {
+                        "cpus": "0.25",
+                        "memory": "50M"
+                    }
+                }
+            },
             "environment": [
-                "POSTGRES_DB=mattermost",
-                "POSTGRES_USER=mattermost",
-                "POSTGRES_PASSWORD={Passwords.0}"
+                "POSTGRES_DB={Context.POSTGRES_DB}",
+                "POSTGRES_USER={Context.POSTGRES_USER}",
+                "POSTGRES_PASSWORD={Context.POSTGRES_PASSWORD}",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=en_US.utf8",
+                "PGDATA=/var/lib/postgresql/data"
             ],
             "networks": {
-                "{ServiceName}": {}
+                "{ServiceName}-internal": {}
             },
-            "network_mode": "{ServiceName}",
+            "network_mode": "{ServiceName}-internal",
             "volumes": [
                 {
                 "type": "volume",
@@ -118,11 +241,22 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "pg_isready -U {Context.POSTGRES_USER} -d {Context.POSTGRES_DB}"
+                ],
+                "interval": 15,
+                "timeout": 5,
+                "retries": 3,
+                "start_period": 10
+            },
             "labels": {
                 "cosmos.stack": "{ServiceName}",
+                "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
                 "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/mattermost/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-mode": "{ServiceName}-internal",
                 "cosmos-force-network-secured": "true"
             }
         }
@@ -158,7 +292,15 @@
             "driver": "bridge",
             "ipam": {
                 "config": [
-                    { "subnet": "172.16.15.0/24" }
+                    { "subnet": "172.16.15.0/25" }
+                ]
+            }
+        },
+        "{ServiceName}-internal": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.15.128/25" }
                 ]
             }
         }
