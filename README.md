@@ -96,13 +96,6 @@ Add the information below in the form in the image above:
 [![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-
-<style>
-    table { border: none!important; width: 100%; }
-    table td { border: none!important; }
-</style>
-
-
 > [!info]
 > It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
 
