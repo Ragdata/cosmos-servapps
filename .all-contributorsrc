@@ -18,25 +18,6 @@
       "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
     }
   },
-  "contributors": [
-    {
-      "login": "Ragdata",
-      "name": "Ragdata",
-      "avatar_url": "https://avatars.githubusercontent.com/u/6827931?v=4",
-      "profile": "https://github.com/ragdata",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "a-bozkurt",
-      "name": "Ahyed Bozkurt",
-      "avatar_url": "https://avatars.githubusercontent.com/u/211136057?v=4",
-      "profile": "https://github.com/a-bozkurt",
-      "contributions": [
-        "code"
-      ]
-    }
-  ],
+  "contributors": [],
   "commitType": "docs"
 }
