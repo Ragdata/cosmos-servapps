@@ -104,7 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/a-bozkurt"><img src="https://avatars.githubusercontent.com/u/211136057?v=4?s=100" width="100px;" alt="Ahyed Bozkurt"/><br /><sub><b>Ahyed Bozkurt</b></sub></a><br /><a href="https://github.com/Ragdata/cosmos-servapps/commits?author=a-bozkurt" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/a-bozkurt"><img src="https://avatars.githubusercontent.com/u/211136057?v=4?s=64" width="64px;" alt="Ahyed Bozkurt"/><br /><sub><b>Ahyed Bozkurt</b></sub></a><br /><a href="https://github.com/Ragdata/cosmos-servapps/commits?author=a-bozkurt" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
