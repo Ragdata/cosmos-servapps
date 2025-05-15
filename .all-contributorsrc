@@ -18,6 +18,17 @@
       "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
     }
   },
-  "contributors": [],
+  "contributors": [
+      {
+          "avatarUrl": "https://avatars.githubusercontent.com/u/12345678?v=4",
+          "login": "a-bozkurt",
+          "name": "Ahyed Bozkurt",
+          "avatar_url": "https://avatars.githubusercontent.com/u/211136057?v=4",
+          "profile": "https://github.com/a-bozkurt",
+          "contributions": [
+              "code"
+          ],
+      }  
+  ],
   "commitType": "docs"
 }
