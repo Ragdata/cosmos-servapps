@@ -1,0 +1,40 @@
+{
+  "projectName": "cosmos-servapps",
+  "projectOwner": "Ragdata",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [".github/CONTRIBUTORS.md"],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "linkToUsage": true,
+  "types": {
+    "bug": {
+      "symbol": "\uD83D\uDC1E",
+      "description": "Bug Reports",
+      "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
+    }
+  },
+  "contributors": [
+    {
+      "login": "Ragdata",
+      "name": "Ragdata",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6827931?v=4",
+      "profile": "https://github.com/ragdata",
+      "contributions": [
+        "business",
+        "code",
+        "content",
+        "doc",
+        "design",
+        "financial",
+        "infra",
+        "maintenance",
+        "projectManagement",
+        "security",
+        "test"
+      ]
+    }
+  ]
+}
