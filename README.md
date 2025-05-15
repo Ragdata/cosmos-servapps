@@ -96,11 +96,11 @@ Add the information below in the form in the image above:
 > It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
 
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 <div align="center">
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
