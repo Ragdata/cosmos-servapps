@@ -127,7 +127,7 @@ Copyright &copy; 2023 - 2024 [**Mạnh Tường Solo**](https://github.com/vnclo
 
 <br />
 
-> <center><em>"We see much further, and reach much higher,<br>only because we stand upon the shoulders of giants"</em></center>
+> <div align="center"><em>"We see much further, and reach much higher,<br>only because we stand upon the shoulders of giants"</em></div>
 <br />
 
 [`^ Top`](#top)
@@ -144,7 +144,7 @@ Copyright &copy; 2023 - 2024 [**Mạnh Tường Solo**](https://github.com/vnclo
 
 ## [License](#top) ⚖️
 
-<CENTER>
+<div align="center">
 
 [![AGPL v3][license-badge]][agpl-license]
 
@@ -152,7 +152,7 @@ Copyright © 2025 Redeyed Technologies
 
 [_**CLICK HERE FOR THE FULL TEXT OF THIS LICENSE**_][agpl-license]
 
-</CENTER>
+</div>
 
 THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
 APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
