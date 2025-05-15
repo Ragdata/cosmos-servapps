@@ -6,7 +6,7 @@
 
 <h1>
 
-[Cosmos Server Servapps][release]
+[Cosmos Cloud Servapps][release]
 
 </h1>
 
