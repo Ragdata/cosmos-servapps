@@ -92,12 +92,13 @@ Add the information below in the form in the image above:
 
 ## [Contributors](#toc) 💎
 
+> [!tip]
+> It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
+
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
-> [!tip]
-> It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
 
 <div align="center">
 
@@ -136,10 +137,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 ## [Security](#top) 🔐
 
-While I always good security practices, 100% security can never be guaranteed in any software package.  The `Cosmos Servapps` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
-
 > [!warning]
 >If you discover any issue regarding the security of this project, please disclose that information responsibly by sending a [security advisory][advisory].  **PLEASE DO NOT CREATE AN ISSUE OR DISCUSSION TOPIC.**  You can read more about this project's security policies [HERE][security]
+
+While I always good security practices, 100% security can never be guaranteed in any software package.  The `Cosmos Servapps` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
 
 [`^ Top`](#top)
 
