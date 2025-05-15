@@ -92,7 +92,7 @@ Add the information below in the form in the image above:
 
 [`^ Top`](#toc)
 
-## 💎 [Contributors](#toc)
+## [Contributors](#toc) 💎
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)

@@ -1,5 +1,5 @@
 ## Contributors ✨
-[![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)
+[![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](CONTRIBUTORS.md)
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
