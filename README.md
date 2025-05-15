@@ -111,12 +111,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 [`^ Top`](#top)
 
-## [Security](#top) 🔐
+## [Resources](#top) 📖
 
-> [!warning]
->If you discover any issue regarding the security of this project, please disclose that information responsibly by sending a [security advisory][advisory].  **PLEASE DO NOT CREATE AN ISSUE OR DISCUSSION TOPIC.**  You can read more about this project's security policies [HERE][security]
-
-While I always good security practices, 100% security can never be guaranteed in any software package.  The `Cosmos Servapps` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
+* [Cosmos Cloud Website](https://cosmos-cloud.io/)
+* [Cosmos Cloud Documentation](https://cosmos-cloud.io/doc)
+* [Cosmos Cloud GitHub Repository](https://github.com/azukaar/cosmos-server)
+* [Cosmos Cloud Discord Server](https://discord.gg/PwMWwsrwHA)
+* [Awesome Cosmos Cloud](https://github.com/azukaar/awesome-cosmos-cloud)
 
 [`^ Top`](#top)
 
@@ -138,13 +139,12 @@ Copyright &copy; 2023 - 2024 [**Mạnh Tường Solo**](https://github.com/vnclo
 
 [`^ Top`](#top)
 
-## [Resources](#top) 📖
+## [Security](#top) 🔐
 
-* [Cosmos Cloud Website](https://cosmos-cloud.io/)
-* [Cosmos Cloud Documentation](https://cosmos-cloud.io/doc)
-* [Cosmos Cloud GitHub Repository](https://github.com/azukaar/cosmos-server)
-* [Cosmos Cloud Discord Server](https://discord.gg/PwMWwsrwHA)
-* [Awesome Cosmos Cloud](https://github.com/azukaar/awesome-cosmos-cloud)
+> [!warning]
+>If you discover any issue regarding the security of this project, please disclose that information responsibly by sending a [security advisory][advisory].  **PLEASE DO NOT CREATE AN ISSUE OR DISCUSSION TOPIC.**  You can read more about this project's security policies [HERE][security]
+
+While I always good security practices, 100% security can never be guaranteed in any software package.  The `Cosmos Servapps` is provided AS IS, and without warranty.  You can find more details in the [LICENSE](LICENSE) file included with this repository.
 
 [`^ Top`](#top)
 
