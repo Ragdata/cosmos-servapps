@@ -3,7 +3,9 @@
   "projectOwner": "Ragdata",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "files": [".github/CONTRIBUTORS.md"],
+  "files": [
+    ".github/CONTRIBUTORS.md"
+  ],
   "imageSize": 100,
   "commit": true,
   "commitConvention": "angular",
@@ -11,7 +13,7 @@
   "linkToUsage": true,
   "types": {
     "bug": {
-      "symbol": "\uD83D\uDC1E",
+      "symbol": "🐞",
       "description": "Bug Reports",
       "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
     }
@@ -35,6 +37,16 @@
         "security",
         "test"
       ]
+    },
+    {
+      "login": "a-bozkurt",
+      "name": "Ahyed Bozkurt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/211136057?v=4",
+      "profile": "https://github.com/a-bozkurt",
+      "contributions": [
+        "code"
+      ]
     }
-  ]
+  ],
+  "commitType": "docs"
 }
