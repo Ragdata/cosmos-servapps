@@ -90,19 +90,52 @@ Add the information below in the form in the image above:
 
 </div>
 
-[`^ Top`](#toc)
-
 ## [Contributors](#toc) 💎
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/github/all-contributors/ragdata/cosmos-servapps?color=ee8449&style=for-the-badge)](.github/CONTRIBUTORS.md)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-If you'd like to make a contribution, then please see [**Cosmos Servapps' Contributor's Guide**][contributing]
+<style>
+    table { border: none!important; }
+    table td { border: none!important; }
+</style>
 
-It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
+> [!info]
+> It's not just contributions of code that I'm looking for.  If you have any ideas or suggestions about how this project may be improved, don't hesitate to [open an issue][issues] and let me know!  Contributions of ALL kinds will be recognised here if they are made part of this project - thanks to the [All-Contributors][all-contributors] bot.
 
-[**VIEW PROJECT CONTRIBUTORS**](.github/CONTRIBUTORS.md)
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ragdata"><img src="https://avatars.githubusercontent.com/u/6827931?v=4?s=100" width="100px;" alt="Ragdata"/><br /><sub><b>Ragdata</b></sub></a><br /><a href="https://github.com/Ragdata/cosmos-servapps/commits?author=Ragdata" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/a-bozkurt"><img src="https://avatars.githubusercontent.com/u/211136057?v=4?s=100" width="100px;" alt="Ahyed Bozkurt"/><br /><sub><b>Ahyed Bozkurt</b></sub></a><br /><a href="https://github.com/Ragdata/cosmos-servapps/commits?author=a-bozkurt" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td align="center" size="13px" colspan="7">
+        <img src="https://raw.githubusercontent.com/all-contributors/all-contributors-cli/1b8533af435da9854653492b1327a23a4dbd0a10/assets/logo-small.svg">
+          <a href="https://all-contributors.js.org/docs/en/bot/usage">Add your contributions</a>
+        </img>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<div align="center">
+
+<small>If you'd like to make a contribution, then please see<br />[**Cosmos Servapps' Contributor's Guide**][contributing]</small>
+
+</div>
 
 [`^ Top`](#top)
 
@@ -163,7 +196,7 @@ PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
 IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
 ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
 
-[`^ Top`](#top)
+&nbsp;
 
 <div align="center">
 

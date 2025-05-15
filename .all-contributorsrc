@@ -4,13 +4,13 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
-    ".github/CONTRIBUTORS.md"
+    "README.md"
   ],
-  "imageSize": 100,
+  "imageSize": 80,
   "commit": true,
   "commitConvention": "angular",
   "contributorsPerLine": 7,
-  "linkToUsage": true,
+  "linkToUsage": false,
   "types": {
     "bug": {
       "symbol": "🐞",
