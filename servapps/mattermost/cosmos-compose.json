@@ -76,11 +76,11 @@
             "hostname": "{ServiceName}",
             "image": "mattermost/mattermost-team-edition:latest",
             "restart": "unless-stopped",
-            "depends_on": [
+            "depends_on": {
                 "{ServiceName}-postgres": {
                     "condition": "service_healthy"
                 }
-            ],
+            },
             "deploy": {
                 "resources": {
                     "limits": {
@@ -111,7 +111,8 @@
                 "MM_EMAILSETTINGS_NOTIFICATIONEMAILADDRESS={Context.NOTIFICATIONEMAILADDRESS}"
             ],
             "networks": {
-                "{ServiceName}": {}
+                "{ServiceName}": {},
+                "{ServiceName}-internal": {}
             },
             "network_mode": "{ServiceName}",
             "volumes": [
