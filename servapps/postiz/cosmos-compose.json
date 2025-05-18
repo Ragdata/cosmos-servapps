@@ -130,7 +130,7 @@
         "{ServiceName}-postgres": {
             "container_name": "{ServiceName}-postgres",
             "hostname": "{ServiceName}-postgres",
-            "image": "postgres:17-alpine",
+            "image": "postgres:17.5-alpine",
             "restart": "unless-stopped",
             "healthcheck": {
                 "test": [

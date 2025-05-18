@@ -97,7 +97,7 @@
             "environment": [
                 "MM_SQLSETTINGS_DRIVERNAME=postgres",
                 "MM_SQLSETTINGS_DATASOURCE=postgres://{Context.POSTGRES_USER}:{Context.POSTGRES_PASSWORD}@{ServiceName}-postgres:5432/{Context.POSTGRES_DBNAME}?sslmode=disable&connect_timeout=10",
-                "MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexe",
+                "MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexes",
                 "MM_SERVICESETTINGS_SITEURL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}",
                 "PATH=/mattermost/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
                 "MM_CALLS_GROUP_CALLS_ALLOWED=true",
@@ -138,7 +138,7 @@
                 },
                 {
                 "type": "volume",
-                "source": "{ServiceName}-plugins",
+                "source": "{ServiceName}-client-plugins",
                 "target": "/mattermost/client/plugins"
                 },
                 {
@@ -191,7 +191,7 @@
         "{ServiceName}-postgres": {
             "container_name": "{ServiceName}-postgres",
             "hostname": "{ServiceName}-postgres",
-            "image": "postgres:17-alpine",
+            "image": "postgres:17.5-alpine",
             "restart": "unless-stopped",
             "stop_grace_period": 5,
             "security_opt": [
@@ -275,6 +275,10 @@
         },
         "{ServiceName}-plugins": {
             "name": "{ServiceName}-plugins",
+            "driver": "local"
+        },
+        "{ServiceName}-client-plugins": {
+            "name": "{ServiceName}-client-plugins",
             "driver": "local"
         },
         "{ServiceName}-indexes": {
