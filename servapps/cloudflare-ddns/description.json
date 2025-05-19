@@ -1,0 +1,9 @@
+{
+  "name": "Cloudflare DDNS",
+  "description": "Cloudflare DDNS is a feature-rich dynamic DNS client for Cloudflare, designed to keep your domain's DNS records up-to-date with your current IP address.",
+  "longDescription": "A feature-rich and robust Cloudflare DDNS updater with a small footprint. The program will detect your machine’s public IP addresses and update DNS records using the Cloudflare API.",
+  "tags": [ "Utilities" ],
+  "repository": "https://github.com/favonia/cloudflare-ddns",
+  "image": "",
+  "supported_architectures": [ "amd64", "386", "arm" ]
+}
