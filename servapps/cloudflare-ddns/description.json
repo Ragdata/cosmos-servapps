@@ -4,6 +4,6 @@
   "longDescription": "A feature-rich and robust Cloudflare DDNS updater with a small footprint. The program will detect your machine’s public IP addresses and update DNS records using the Cloudflare API.",
   "tags": [ "Utilities" ],
   "repository": "https://github.com/favonia/cloudflare-ddns",
-  "image": "",
+  "image": "https://hub.docker.com/r/favonia/cloudflare-ddns",
   "supported_architectures": [ "amd64", "386", "arm" ]
 }

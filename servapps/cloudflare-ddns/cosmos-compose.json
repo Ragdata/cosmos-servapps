@@ -21,7 +21,7 @@
                 "description": "Set to true if you want to use Cloudflare's proxy feature.",
                 "initialValue": false,
                 "type": "checkbox"
-            },
+            }
         ]
     },
     "name": "cloudflare-ddns",
@@ -47,7 +47,7 @@
             "network_mode": "host",
             "labels": {
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/cloudflare-ddns/icon.png",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/cloudflare-ddns/icon.png"
             }
         }
     }
