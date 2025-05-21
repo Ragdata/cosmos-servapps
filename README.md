@@ -75,6 +75,7 @@ Add the information below in the form in the image above:
 | [N8n][n8n]                  | Automation  | [🌐][n8n-web]   | [💾][n8n-cod]  | [📖][n8n-doc]  | 172.16.12.0/24   |
 | [NetAlertX][net]            | Security    | [🌐][net-web]   | [💾][net-cod]  | [📖][net-doc]  | 172.16.16.0/24   |
 | [Nextcloud][nex]            | Security    | [🌐][nex-web]   | [💾][nex-cod]  | [📖][nex-doc]  | 172.16.21.0/24   |
+| [NocoDB][noc]               | DB / Apps   | [🌐][noc-web]   | [💾][noc-cod]  | [📖][noc-doc]  | 172.16.29.0/24   |
 | [Notifiarr][not]            | Messaging   | [🌐][not-web]   | [💾][not-cod]  | [📖][not-doc]  | 172.16.17.0/24   |
 | [OnlyOffice Docs][ood]      | Office      | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.23.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
@@ -230,6 +231,11 @@ Copyright &copy; 2025 Redeyed Technologies
 [cal-cod]: https://github.com/janeczku/calibre-web
 [cal-doc]: https://calibre-ebook.com/help
 
+[chr]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/chromium
+[chr-web]: https://docs.linuxserver.io/images/docker-chromium/
+[chr-cod]: https://github.com/linuxserver/docker-chromium/
+[chr-doc]: https://docs.linuxserver.io/images/docker-chromium/
+
 [dns]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/cloudflare-dns
 [dns-web]: https://github.com/favonia/cloudflare-ddns
 [dns-cod]: https://github.com/favonia/cloudflare-ddns
@@ -309,6 +315,11 @@ Copyright &copy; 2025 Redeyed Technologies
 [nex-web]: https://nextcloud.com/
 [nex-cod]: https://github.com/nextcloud
 [nex-doc]: https://docs.nextcloud.com/server/latest/admin_manual/
+
+[noc]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/nocodb
+[noc-web]: https://nocodb.com/
+[noc-cod]: https://github.com/nocodb/nocodb
+[noc-doc]: https://docs.nocodb.com/
 
 [not]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/notifiarr
 [not-web]: https://notifiarr.com/
