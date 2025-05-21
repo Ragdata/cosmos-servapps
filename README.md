@@ -56,7 +56,9 @@ Add the information below in the form in the image above:
 | App                         | Category    | Web             | Code            | Docs           | Subnet           |
 |:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:-----------------|
 | [Activepieces][act]         | Automation  | [🌐][act-web]   | [💾][act-cod]  | [📖][act-doc]  | 172.16.8.0/24    |
+| [Baserow][bas]              | Database    | [🌐][bas-web]   | [💾][bas-cod]  | [📖][bas-doc]  | 172.16.20.0/24   |
 | [Calibre-Web][cal]          | Doc Mgmt    | [🌐][cal-web]   | [💾][cal-cod]  | [📖][cal-doc]  | 172.16.20.0/24   |
+| [Cloudflare DDNS][dns]      | DNS Mgmt    | [🌐][dns-web]   | [💾][dns-cod]  | [📖][dns-doc]  |                  |
 | [Dashy][das]                | Dashboards  | [🌐][das-web]   | [💾][das-cod]  | [📖][das-doc]  | 172.16.24.0/24   |
 | [Dozzle][doz]               | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | [📖][doz-doc]  | 172.16.1.0/24    |
 | [Excalidraw][exc]           | Whiteboard  | [🌐][exc-web]   | [💾][exc-cod]  | [📖][exc-doc]  | 172.16.14.0/24   |
@@ -80,6 +82,7 @@ Add the information below in the form in the image above:
 | [Seafile][sea]              | File Mgmt   | [🌐][sea-web]   | [💾][sea-cod]  | [📖][sea-doc]  | 172.16.22.0/24   |
 | [Uptime-Kuma][upk]          | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  | [📖][upk-doc]  | 172.16.13.0/24   |
 | [Vaultwarden][vlw]          | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  | [📖][vlw-doc]  | 172.16.3.0/24    |
+| [WikiJS][wik]               | CMS         | [🌐][wik-web]   | [💾][wik-cod]  | [📖][wik-doc]  | 172.16.26.0/24   |
 | [Yopass][yop]               | Secrets     | [🌐][yop-web]   | [💾][yop-cod]  | [📖][yop-doc]  | 172.16.18.0/24   |
 
 [`^ Top`](#top)
@@ -216,10 +219,20 @@ Copyright &copy; 2025 Redeyed Technologies
 [act-cod]: https://github.com/activepieces/activepieces/
 [act-doc]: https://www.activepieces.com/docs/getting-started/introduction
 
+[bas]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/baserow
+[bas-web]: https://baserow.io/
+[bas-cod]: https://gitlab.com/baserow/baserow
+[bas-doc]: https://baserow.io/user-docs
+
 [cal]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/calibre-web
 [cal-web]: https://calibre-ebook.com/
 [cal-cod]: https://github.com/janeczku/calibre-web
 [cal-doc]: https://calibre-ebook.com/help
+
+[dns]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/cloudflare-dns
+[dns-web]: https://github.com/favonia/cloudflare-ddns
+[dns-cod]: https://github.com/favonia/cloudflare-ddns
+[dns-doc]: https://github.com/favonia/cloudflare-ddns
 
 [das]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dashy
 [das-web]: https://dashy.to/
@@ -335,6 +348,11 @@ Copyright &copy; 2025 Redeyed Technologies
 [vlw-web]: https://github.com/IceWhaleTech/CasaOS-AppStore
 [vlw-cod]: https://github.com/dani-garcia/vaultwarden
 [vlw-doc]: https://bitwarden.com/help/
+
+[wik]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/vaultwarden
+[wik-web]: https://github.com/IceWhaleTech/CasaOS-AppStore
+[wik-cod]: https://github.com/dani-garcia/vaultwarden
+[wik-doc]: https://bitwarden.com/help/
 
 [yop]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/yopass
 [yop-web]: https://yopass.se/
