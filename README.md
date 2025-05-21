@@ -56,8 +56,9 @@ Add the information below in the form in the image above:
 | App                         | Category    | Web             | Code            | Docs           | Subnet           |
 |:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:-----------------|
 | [Activepieces][act]         | Automation  | [🌐][act-web]   | [💾][act-cod]  | [📖][act-doc]  | 172.16.8.0/24    |
-| [Baserow][bas]              | Database    | [🌐][bas-web]   | [💾][bas-cod]  | [📖][bas-doc]  | 172.16.20.0/24   |
+| [Baserow][bas]              | Database    | [🌐][bas-web]   | [💾][bas-cod]  | [📖][bas-doc]  | 172.16.27.0/24   |
 | [Calibre-Web][cal]          | Doc Mgmt    | [🌐][cal-web]   | [💾][cal-cod]  | [📖][cal-doc]  | 172.16.20.0/24   |
+| [Chromium][chr]             | Doc Mgmt    | [🌐][chr-web]   | [💾][chr-cod]  | [📖][chr-doc]  | 172.16.28.0/24   |
 | [Cloudflare DDNS][dns]      | DNS Mgmt    | [🌐][dns-web]   | [💾][dns-cod]  | [📖][dns-doc]  |                  |
 | [Dashy][das]                | Dashboards  | [🌐][das-web]   | [💾][das-cod]  | [📖][das-doc]  | 172.16.24.0/24   |
 | [Dozzle][doz]               | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | [📖][doz-doc]  | 172.16.1.0/24    |
