@@ -1,8 +1,8 @@
-<a name="top"><img height="100" align="right" src="https://raw.githubusercontent.com/Ragdata/media/master/logo/Ragdata-64.svg" alt="Cosmos Server Servapps" /></a>
+<a name="top" href="https://github.com/ragdata" target="_blank"><img height="100" align="right" src="https://raw.githubusercontent.com/Ragdata/media/master/logo/Ragdata-64.svg" alt="Cosmos Server Servapps" /></a>
 
 <!-- [![Codacy grade][codacy-grade]][codacy-repo] -->
 ![Dev-Release][dev-release]
-<!-- ![Version][version] -->
+[![Version][version-badge]][release]
 
 <h1>
 
@@ -12,10 +12,10 @@
 
 <div align="center">
 
-### _An App Marketplace for Cosmos Cloud_
+### _An App Marketplace Source for Cosmos Cloud_
 
 [![GitHub issues][issues-badge]][issues]
-![Last Commit][commit-badge]
+[![Last Release][release-date]][release]
 [![AGPL][license-badge]][agpl-license]
 <br />
 [![wakatime][wakatime-badge]][wakatime-repo]
@@ -373,13 +373,16 @@ Copyright &copy; 2025 Redeyed Technologies
 
 [//]: # (############################################################)
 
-[dev-release]: https://img.shields.io/badge/Status-Dev--Release-cd4800?labelColor=31383f
-[release]: https://ragdata.github.io/cosmos-servapps/
+[release]: https://github.com/ragdata/cosmos-servapps/releases/tag/0.1.1-dev
+[gh-pages]: https://ragdata.github.io/cosmos-servapps/
 [repo]: https://github.com/ragdata/cosmos-servapps
 
-[commit-badge]: https://img.shields.io/github/last-commit/ragdata/cosmos-servapps/master?logo=github&style=for-the-badge
+[dev-release]: https://img.shields.io/badge/Status-Dev--Release-cd4800?labelColor=31383f
 [issues-badge]: https://img.shields.io/github/issues-raw/ragdata/cosmos-servapps?style=for-the-badge&logo=github
 [license-badge]: https://img.shields.io/badge/License-AGPL_v3-blue?style=for-the-badge
+[release-date]: https://img.shields.io/github/release-date-pre/ragdata/cosmos-servapps?display_date=published_at&style=for-the-badge
+[version-badge]: https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fragdata%2Fcosmos-servapps%2Fmaster%2F.releaserc&query=%24.version&prefix=v&label=Version&labelColor=31383f&color=cd4800
+
 
 [issues]: https://github.com/ragdata/cosmos-servapps/issues
 [agpl-license]: http://choosealicense.com/licenses/agpl/
