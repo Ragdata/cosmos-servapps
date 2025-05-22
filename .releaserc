@@ -1,0 +1,43 @@
+extends: relman.base.yml
+name: Cosmos Cloud Servapps
+description: An app marketplace source for Cosmos Cloud
+version: 0.1.1-dev
+copyright: Copyright © 2025 Redeyed Technologies
+website: https://ragdata.github.io/cosmos-servapps/
+repo_url: https://github.com/ragdata/cosmos-servapps
+license: GNU Affero General Public License v3.0
+license_url: https://www.gnu.org/licenses/agpl-3.0.html
+license_file: LICENSE
+keywords:
+    - cosmos
+    - cosmos-cloud
+    - cosmos-server
+    - servapps
+    - marketplace
+    - docker
+    - docker-compose
+    - self-hosted
+    - open-source
+    - redeyed-au
+    - ragdata
+authors:
+    - username: Ragdata
+      first_name: Darren
+      surname: Poulton
+      email: ragdata@ragdata.dev
+      location: Brisbane, Australia
+      affiliation: Redeyed Technologies
+release_notes: |
+    - Developer Release of the Cosmos Cloud Servapps source.
+    - Packages added this release:
+        - Baserow
+        - Cloudflare-DDNS
+        - NocoDB
+    - Packages modified this release:
+        - Chromium
+        - Mattermost
+    - This is a work in progress and not yet ready for production use.
+    - The source is designed to be used with the Cosmos Cloud platform.
+    - The source is not yet fully tested and may contain bugs.
+    - The source is not yet fully documented and may be missing features.
+    - The source is not yet fully supported and may not work as expected.

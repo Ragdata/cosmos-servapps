@@ -1,29 +1,30 @@
 {
-    "cosmos-installer": {},
-    "name": "wikijs",
+    "cosmos-installer": {}, 
+    "name": "nocodb",
     "services": {
         "{ServiceName}": {
             "container_name": "{ServiceName}",
             "hostname": "{ServiceName}",
-            "image": "ghcr.io/requarks/wiki:latest",
+            "image": "nocodb/nocodb:latest",
             "restart": "unless-stopped",
+            "depends_on": {
+                "{ServiceName}-db": {
+                    "condition": "service_healthy"
+                }
+            },
             "environment": [
-                "DB_TYPE=postgres",
-                "DB_HOST={ServiceName}-postgres",
-                "DB_PORT=5432",
-                "DB_USER=wikijs",
-                "DB_PASS={Passwords.0}",
-                "DB_NAME=wikijs"
+                "NC_DB=pg://{ServiceName}-db:5432?u=postgres&p={Passwords.0}&d=root_db"
             ],
             "networks": {
-                "{ServiceName}": {}
+                "{ServiceName}": {},
+                "{ServiceName}-internal": {}
             },
             "network_mode": "{ServiceName}",
             "volumes": [
                 {
-                "source": "{ServiceName}-content",
-                "target": "/wiki/data/content",
-                "type": "volume"
+                "type": "volume",
+                "source": "{ServiceName}-data",
+                "target": "/usr/app/data"
                 },
                 {
                 "type": "bind",
@@ -36,52 +37,56 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
-            "routes": [{
+            "routes": [
+                {
                 "name": "{ServiceName}",
                 "description": "Expose {ServiceName} to the web",
                 "useHost": true,
-                "target": "http://{ServiceName}:3000",
+                "target": "http://{ServiceName}:8080",
                 "mode": "SERVAPP",
                 "Timeout": 14400000,
                 "ThrottlePerMinute": 12000,
                 "BlockCommonBots": true,
                 "SmartShield": { "Enabled": true }
-            }],
+                }
+            ],
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8080 || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 10,
+                "retries": 3,
+                "start_period": 10
+            },
             "labels": {
-                "cosmos-persistent-env": "DB_TYPE, DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME",
                 "cosmos.stack": "{ServiceName}",
                 "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/wikijs/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nocodb/icon.png",
                 "cosmos-force-network-secured": "true"
             }
         },
-
-        "{ServiceName}-postgres": {
-            "container_name": "{ServiceName}-postgres",
-            "hostname": "{ServiceName}-postgres",
+        "{ServiceName}-db": {
+            "container_name": "{ServiceName}-db",
+            "hostname": "{ServiceName}-db",
             "image": "postgres:17.5-alpine",
             "restart": "unless-stopped",
-            "stop_grace_period": 5,
-            "security_opt": [
-                "seccomp:unconfined",
-                "apparmor:unconfined"
-            ],
             "environment": [
-                "POSTGRES_DB=wikijs",
-                "POSTGRES_USER=wikijs",
+                "POSTGRES_DB=root_db",
+                "POSTGRES_USER=postgres",
                 "POSTGRES_PASSWORD={Passwords.0}"
             ],
             "networks": {
-                "{ServiceName}": {}
+                "{ServiceName}-internal": {}
             },
-            "network_mode": "{ServiceName}",
+            "network_mode": "{ServiceName}-internal",
             "volumes": [
                 {
-                "source": "{ServiceName}-postgres",
-                "target": "/var/lib/postgresql/data",
-                "type": "volume"
+                "type": "volume",
+                "source": "{ServiceName}-db",
+                "target": "/var/lib/postgresql/data"
                 },
                 {
                 "type": "bind",
@@ -94,24 +99,33 @@
                 "target": "/etc/timezone:ro"
                 }
             ],
+            "healthcheck": {
+                "test": [
+                    "CMD-SHELL",
+                    "pg_isready -U postgres -d root_db"
+                ],
+                "interval": 15,
+                "timeout": 5,
+                "retries": 3,
+                "start_period": 10
+            },
             "labels": {
-                "cosmos-persistent-env": "POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD",
                 "cosmos.stack": "{ServiceName}",
                 "cosmos.stack.main": "{ServiceName}",
                 "cosmos-auto-update": "true",
-                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/wikijs/icon.png",
-                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/nocodb/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}-internal",
                 "cosmos-force-network-secured": "true"
             }
         }
     },
     "volumes": {
-        "{ServiceName}-content": {
-            "name": "{ServiceName}-content",
+        "{ServiceName}-data": {
+            "name": "{ServiceName}-data",
             "driver": "local"
         },
-        "{ServiceName}-postgres": {
-            "name": "{ServiceName}-postgres",
+        "{ServiceName}-db": {
+            "name": "{ServiceName}-db",
             "driver": "local"
         }
     },
@@ -120,7 +134,15 @@
             "driver": "bridge",
             "ipam": {
                 "config": [
-                    { "subnet": "172.16.26.0/24" }
+                    { "subnet": "172.16.29.0/25" }
+                ]
+            }
+        },
+        "{ServiceName}-internal": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.29.128/25" }
                 ]
             }
         }

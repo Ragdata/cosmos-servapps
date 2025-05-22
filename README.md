@@ -1,8 +1,8 @@
-<a name="top"><img height="100" align="right" src="https://raw.githubusercontent.com/Ragdata/media/master/logo/Ragdata-64.svg" alt="Cosmos Server Servapps" /></a>
+<a name="top" href="https://github.com/ragdata" target="_blank"><img height="100" align="right" src="https://raw.githubusercontent.com/Ragdata/media/master/logo/Ragdata-64.svg" alt="Cosmos Server Servapps" /></a>
 
 <!-- [![Codacy grade][codacy-grade]][codacy-repo] -->
 ![Dev-Release][dev-release]
-<!-- ![Version][version] -->
+[![Version][version-badge]][release]
 
 <h1>
 
@@ -12,10 +12,10 @@
 
 <div align="center">
 
-### _An App Marketplace for Cosmos Cloud_
+### _An App Marketplace Source for Cosmos Cloud_
 
 [![GitHub issues][issues-badge]][issues]
-![Last Commit][commit-badge]
+[![Last Release][release-date]][release]
 [![AGPL][license-badge]][agpl-license]
 <br />
 [![wakatime][wakatime-badge]][wakatime-repo]
@@ -56,7 +56,10 @@ Add the information below in the form in the image above:
 | App                         | Category    | Web             | Code            | Docs           | Subnet           |
 |:----------------------------|:------------|:---------------:|:---------------:|:--------------:|:-----------------|
 | [Activepieces][act]         | Automation  | [🌐][act-web]   | [💾][act-cod]  | [📖][act-doc]  | 172.16.8.0/24    |
+| [Baserow][bas]              | Database    | [🌐][bas-web]   | [💾][bas-cod]  | [📖][bas-doc]  | 172.16.27.0/24   |
 | [Calibre-Web][cal]          | Doc Mgmt    | [🌐][cal-web]   | [💾][cal-cod]  | [📖][cal-doc]  | 172.16.20.0/24   |
+| [Chromium][chr]             | Doc Mgmt    | [🌐][chr-web]   | [💾][chr-cod]  | [📖][chr-doc]  | 172.16.28.0/24   |
+| [Cloudflare DDNS][dns]      | DNS Mgmt    | [🌐][dns-web]   | [💾][dns-cod]  | [📖][dns-doc]  |                  |
 | [Dashy][das]                | Dashboards  | [🌐][das-web]   | [💾][das-cod]  | [📖][das-doc]  | 172.16.24.0/24   |
 | [Dozzle][doz]               | Utilities   | [🌐][doz-web]   | [💾][doz-cod]  | [📖][doz-doc]  | 172.16.1.0/24    |
 | [Excalidraw][exc]           | Whiteboard  | [🌐][exc-web]   | [💾][exc-cod]  | [📖][exc-doc]  | 172.16.14.0/24   |
@@ -72,6 +75,7 @@ Add the information below in the form in the image above:
 | [N8n][n8n]                  | Automation  | [🌐][n8n-web]   | [💾][n8n-cod]  | [📖][n8n-doc]  | 172.16.12.0/24   |
 | [NetAlertX][net]            | Security    | [🌐][net-web]   | [💾][net-cod]  | [📖][net-doc]  | 172.16.16.0/24   |
 | [Nextcloud][nex]            | Security    | [🌐][nex-web]   | [💾][nex-cod]  | [📖][nex-doc]  | 172.16.21.0/24   |
+| [NocoDB][noc]               | DB / Apps   | [🌐][noc-web]   | [💾][noc-cod]  | [📖][noc-doc]  | 172.16.29.0/24   |
 | [Notifiarr][not]            | Messaging   | [🌐][not-web]   | [💾][not-cod]  | [📖][not-doc]  | 172.16.17.0/24   |
 | [OnlyOffice Docs][ood]      | Office      | [🌐][ood-web]   | [💾][ood-cod]  | [📖][ood-doc]  | 172.16.23.0/24   |
 | [Portainer BE][pbe]         | Containers  | [🌐][pbe-web]   | [💾][pbe-cod]  | [📖][pbe-doc]  | 172.17.0.0/24    |
@@ -80,6 +84,7 @@ Add the information below in the form in the image above:
 | [Seafile][sea]              | File Mgmt   | [🌐][sea-web]   | [💾][sea-cod]  | [📖][sea-doc]  | 172.16.22.0/24   |
 | [Uptime-Kuma][upk]          | Analytics   | [🌐][upk-web]   | [💾][upk-cod]  | [📖][upk-doc]  | 172.16.13.0/24   |
 | [Vaultwarden][vlw]          | Passwords   | [🌐][vlw-web]   | [💾][vlw-cod]  | [📖][vlw-doc]  | 172.16.3.0/24    |
+| [WikiJS][wik]               | CMS         | [🌐][wik-web]   | [💾][wik-cod]  | [📖][wik-doc]  | 172.16.26.0/24   |
 | [Yopass][yop]               | Secrets     | [🌐][yop-web]   | [💾][yop-cod]  | [📖][yop-doc]  | 172.16.18.0/24   |
 
 [`^ Top`](#top)
@@ -216,10 +221,25 @@ Copyright &copy; 2025 Redeyed Technologies
 [act-cod]: https://github.com/activepieces/activepieces/
 [act-doc]: https://www.activepieces.com/docs/getting-started/introduction
 
+[bas]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/baserow
+[bas-web]: https://baserow.io/
+[bas-cod]: https://gitlab.com/baserow/baserow
+[bas-doc]: https://baserow.io/user-docs
+
 [cal]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/calibre-web
 [cal-web]: https://calibre-ebook.com/
 [cal-cod]: https://github.com/janeczku/calibre-web
 [cal-doc]: https://calibre-ebook.com/help
+
+[chr]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/chromium
+[chr-web]: https://docs.linuxserver.io/images/docker-chromium/
+[chr-cod]: https://github.com/linuxserver/docker-chromium/
+[chr-doc]: https://docs.linuxserver.io/images/docker-chromium/
+
+[dns]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/cloudflare-dns
+[dns-web]: https://github.com/favonia/cloudflare-ddns
+[dns-cod]: https://github.com/favonia/cloudflare-ddns
+[dns-doc]: https://github.com/favonia/cloudflare-ddns
 
 [das]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/dashy
 [das-web]: https://dashy.to/
@@ -296,6 +316,11 @@ Copyright &copy; 2025 Redeyed Technologies
 [nex-cod]: https://github.com/nextcloud
 [nex-doc]: https://docs.nextcloud.com/server/latest/admin_manual/
 
+[noc]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/nocodb
+[noc-web]: https://nocodb.com/
+[noc-cod]: https://github.com/nocodb/nocodb
+[noc-doc]: https://docs.nocodb.com/
+
 [not]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/notifiarr
 [not-web]: https://notifiarr.com/
 [not-cod]: https://github.com/Notifiarr/notifiarr
@@ -336,6 +361,11 @@ Copyright &copy; 2025 Redeyed Technologies
 [vlw-cod]: https://github.com/dani-garcia/vaultwarden
 [vlw-doc]: https://bitwarden.com/help/
 
+[wik]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/vaultwarden
+[wik-web]: https://github.com/IceWhaleTech/CasaOS-AppStore
+[wik-cod]: https://github.com/dani-garcia/vaultwarden
+[wik-doc]: https://bitwarden.com/help/
+
 [yop]: https://github.com/Ragdata/cosmos-servapps/tree/master/servapps/yopass
 [yop-web]: https://yopass.se/
 [yop-cod]: https://github.com/jhaals/yopass/
@@ -343,13 +373,16 @@ Copyright &copy; 2025 Redeyed Technologies
 
 [//]: # (############################################################)
 
-[dev-release]: https://img.shields.io/badge/Status-Dev--Release-cd4800?labelColor=31383f
-[release]: https://ragdata.github.io/cosmos-servapps/
+[release]: https://github.com/ragdata/cosmos-servapps/releases/tag/0.1.1-dev
+[gh-pages]: https://ragdata.github.io/cosmos-servapps/
 [repo]: https://github.com/ragdata/cosmos-servapps
 
-[commit-badge]: https://img.shields.io/github/last-commit/ragdata/cosmos-servapps/master?logo=github&style=for-the-badge
+[dev-release]: https://img.shields.io/badge/Status-Dev--Release-cd4800?labelColor=31383f
 [issues-badge]: https://img.shields.io/github/issues-raw/ragdata/cosmos-servapps?style=for-the-badge&logo=github
 [license-badge]: https://img.shields.io/badge/License-AGPL_v3-blue?style=for-the-badge
+[release-date]: https://img.shields.io/github/release-date-pre/ragdata/cosmos-servapps?display_date=published_at&style=for-the-badge
+[version-badge]: https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fragdata%2Fcosmos-servapps%2Fmaster%2F.releaserc&query=%24.version&prefix=v&label=Version&labelColor=31383f&color=cd4800
+
 
 [issues]: https://github.com/ragdata/cosmos-servapps/issues
 [agpl-license]: http://choosealicense.com/licenses/agpl/

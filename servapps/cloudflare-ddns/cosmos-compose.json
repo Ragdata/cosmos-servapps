@@ -1,0 +1,54 @@
+{
+    "cosmos-installer": {
+        "form": [
+            {
+                "name": "CLOUDFLARE_API_TOKEN",
+                "label": "Cloudflare API Token",
+                "description": "Create a token with the following permissions: Zone - DNS - Edit",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "DOMAINS",
+                "label": "Domains",
+                "description": "Comma-separated list of domains to update. For example: example.com,www.example.com",
+                "initialValue": "",
+                "type": "text"
+            },
+            {
+                "name": "PROXIED",
+                "label": "Proxied?",
+                "description": "Set to true if you want to use Cloudflare's proxy feature.",
+                "initialValue": false,
+                "type": "checkbox"
+            }
+        ]
+    },
+    "name": "cloudflare-ddns",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "favonia/cloudflare-ddns:latest",
+            "restart": "unless-stopped",
+            "security_opt": [
+                "no-new-privileges:true"
+            ],
+            "user": "1000:1000",
+            "cap_drop": [
+                "ALL"
+            ],
+            "read-only": true,
+            "environment": [
+                "CLOUDFLARE_API_TOKEN={Context.CLOUDFLARE_API_TOKEN}",
+                "DOMAINS={Context.DOMAINS}",
+                "PROXIED={Context.PROXIED}"
+            ],
+            "network_mode": "host",
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/cloudflare-ddns/icon.png"
+            }
+        }
+    }
+}

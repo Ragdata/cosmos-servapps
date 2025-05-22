@@ -1,0 +1,61 @@
+{
+    "cosmos-installer": {},
+    "name": "baserow",
+    "services": {
+        "{ServiceName}": {
+            "container_name": "{ServiceName}",
+            "hostname": "{ServiceName}",
+            "image": "baserow/baserow",
+            "restart": "unless-stopped",
+            "environment": [
+                "BASEROW_PUBLIC_URL=https://{Hostnames.{StaticServiceName}.{StaticServiceName}.host}"
+            ],
+            "networks": {
+                "{ServiceName}": {}
+            },
+            "network_mode": "{ServiceName}",
+            "volumes": [
+                {
+                    "source": "{ServiceName}",
+                    "target": "/baserow/data",
+                    "type": "volume"
+                }
+            ],
+            "routes": [
+                {
+                    "name": "{ServiceName}",
+                    "description": "Expose {ServiceName} to the web",
+                    "useHost": true,
+                    "target": "http://{ServiceName}:80",
+                    "mode": "SERVAPP",
+                    "Timeout": 14400000,
+                    "ThrottlePerMinute": 12000,
+                    "BlockCommonBots": true,
+                    "SmartShield": { "Enabled": true }
+                }
+            ],
+            "labels": {
+                "cosmos-auto-update": "true",
+                "cosmos-icon": "https://ragdata.github.io/cosmos-servapps/servapps/baserow/icon.png",
+                "cosmos-force-network-mode": "{ServiceName}",
+                "cosmos-force-network-secured": "true"
+            }
+        }
+    },
+    "volumes": {
+        "{ServiceName}": {
+            "name": "{ServiceName}",
+            "driver": "local"
+        }
+    },
+    "networks": {
+        "{ServiceName}": {
+            "driver": "bridge",
+            "ipam": {
+                "config": [
+                    { "subnet": "172.16.27.0/24" }
+                ]
+            }
+        }
+    }
+}
